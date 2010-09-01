@@ -620,7 +620,14 @@ XC.Message = XC.Object.extend({
    *   thread = thread
    * @param {String} body The message body.
    */
-  reply: function (body) {}
+  reply: function (body) {
+    XC.Chat.send(XC.Message.extend({
+      to: this.from,
+      from: this.to,
+      body: body,
+      thread: this.thread
+    }));
+  }
 
 });
 /**
@@ -638,7 +645,42 @@ XC.Roster = {
    * 
    * @param {Object}   [callbacks] An Object with 'onError' and 'onSuccess'.
    */
-  request: function (callbacks) {},
+  request: function (callbacks) {
+    var iq = XC.XMPP.IQ.extend(),
+        q = XC.XMPP.Query.extend({xmlns: this.XMLNS});
+    iq.type('get');
+    iq.addChild(q);
+
+    this.connection.send(iq.convertToString(), function (packet) {
+      if (packet.getType() === 'error') {
+        callbacks.onError(packet);
+      } else {
+        var items = packet.getElementsByTagName('item'),
+            entities = [], idx = items.length,
+            entity, item, groups, len;
+        while (idx--) {
+          item = items[idx];
+          entity = XC.Entity.extend({
+            jid: item.getAttribute('jid'),
+            subscription: item.getAttribute('subscription'),
+            name: item.getAttribute('name')
+          });
+          groups = item.getElemengsByTagName('group');
+          len = groups ? groups.length : 0;
+
+          if (len) {
+            entity.groups = [];
+          }
+
+          while (len--) {
+            entity.groups.push(groups[len].text);
+          }
+          entities.push(entity);
+        }
+        this.onSuccess(entities);
+      }
+    });
+  },
 
   /**
    * Add a new entity to your roster.
@@ -647,7 +689,10 @@ XC.Roster = {
    * @param {XC.Entity} entity      The entity to add to your roster.
    * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
    */
-  add: function (entity, callbacks) {},
+  add: function (entity, callbacks) {
+    this.update(entity, callbacks);
+    XC.Presence.subscribe(entity, callbacks);
+  },
 
   /**
    * Update an entity in your roster.
@@ -655,7 +700,35 @@ XC.Roster = {
    * @param {XC.Entity} entity      The entity to update on your roster.
    * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
    */
-  update: function (entity, callbacks) {},
+  update: function (entity, callbacks) {
+    var iq = XC.XMPP.IQ.extend(),
+        q = XC.XMPP.Query.extend({xmlns: this.XMLNS}),
+        item = XC.XML.Element.extend({name: 'item'}),
+        Group = XC.XML.Element.extend({name: 'group'}),
+        idx = !entity.groups ? 0 : entity.groups.length,
+        group;
+    iq.type('set');
+    item.attr('jid', entity.jid);
+
+    if (entity.name) {
+      item.attr('name', entity.name);
+    }
+
+    while (idx--) {
+      group = Group.extend();
+      group.text = entity.groups[idx];
+      item.addChild(group);
+    }
+
+    iq.addChild(item);
+    this.connection.send(iq.convertToString(), function (packet) {
+      if (packet.getType() === 'error') {
+        callbacks.onError(packet);
+      } else {
+        callbacks.onSuccess();
+      }
+    });
+  },
 
   /**
    * Remove an entity from your roster.
@@ -663,7 +736,73 @@ XC.Roster = {
    * @param {XC.Entity} entity      The entity to remove from your roster.
    * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
    */
-  remove: function (entity, callbacks) {}
+  remove: function (entity, callbacks) {
+    var iq = XC.XMPP.IQ.extend(),
+        q = XC.XMPP.Query.extend({xmlns: this.XMLNS}),
+        item = XC.XML.Element.extend({name: 'item'});
+
+    item.attr('jid', entity.jid);
+    item.attr('subscription', 'remove');
+
+    this.connection.send(iq.convertToString(), function (packet) {
+      if (packet.getType() === 'error') {
+        callbacks.onError(packet);
+      } else {
+        callbacks.onSuccess();
+      }
+    });
+  },
+
+  /**
+   * Endpoint for a server-side roster push.
+   *
+   * @param {Array} entities An array of entities.
+   */
+  onRosterPush: function (entities) {},
+
+  /**
+   * Handle incoming out-of-band Roster IQs
+   *
+   * @param {Element} packet The incoming XML stanza.
+   */
+  _handleRoster: function (packet) {
+    var type = packet.getAttribute('type');
+
+    // Acknowledge a roster push.
+    if (type === 'set') {
+      var iq = XC.XMPP.IQ.extend();
+      iq.type('result');
+      iq.attr('id', packet.getAttribute('id'));
+      this.connection.send(iq.convertToString());
+
+    // Process the items passed from the roster.
+    } else {
+      var items = packet.getElementsByTagName('item'),
+          entities = [], idx = items.length,
+          entity, item, groups, len;
+
+      while (idx--) {
+        item = items[idx];
+        entity = XC.Entity.extend({
+          jid: item.getAttribute('jid'),
+          subscription: item.getAttribute('subscription'),
+          name: item.getAttribute('name')
+        });
+        groups = item.getElemengsByTagName('group');
+        len = groups ? groups.length : 0;
+
+        if (len) {
+          entity.groups = [];
+        }
+
+        while (len--) {
+          entity.groups.push(groups[len].text);
+        }
+        entities.push(entity);
+      }
+      this.onRosterPush(entities);
+    }
+  }
 
 };
 /**
@@ -692,12 +831,62 @@ XC.Presence = {
    * @param {XC.Entity} [entity]    The entity to direct presence to.
    * @param {Object}    [callbacks] An Object with 'onError'.
    */
-  send: function (entity, callbacks) {},
+  send: function (entity, callbacks) {
+    var p = XC.XMPP.Presence.extend(),
+        presence = this.presence;
+
+    // Send directed presence.
+    if (to) {
+      p.to(to.jid);
+    }
+
+    if (this.status) {
+      var status = XC.XML.Element.extend({
+        name: 'status'
+      });
+      status.text = presence.status.toString();
+      p.addChild(status);
+    }
+
+    if (presence.show !== XC.Presence.SHOW.AVAILABLE) {
+      var show = XC.XML.Element.extend({
+        name: 'show'
+      });
+
+      // Show must be one of the pre-defined constants
+      if (XC.IM.Presence.SHOW[presence.show.toUpperCase()]) {
+        show.text = presence.show;
+        p.addChild(show);
+      }
+    }
+
+    if (presence.priority) {
+      var priority = XC.XML.Element.extend({
+        name: 'priority'
+      }), iPriority = parseInt(presence.priority, 10);
+
+      // The priority MUST be an integer between -128 and +127
+      if (iPriority > -128 && iPriority < 127) {
+        priority.text = presence.priority;
+        p.addChild(priority);
+      }
+    }
+
+    this.connection.send(p.convertToString(), function (packet) {
+      if (packet.getType() === 'error') {
+        callbacks.onError(packet);
+      }
+    });
+  },
 
   /**
    * Send 'unavailable' presence.
    */
-  unavailable: function () {},
+  unavailable: function () {
+    var p = XC.XMPP.Presence.extend();
+    p.type('unavailable');
+    this.connection.send(p.convertToString());
+  },
   
   /**
    * Request a subscription to an entity's presence.
@@ -705,7 +894,17 @@ XC.Presence = {
    * @param {XC.Entity} entity      The entity to request a presence subscription from.
    * @param {Object}    [callbacks] An Object with 'onError'.
    */
-  subscribe: function (entity, callbacks) {},
+  subscribe: function (entity, callbacks) {
+    var p = XC.XMPP.Presence.extend();
+    p.attr('type', 'subscribe');
+    p.to(entity.jid);
+
+    this.connection.send(p.convertToString(), function (packet) {
+      if (packet.getType() === 'error') {
+        callbacks.onError();
+      }
+    });
+  },
 
   /**
    * Unsubscribe from an entity's presence.
@@ -713,7 +912,17 @@ XC.Presence = {
    * @param {XC.Entity} entity      The entity to unsubscribe from it's presence.
    * @param {Object}    [callbacks] An Object with 'onError'.
    */
-  unsubscribe: function (entity, callbacks) {},
+  unsubscribe: function (entity, callbacks) {
+    var p = XC.XMPP.Presence.extend();
+    p.attr('type', 'unsubscribe');
+    p.to(entity.jid);
+
+    this.connection.send(p.convertToString(), function (packet) {
+      if (packet.getType() === 'error') {
+        callbacks.onError();
+      }
+    });
+  },
 
   // Out of band
 
@@ -722,14 +931,26 @@ XC.Presence = {
    * 
    * @param {XC.Entity} entity      The entity requesting a presence subscription.
    */
-  approveSubscription: function (entity) {},
+  approveSubscription: function (entity) {
+    var p = XC.XMPP.Presence.extend();
+    p.attr('type', 'subscribed');
+    p.to(entity.jid);
+
+    this.connection.send(p.convertToString());
+  },
 
   /**
    * Deny a pending subscription request from an entity.
    * 
    * @param {XC.Entity} entity      The entity requesting a presence subscription.
    */
-  denySubscription: function (entity) {},
+  denySubscription: function (entity) {
+    var p = XC.XMPP.Presence.extend();
+    p.attr('type', 'unsubscribed');
+    p.to(entity.jid);
+
+    this.connection.send(p.convertToString());
+  },
 
   /**
    * Endpoint for requests to subscribe to your presence.
@@ -746,11 +967,40 @@ XC.Presence = {
   onSubscribed: function (entity) {},
 
   /**
-   * Endpoing notifying that you are unsubscribed from the entity's presence.
+   * Endpoint notifying that you are unsubscribed from the entity's presence.
    * 
    * @param {XC.Entity} entity      The entity whose presence you are unsubscribed from.
    */
-  onUnsubscribed: function (entity) {}
+  onUnsubscribed: function (entity) {},
+
+  /**
+   * Handle out-of-band presence stanzas
+   *
+   * @param {Element} packet The incoming XML stanza.
+   */
+  _handlePresence: function (packet) {
+    var jid = packet.getAttribute('from'),
+        type = packet.getAttribute('type'),
+        entity = XC.Entity.extend({jid: jid});
+
+    switch (type) {
+    case 'error':
+      break;
+    case 'probe':
+      break;
+    case 'subscribe':
+      this.onSubscribe(entity);
+      break;
+    case 'subscribed':
+      this.onSubscribed(entity);
+      break;
+    case 'unsubscribe':
+      break;
+    case 'unsubscribed':
+      this.onUnsubscribed(entity);
+      break;
+    }
+  }
   
 };
 /**
@@ -762,22 +1012,86 @@ XC.Presence = {
  */
 XC.Chat = {
 
-  type: 'chat',
+  TYPE: 'chat',
 
   /**
    * Send a message to another entity.
    * 
    * @param {XC.Message} message     The message to send to another entity.
-   * @param {Object}     [callbacks] An Object that has 'onSuccess' and 'onError'.
+   * @param {Object}     [callbacks] An Object that has 'onError'.
    */
-  send: function (message, callbacks) {},
+  send: function (message, callbacks) {
+    var msg = XC.XMPP.Message.extend(),
+        body = XC.XML.Element.extend({name: 'body'}),
+        subject = XC.XML.Element.extend({name: 'subject'}),
+        thread = XC.XML.Element.extend({name: 'thread'}),
+        active = XC.XML.Element.extend({name: 'active',
+                                        xmlns: this.XMLNS});
+    msg.from(message.from.jid);
+    msg.to(message.to.jid);
+    msg.attr('type', this.TYPE);
+
+    if (msg.body) {
+      body.text = message.body;
+      msg.addChild(body);
+    }
+
+    if (message.subject) {
+      subject.text = message.subject;
+      msg.addChild(subject);
+    }
+
+    if (message.thread) {
+      thread.text = message.thread;
+      msg.addChild(thread);
+    }
+
+    this.connection.send(msg.convertToString(), function (packet) {
+      if (packet.getType() === 'error') {
+        callbacks.onError(packet);
+      }
+    });
+  },
 
   /**
    * Endpoint to recieve out-of-band messages.
    * 
    * @param {XC.Message} message     A message from another entity.
    */
-  onMessage: function (message) {}
+  onMessage: function (message) {},
+
+  /**
+   * Handles out-of-band messages (All incoming messages)
+   * from another entity.
+   * 
+   * @param {Element} packet        The incoming XML stanza.
+   */
+  _handleMessages: function (packet) {
+    var msg = XC.Message.extend({
+      to: XC.Entity.extend({jid: packet.getAttribute('to')}),
+      from: XC.Entity.extend({jid: packet.getAttribute('from')})
+    }), subject, body, thread;
+
+    switch (packet.getType()) {
+    case 'chat':
+      subject = packet.getElementsByTagName('subject');
+      if (subject && subject[0]) {
+        msg.subject = subject[0].text;
+      }
+
+      body = packet.getElementsByTagName('body');
+      if (body && body[0]) {
+        msg.body = body[0].text;
+      }
+
+      thread = packet.getElementsByTagName('thread');
+      if (thread && thread[0]) {
+        msg.thread = thread[0].text;
+      }
+
+      this.onMessage(msg);
+    }
+  }
 };
 /**
  * Service Discovery provides the ability to discover information about entities.

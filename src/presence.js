@@ -29,8 +29,8 @@ XC.Presence = {
         presence = this.presence;
 
     // Send directed presence.
-    if (to) {
-      p.to(to.jid);
+    if (entity) {
+      p.to(entity.jid);
     }
 
     if (this.status) {

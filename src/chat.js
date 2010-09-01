@@ -67,8 +67,7 @@ XC.Chat = {
       from: XC.Entity.extend({jid: packet.getAttribute('from')})
     }), subject, body, thread;
 
-    switch (packet.getType()) {
-    case 'chat':
+    if (packet.getType() === 'chat') {
       subject = packet.getElementsByTagName('subject');
       if (subject && subject[0]) {
         msg.subject = subject[0].text;
