@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>XC Test Suite</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="../frameworks/yui-test/logger.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="../frameworks/yui-test/testlogger.css"/>
+    <style type="text/css">
+      .yui-log-container { width: 90%; };
+    </style>
+  </head>
+
+  <body>
+    <!-- Load the YUI test harness. -->
+    <script src="../frameworks/yui-test/yahoo-dom-event.js"></script>
+    <script src="../frameworks/yui-test/logger-min.js"></script>
+    <script src="../frameworks/yui-test/yuitest-min.js"></script>
+
+    <!-- Load the XMPP Client library. -->
+    <script src="../xc.js"></script>
+
+    <!-- Load our test suites. -->
+    <script src="xc.test.js"></script>
+    <script src="namespace.js"></script>
+    <script src="object.js"></script>
+    <script src="xml.js"></script>
+    <script src="connection-adapter.js"></script>
+    <script src="connection.js"></script>
+    <script src="presence.js"></script>
+    <script src="roster.js"></script>
+    <script src="chat.js"></script>
+    <script src="disco.js"></script>
+    <script src="message.js"></script>
+    <script src="ping.js"></script>
+
+    <script>
+      new YAHOO.tool.TestLogger();
+      YAHOO.tool.TestRunner.run();
+    </script>
+  </body>
+</html>
