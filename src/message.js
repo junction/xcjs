@@ -36,6 +36,13 @@ XC.Message = XC.Object.extend({
    *   thread = thread
    * @param {String} body The message body.
    */
-  reply: function (body) {}
+  reply: function (body) {
+    XC.Chat.send(XC.Message.extend({
+      to: this.from,
+      from: this.to,
+      body: body,
+      thread: this.thread
+    }));
+  }
 
 });
