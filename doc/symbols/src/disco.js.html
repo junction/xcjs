@@ -1,0 +1,127 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/**
+<span class='line'>  2</span>  * Service Discovery provides the ability to discover information about entities.
+<span class='line'>  3</span>  * @namespace
+<span class='line'>  4</span>  * 
+<span class='line'>  5</span>  * XEP-0030: Service Discovery
+<span class='line'>  6</span>  * @see http://xmpp.org/extensions/xep-0030.html
+<span class='line'>  7</span>  * 
+<span class='line'>  8</span>  * @requires rootItem  A list of features and items associated with your entity.
+<span class='line'>  9</span>  */</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="NAME">XC.Disco</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 11</span> 
+<span class='line'> 12</span> </span><span class="WHIT">  </span><span class="NAME">XMLNS</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'http://jabber.org/protocol/disco'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 13</span> 
+<span class='line'> 14</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 15</span>    * @param {XC.Entity} entity
+<span class='line'> 16</span>    * @param {Object}    [callbacks]
+<span class='line'> 17</span>    */</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">  </span><span class="NAME">info</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">entity</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">callbacks</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 19</span> 
+<span class='line'> 20</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 21</span>    * @param {XC.Entity} entity
+<span class='line'> 22</span>    * @param {Object}    [callbacks]
+<span class='line'> 23</span>    */</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">  </span><span class="NAME">items</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">entity</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">callbacks</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 25</span> 
+<span class='line'> 26</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 27</span>    * The root item of the Disco Item tree.
+<span class='line'> 28</span>    * @type {XC.DiscoItem}
+<span class='line'> 29</span>    */</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">  </span><span class="NAME">rootItem</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 32</span> 
+<span class='line'> 33</span> </span><span class="COMM">/**
+<span class='line'> 34</span>  * Represents an item (node) in Service Discovery.
+<span class='line'> 35</span>  * 
+<span class='line'> 36</span>  * @extends XC.Object
+<span class='line'> 37</span>  * @class
+<span class='line'> 38</span>  * @see XC.Disco
+<span class='line'> 39</span>  */</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="NAME">XC.DiscoItem</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">XC.Object.extend</span><span class="PUNC">(</span><span class="COMM">/** @lends XC.DiscoItem */</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 41</span> 
+<span class='line'> 42</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 43</span>    * The name of the node.
+<span class='line'> 44</span>    * @type {String}
+<span class='line'> 45</span>    */</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">  </span><span class="NAME">name</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 47</span> 
+<span class='line'> 48</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 49</span>    * Namespaces of supported features.
+<span class='line'> 50</span>    * @type {String}
+<span class='line'> 51</span>    */</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">  </span><span class="NAME">features</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 53</span> 
+<span class='line'> 54</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 55</span>    * Associative array of all items in this item.
+<span class='line'> 56</span>    * @type {XC.DiscoItem}
+<span class='line'> 57</span>    */</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">  </span><span class="NAME">items</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 59</span> 
+<span class='line'> 60</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 61</span>    * Identities that this item represents.
+<span class='line'> 62</span>    * @type {Object}
+<span class='line'> 63</span>    */</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">  </span><span class="NAME">identities</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 65</span> 
+<span class='line'> 66</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 67</span>    * Add a feature to this item.
+<span class='line'> 68</span>    * @param {String} xmlns The namespace of the feature to add.
+<span class='line'> 69</span>    */</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">  </span><span class="NAME">addFeature</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">xmlns</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 71</span> 
+<span class='line'> 72</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 73</span>    * Remove a pre-existing feature from this item.
+<span class='line'> 74</span>    * @param {String} xmlns The namespace of the feature to remove.
+<span class='line'> 75</span>    */</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">  </span><span class="NAME">removeFeature</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">xmlns</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 77</span> 
+<span class='line'> 78</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 79</span>    * Add a child item to this item.
+<span class='line'> 80</span>    * @param {XC.DiscoItem} discoItem The item to add.
+<span class='line'> 81</span>    */</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">  </span><span class="NAME">addItem</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">discoItem</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 83</span> 
+<span class='line'> 84</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 85</span>    * Remove a pre-existing item from this item.
+<span class='line'> 86</span>    * @param {XC.DiscoItem} discoItem The item to remove.
+<span class='line'> 87</span>    */</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="WHIT">  </span><span class="NAME">removeItem</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">discoItem</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 89</span> 
+<span class='line'> 90</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 91</span>    * Add an identity to this item.
+<span class='line'> 92</span>    * {
+<span class='line'> 93</span>    *   category: {String},
+<span class='line'> 94</span>    *   name: {String},
+<span class='line'> 95</span>    *   type: {String}
+<span class='line'> 96</span>    * }
+<span class='line'> 97</span>    * @param {Object} identity The identity to add.
+<span class='line'> 98</span>    */</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">  </span><span class="NAME">addIdentity</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">identity</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>100</span> 
+<span class='line'>101</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>102</span>    * Remove a pre-existing identity from this item.
+<span class='line'>103</span>    * @param {Object} identity The identity to remove.
+<span class='line'>104</span>    */</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">  </span><span class="NAME">removeIdentity</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">identity</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>106</span> 
+<span class='line'>107</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>108</span>    * Disco items request on this item.
+<span class='line'>109</span>    * @param {XC.Entity} entity
+<span class='line'>110</span>    */</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">  </span><span class="NAME">getItems</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">entity</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>112</span> 
+<span class='line'>113</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'>114</span>    * Disco info request on this item.
+<span class='line'>115</span>    * @param {XC.Entity} entity
+<span class='line'>116</span>    */</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">  </span><span class="NAME">getInfo</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">entity</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>118</span> 
+<span class='line'>119</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> </span></pre></body></html>
