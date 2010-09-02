@@ -836,8 +836,8 @@ XC.Presence = {
         presence = this.presence;
 
     // Send directed presence.
-    if (to) {
-      p.to(to.jid);
+    if (entity) {
+      p.to(entity.jid);
     }
 
     if (this.status) {
@@ -1072,8 +1072,7 @@ XC.Chat = {
       from: XC.Entity.extend({jid: packet.getAttribute('from')})
     }), subject, body, thread;
 
-    switch (packet.getType()) {
-    case 'chat':
+    if (packet.getType() === 'chat') {
       subject = packet.getElementsByTagName('subject');
       if (subject && subject[0]) {
         msg.subject = subject[0].text;
