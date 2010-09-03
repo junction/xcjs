@@ -15,13 +15,16 @@ all:	src doc
 
 src:	xc.js
 
-doc:	$(DOCDIR)/index.html
+doc:	$(DOCDIR)/private/index.html $(DOCDIR)/public/index.html
 
 xc.js:	Makefile $(SRC)
 	cat $(SRC) > ../$@
 
-$(DOCDIR)/index.html: Makefile $(SRC)
-	$(JAVA) -jar $(JSDOCDIR)/jsrun.jar $(JSDOCDIR)/app/run.js -a -p -t=$(TEMPLATE) -d=$(DOCDIR) $(SRC)
+$(DOCDIR)/private/index.html: Makefile $(SRC)
+	$(JAVA) -jar $(JSDOCDIR)/jsrun.jar $(JSDOCDIR)/app/run.js --allfunctions --private -t=$(TEMPLATE) -d=$(DOCDIR)/private $(SRC)
+
+$(DOCDIR)/public/index.html: Makefile $(SRC)
+	$(JAVA) -jar $(JSDOCDIR)/jsrun.jar $(JSDOCDIR)/app/run.js -t=$(TEMPLATE) -d=$(DOCDIR)/public $(SRC)
 
 clean-doc:
 	rm -rf $(DOCDIR)
