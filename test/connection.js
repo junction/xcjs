@@ -17,12 +17,12 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     var Assert = YAHOO.util.Assert,
         expectedError = new Error(),
         badAdapter = XC.Test.MockConnection.extend({
-          jid: function () { 
+          jid: function () {
             return undefined;
           }}).init(),
         badXC = XC.Connection.extend({connection: badAdapter});
 
-    Assert.throws(XC.Error, function () { 
+    Assert.throws(XC.Error, function () {
                     badXC.initConnection();
                   });
   },
@@ -50,31 +50,136 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
 
   },
 
-  testHandlers: function () {
+  testEntity: function() {
+    var Assert = YAHOO.util.Assert;
+    Assert.isObject(this.xc.Entity);
+  },
+
+  testHandlerWithSingleCriteria: function () {
     var Assert = YAHOO.util.Assert;
 
     var handlerFired = false;
-    var handler = function (packet) {
-      handlerFired = true;
-      Assert.areSame('jill@example.com', packet.getFrom());
-      Assert.areSame('jack@example.com', packet.getTo());
-    };
+    var handler = function (packet) { handlerFired = true; };
 
-    Assert.isFunction(this.xc.registerJIDHandler,
-                      'registerJIDHandler is not a function.');
+    // test api exists
+    Assert.isFunction(this.xc.registerStanzaHandler,
+                      'registerStanzaHandler is not a function.');
+    Assert.isFunction(this.xc.unregisterStanzaHandler,
+                      'registerStanzaHandler is not a function.');
 
-    this.xc.registerJIDHandler('jill@example.com', handler);
+    // test register handler
+    var id = this.xc.registerStanzaHandler({element: 'message'}, handler);
+    Assert.isNumber(id, 'failed to register service callback');
 
-    var packet = XC.Test.Packet.extendWithXML('<message from="jill@example.com" to="jack@example.com"><event xmlns="http://jabber.org/protocol/pubsub#event"><items node="musings"><item id="1"></item></items></event></message>');
-    this.conn.fireEvent('message', packet);
-    Assert.isTrue(handlerFired, 'JID event handler was not fired.');
+    // test handler fires
+    var xml = '<message from="sender@source.org" to="me@dest.com" type="get"></message>';
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.isTrue(handlerFired, 'handler did not fire');
 
-    Assert.isFunction(this.xc.unregisterJIDHandler,
-                      'unregisterJIDHandler is not a function.');
+    // test unregister handler with matches the criteria
+    Assert.isTrue(this.xc.unregisterStanzaHandler(id),
+                  'failed to unregister stanza handler');
+
     handlerFired = false;
-    this.xc.unregisterJIDHandler('jill@example.com');
-    this.conn.fireEvent('message', packet);
-    Assert.isFalse(handlerFired, 'JID event handler was fired after unregister.');
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.isFalse(handlerFired, 'handler should not fire');
+
+    // non matching
+    this.xc.registerStanzaHandler({element: 'iq'}, handler);
+    handlerFired = false;
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.isFalse(handlerFired, 'handler should not fire');
+  },
+
+  testHandlerRegistrationCriteria: function() {
+    var Assert = YAHOO.util.Assert;
+
+    var handlerAFired = false,
+      handlerBFired = false,
+      handlerCFired = false,
+      handlerDFired = false,
+      handlerEFired = false,
+      handlerFFired = false;
+
+    var handlerA = function (packet) { handlerAFired = true; },
+      handlerB = function (packet) { handlerBFired = true; },
+      handlerC = function (packet) { handlerCFired = true; },
+      handlerD = function (packet) { handlerDFired = true; },
+      handlerE = function (packet) { handlerEFired = true; },
+      handlerF = function (packet) { handlerFFired = true; };
+
+    var criteriaA = { element: 'message' },
+      criteriaB = { xmlns: 'xcjs:top:level' },
+      criteriaC = { xmlns: 'xcjs:child:level' },
+      criteriaD = { type: 'get' },
+      criteriaE = { id: 'test-1' },
+      criteriaF = { from: 'sender@source.org' };
+
+    var idA = this.xc.registerStanzaHandler(criteriaA,handlerA),
+      idB = this.xc.registerStanzaHandler(criteriaB,handlerB),
+      idC = this.xc.registerStanzaHandler(criteriaC,handlerC),
+      idD = this.xc.registerStanzaHandler(criteriaD,handlerD),
+      idE = this.xc.registerStanzaHandler(criteriaE,handlerE),
+      idF = this.xc.registerStanzaHandler(criteriaF,handlerF);
+
+    var xml = '<message from="sender@source.org" to="me@dest.com" type="get" xmlns="xcjs:top:level" id="test-1">'
+                + '<child xmlns="xcjs:child:level"></child>'
+                + '</message>';
+
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.isTrue(handlerAFired, 'handlerA did not fire');
+    Assert.isTrue(handlerBFired, 'handlerB did not fire');
+    Assert.isTrue(handlerCFired, 'handlerC did not fire');
+    Assert.isTrue(handlerDFired, 'handlerD did not fire');
+    Assert.isTrue(handlerEFired, 'handlerE did not fire');
+    Assert.isTrue(handlerFFired, 'handlerF did not fire');
+  },
+
+  testHandlerWithMultipleCriteria: function() {
+    var Assert = YAHOO.util.Assert;
+
+    var handlerFired = false;
+    var handler = function (packet) { handlerFired = true; };
+    var criteria = { element: 'message', xmlns: 'xcjs:test' };
+
+    var id = this.xc.registerStanzaHandler(criteria, hanlder);
+
+    var matchingXML = '<message from="sender@source.org" to="me@dest.com" xmlns="xcjs:test"></message>';
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(matchingXML));
+    Assert.isTrue(handlerFired, 'handler with multiple matching criteria did not fire');
+
+    var unmatchingXML = '<message from="sender@source.org" to="me@dest.com" xmlns="xcjs:badtest"></message>';
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(unmatchingXML));
+    handlerFired = false;
+    Assert.isFalse(handlerFired, 'handler with some matching criteria should not fire');
+  },
+
+  testMultipleHandlers: function() {
+    var Assert = YAHOO.util.Assert;
+
+    var handlerAFired = false,
+      handlerBFired = false;
+
+    var handlerA = function (packet) { handlerAFired = true; },
+      handlerB = function (packet) { handlerBFired = true; };
+
+    var idA = this.xc.registerStanzaHandler({element: 'message'},handlerA),
+      idB = this.xc.registerStanzaHandler({element: 'message'},handlerB);
+
+    Assert.isNumber(idA, 'failed to register handlerA callback');
+    Assert.isNumber(idB, 'failed to register handlerB callback');
+
+    var xml = '<message from="sender@source.org" to="me@dest.com" type="get"></message>';
+
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.isTrue(handlerAFired && handlerBFired,
+                  'either handlerA, handlerB, or both did not fire');
+
+    handlerAFired = handlerBFired = false;
+    this.xc.unregisterStanzaHandler(idB);
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.isTrue(handlerAFired, 'handler A did not fire');
+    Assert.isFalse(handlerBFired, 'handler B should not fire');
   }
 });
 
