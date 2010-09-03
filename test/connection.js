@@ -13,6 +13,11 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     delete this.xc;
   },
 
+  testInitConnection: function() {
+    var Assert = YAHOO.util.Assert;
+    console.log(this.xc);
+  },
+
   testNoJID: function () {
     var Assert = YAHOO.util.Assert,
         expectedError = new Error(),
@@ -58,11 +63,10 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
                   'extended connection.Entity template has the wrong connection');
   },
 
-  testHandlerWithSingleCriteria: function () {
+  testRegisterStanzaHandler: function() {
     var Assert = YAHOO.util.Assert;
 
-    var handlerFired = false;
-    var handler = function (packet) { handlerFired = true; };
+    var handler = function (packet) {};
 
     // test api exists
     Assert.isFunction(this.xc.registerStanzaHandler,
@@ -74,14 +78,29 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     var id = this.xc.registerStanzaHandler({element: 'message'}, handler);
     Assert.isNumber(id, 'failed to register service callback');
 
+    // test unregister handler with matches the criteria
+    Assert.isTrue(this.xc.unregisterStanzaHandler(id),
+                  'failed to unregister stanza handler');
+
+    // test unregister a handler that isn't regitered
+    Assert.isFalse(this.xc.unregisterStanzaHandler(id),
+                   'unregister stanza handler should return false for nonexistant handler id');
+  },
+
+  testHandlerFiring: function () {
+    var Assert = YAHOO.util.Assert;
+
+    var handlerFired = false;
+    var handler = function (packet) { handlerFired = true; };
+
+    var id = this.xc.registerStanzaHandler({element: 'message'}, handler);
+
     // test handler fires
     var xml = '<message from="sender@source.org" to="me@dest.com" type="get"></message>';
     this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
     Assert.isTrue(handlerFired, 'handler did not fire');
 
-    // test unregister handler with matches the criteria
-    Assert.isTrue(this.xc.unregisterStanzaHandler(id),
-                  'failed to unregister stanza handler');
+    this.xc.unregisterStanzaHandler(id);
 
     handlerFired = false;
     this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
@@ -145,7 +164,7 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     var handler = function (packet) { handlerFired = true; };
     var criteria = { element: 'message', xmlns: 'xcjs:test' };
 
-    var id = this.xc.registerStanzaHandler(criteria, hanlder);
+    var id = this.xc.registerStanzaHandler(criteria, handler);
 
     var matchingXML = '<message from="sender@source.org" to="me@dest.com" xmlns="xcjs:test"></message>';
     this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(matchingXML));

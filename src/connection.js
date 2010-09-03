@@ -16,6 +16,7 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
    * initConnection().
    *
    * @see XC.Connection#initConnection
+   * @private
    */
   services: {
     Presence: XC.Service.Presence,
@@ -26,19 +27,11 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
 
   /**
    * Templates are extended with the connection (this) during initConnection()
+   * @private
    */
   templates: {
     Entity: XC.Entity
   },
-
-  /**
-   * Stanza Handlers are registered by the Services to register a callback
-   * for a specific stanza based on various criteria
-   *
-   * @see XC.Connection#registerStanzaHandler
-   * @see XC.Connection#unregisterStanzaHandler
-   */
-  stanzaHandlers: [],
 
   /**
    * Initialize the service properties.
@@ -68,10 +61,12 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
     }
 
     // Register for all incoming stanza types.
-    var that = this;
-    for (var event in ['iq','message','presence']) {
-      this.connectionAdapter.registerHandler(s, function(event) {
+    var that = this,
+      events = ['iq','message','stanza'];
+    for (var i=0;i<events.length; i++) {
+      this.connectionAdapter.registerHandler(events[i], function(stanza) {
                                                that._dispatchStanza(stanza);
+                                               return true;
                                              });
     };
 
@@ -103,6 +98,115 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
    */
   getJID: function () {
     return this.connectionAdapter.jid();
-  }
+  },
 
+  /**
+   * Register a handler for a stanza based on the following criteria:
+   *
+   * element - stanza element; 'iq', 'message', or 'presence'
+   * xmlns   - namespace of the stanza element OR first child
+   * from    - from JID
+   * type    - stanza type
+   * id      - stanza id
+   *
+   * This function is only to be called internally by the XC.Services.
+   * Client libraries should register their callbacks with each service,
+   * or directly with their bosh connection for services not provided
+   * by the XC library.
+   *
+   * @private
+   * @param {Object} criteria has any of the members listed above
+   * @param {Function} callback
+   * @returns id
+   */
+  registerStanzaHandler: function(criteria, callback) {
+    return this._stanzaHandlers.insert(criteria,callback);
+  },
+
+  /**
+   * @private
+   */
+  unregisterStanzaHandler: function(id) {
+    return this._stanzaHandlers.remove(id);
+  },
+
+  /**
+   * find a set of registered callbacks whose set of criteria match the stanza
+   * and call the callbacks with the stanza
+   * @private
+   */
+  _dispatchStanza: function(stanza) {
+    var callbacks = this._stanzaHandlers.findCallbacks(stanza);
+    for (var i=0, len=callbacks.length; i<len; i++) {
+      callbacks[i](stanza);
+    }
+  },
+
+  /**
+   * Stanza Handlers are registered by the Services to register a callback
+   * for a specific stanza based on various criteria
+   *
+   * @private
+   * @see XC.Connection#registerStanzaHandler
+   * @see XC.Connection#unregisterStanzaHandler
+   */
+  _stanzaHandlers: XC.Object.extend({
+    lastID: 0,
+    store: {},
+
+    insert: function(criteria,cb) {
+      var id = this.lastID++;
+      this.store[id] = {
+        criteria: criteria,
+        callback: cb
+      };
+
+      return id;
+    },
+
+    remove: function(id) {
+      if (this.store[id]) {
+        delete this.store[id];
+        return true;
+      }
+      return false;
+    },
+
+    findCallbacks: function(stanza) {
+      var resultSet = [];
+
+      for (var id in this.store) if (this.store.hasOwnProperty(id)) {
+        var callbackSet = this.store[id];
+
+        var criteria = callbackSet.criteria,
+          cb = callbackSet.callback;
+
+        var domEl = stanza.doc.firstChild;
+
+        if (!cb || !criteria)
+          continue;
+
+        if (criteria.element && domEl.tagName != criteria.element)
+          continue;
+
+        if (criteria.xmlns &&
+            !(domEl.getAttribute('xmlns') === criteria.xmlns
+              || (domEl.firstChild && domEl.firstChild.getAttribute('xmlns') == criteria.xmlns)))
+          continue;
+
+        if (criteria.from && stanza.getFrom() != criteria.from)
+          continue;
+
+        if (criteria.type && stanza.getType() != criteria.type)
+          continue;
+
+        if (criteria.id && domEl.getAttribute('id') != criteria.id)
+          continue;
+
+        // we've passed all of our criteria tests
+        resultSet.push(cb);
+      }
+      return resultSet;
+    }
+  })
 });
