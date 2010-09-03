@@ -15,11 +15,11 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
 
   testNoJID: function () {
     var Assert = YAHOO.util.Assert,
-     expectedError = new Error();
-
-    var badAdapter = XC.Test.ConnectionMock.extend({jid: function () { 
-                                                      return undefined;
-                                                    }}).init(),
+        expectedError = new Error(),
+        badAdapter = XC.Test.MockConnection.extend({
+          jid: function () { 
+            return undefined;
+          }}).init(),
         badXC = XC.Connection.extend({connection: badAdapter});
 
     Assert.throws(XC.Error, function () { 
