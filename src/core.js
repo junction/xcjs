@@ -39,3 +39,15 @@ var XC = {
     }
   }
 };
+
+/**
+ * Namespaces for services.
+ * @namespace
+ */
+XC.Service = {};
+
+/**
+ * Namespace for mixins.
+ * @namespace
+ */
+XC.Mixin = {};

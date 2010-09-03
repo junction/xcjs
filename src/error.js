@@ -3,8 +3,8 @@
  * 
  * @namespace
  */
-XC.Error = function () {
-  this.message = Array.prototype.join.apply(arguments, [' ']);
+XC.Error = function (message) {
+  this.message = message;
 };
 XC.Error.prototype = new Error();
 XC.Error.prototype.name = 'XC.Error';

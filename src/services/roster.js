@@ -1,12 +1,12 @@
 /**
  * Roster Management
- * @namespace
+ * @class
+ * @extends XC.Object
  * 
  * RFC 3921: XMPP IM; Section 7 & 8
  * @see http://ietf.org/rfc/rfc3921.txt
  */
-XC.Roster = {
-  XMLNS: 'jabber:iq:roster',
+XC.Service.Roster = XC.Object.extend(/** @lends XC.Service.Roster */{
 
   /**
    * Request your roster from the server.
@@ -15,7 +15,7 @@ XC.Roster = {
    */
   request: function (callbacks) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: this.XMLNS});
+        q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS});
     iq.type('get');
     iq.addChild(q);
 
@@ -54,79 +54,39 @@ XC.Roster = {
    * Add a new entity to your roster.
    * (Same as Update + Subscribe.)
    * 
-   * @param {XC.Entity} entity      The entity to add to your roster.
-   * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
-   */
-  add: function (entity, callbacks) {
-    this.update(entity, callbacks);
-    XC.Presence.subscribe(entity, callbacks);
-  },
-
-  /**
-   * Update an entity in your roster.
+   * @param   {String}    jid     The Jabber ID of the entity to add.
+   * @param   {String}    name    The name of the entity.
+   * @param   {Array}     groups  The list of groups that the entity belongs to.
    * 
-   * @param {XC.Entity} entity      The entity to update on your roster.
-   * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
+   * @returns {XC.Entity} entity  The entity added to your roster.
    */
-  update: function (entity, callbacks) {
-    var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: this.XMLNS}),
-        item = XC.XML.Element.extend({name: 'item'}),
-        Group = XC.XML.Element.extend({name: 'group'}),
-        idx = !entity.groups ? 0 : entity.groups.length,
-        group;
-    iq.type('set');
-    item.attr('jid', entity.jid);
-
-    if (entity.name) {
-      item.attr('name', entity.name);
-    }
-
-    while (idx--) {
-      group = Group.extend();
-      group.text = entity.groups[idx];
-      item.addChild(group);
-    }
-
-    iq.addChild(item);
-    this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
-        callbacks.onError(packet);
-      } else {
-        callbacks.onSuccess();
-      }
+  add: function (jid, name, groups) {
+    var entity = XC.Entity.extend({
+      jid: jid,
+      name: name,
+      groups: groups,
+      connection: this.connection
     });
-  },
 
-  /**
-   * Remove an entity from your roster.
-   * 
-   * @param {XC.Entity} entity      The entity to remove from your roster.
-   * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
-   */
-  remove: function (entity, callbacks) {
-    var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: this.XMLNS}),
-        item = XC.XML.Element.extend({name: 'item'});
-
-    item.attr('jid', entity.jid);
-    item.attr('subscription', 'remove');
-
-    this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
-        callbacks.onError(packet);
-      } else {
-        callbacks.onSuccess();
-      }
+    entity.rosterSet({
+      onError: function () {},
+      onSuccess: function () {}
     });
+
+    entity.subscribeToPresence({
+      onError: function () {},
+      onSuccess: function () {}      
+    });
+
+    return entity;
   },
 
   /**
    * Endpoint for a server-side roster push.
    *
-   * @param {Array} entities An array of entities.
+   * @param {XC.Entity} entity An entity.
    */
-  onRosterPush: function (entities) {},
+  onRosterItem: function (entity) {},
 
   /**
    * Handle incoming out-of-band Roster IQs
@@ -146,7 +106,7 @@ XC.Roster = {
     // Process the items passed from the roster.
     } else {
       var items = packet.getElementsByTagName('item'),
-          entities = [], idx = items.length,
+          idx = items.length,
           entity, item, groups, len;
 
       while (idx--) {
@@ -166,10 +126,9 @@ XC.Roster = {
         while (len--) {
           entity.groups.push(groups[len].text);
         }
-        entities.push(entity);
+        this.onRosterItem(entity);
       }
-      this.onRosterPush(entities);
     }
   }
 
-};
+});

@@ -34,15 +34,56 @@ XC.Message = XC.Object.extend({
    *   from = to,
    *   to = from,
    *   thread = thread
+   * 
    * @param {String} body The message body.
+   * @returns {XC.Message} The sent message.
    */
   reply: function (body) {
-    XC.Chat.send(XC.Message.extend({
+    var msg = this.extend({
       to: this.from,
-      from: this.to,
-      body: body,
-      thread: this.thread
-    }));
+      from: this.connection.getJID(),
+      body: body
+    });
+
+    msg.send();
+    return msg;
+  },
+
+  /**
+   * Send a message.
+   * 
+   * @param {Object} [callbacks]   An Object with 'onError'.
+   */
+  send: function (callbacks) {
+    var msg = XC.XMPP.Message.extend(),
+        body = XC.XML.Element.extend({name: 'body'}),
+        subject = XC.XML.Element.extend({name: 'subject'}),
+        thread = XC.XML.Element.extend({name: 'thread'}),
+        message = this;
+
+    msg.to(message.to.jid);
+    msg.attr('type', this.TYPE);
+
+    if (msg.body) {
+      body.text = message.body;
+      msg.addChild(body);
+    }
+
+    if (message.subject) {
+      subject.text = message.subject;
+      msg.addChild(subject);
+    }
+
+    if (message.thread) {
+      thread.text = message.thread;
+      msg.addChild(thread);
+    }
+
+    this.connection.send(msg.convertToString(), function (packet) {
+      if (packet.getType() === 'error') {
+        callbacks.onError(packet);
+      }
+    });
   }
 
 });

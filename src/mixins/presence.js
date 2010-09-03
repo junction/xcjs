@@ -1,11 +1,11 @@
 /**
- * Presence
+ * Presence Mixin.
  * @namespace
  * 
  * RFC 3921: XMPP IM; Section 5 & 6
  * @see http://www.ietf.org/rfc/rfc3921.txt
  */
-XC.Presence = {
+XC.Mixin.Presence = {
 
   SHOW: {
     AWAY: 'away',  // The entity or resource is temporarily away.
@@ -15,21 +15,39 @@ XC.Presence = {
                    // (xa = "eXtended Away").
   },
 
+  /**
+   * What the status of the entity is.
+   * @type {XC.Presence.SHOW}
+   */
+  show: null,
+
+  /**
+   * The custom status of the entity.
+   * @type {String}
+   */
+  status: null,
+
+  /**
+   * A number between -128 and +127
+   * @type {Number}
+   */
+  priority: null,
+
   // In band
 
   /**
    * Send presence to all subscribed entities / resources
    * or send direced presence to a specific entity.
    * 
-   * @param {XC.Entity} [entity]    The entity to direct presence to.
    * @param {Object}    [callbacks] An Object with 'onError'.
    */
-  send: function (entity, callbacks) {
+  sendPresence: function (callbacks) {
     var p = XC.XMPP.Presence.extend(),
-        presence = this.presence;
+        presence = this.presence,
+        entity = this;
 
     // Send directed presence.
-    if (entity) {
+    if (entity.jid !== this.connnection.getJID()) {
       p.to(entity.jid);
     }
 
@@ -47,7 +65,7 @@ XC.Presence = {
       });
 
       // Show must be one of the pre-defined constants
-      if (XC.IM.Presence.SHOW[presence.show.toUpperCase()]) {
+      if (XC.Presence.SHOW[presence.show.toUpperCase()]) {
         show.text = presence.show;
         p.addChild(show);
       }
@@ -71,24 +89,15 @@ XC.Presence = {
       }
     });
   },
-
-  /**
-   * Send 'unavailable' presence.
-   */
-  unavailable: function () {
-    var p = XC.XMPP.Presence.extend();
-    p.type('unavailable');
-    this.connection.send(p.convertToString());
-  },
   
   /**
    * Request a subscription to an entity's presence.
    * 
-   * @param {XC.Entity} entity      The entity to request a presence subscription from.
    * @param {Object}    [callbacks] An Object with 'onError'.
    */
-  subscribe: function (entity, callbacks) {
-    var p = XC.XMPP.Presence.extend();
+  subscribe: function (callbacks) {
+    var p = XC.XMPP.Presence.extend(),
+        entity = this;
     p.attr('type', 'subscribe');
     p.to(entity.jid);
 
@@ -102,11 +111,11 @@ XC.Presence = {
   /**
    * Unsubscribe from an entity's presence.
    * 
-   * @param {XC.Entity} entity      The entity to unsubscribe from it's presence.
    * @param {Object}    [callbacks] An Object with 'onError'.
    */
-  unsubscribe: function (entity, callbacks) {
-    var p = XC.XMPP.Presence.extend();
+  unsubscribe: function (callbacks) {
+    var p = XC.XMPP.Presence.extend(),
+        entity = this;
     p.attr('type', 'unsubscribe');
     p.to(entity.jid);
 
@@ -121,11 +130,10 @@ XC.Presence = {
 
   /**
    * Approve a pending subscription request from an entity.
-   * 
-   * @param {XC.Entity} entity      The entity requesting a presence subscription.
    */
-  approveSubscription: function (entity) {
-    var p = XC.XMPP.Presence.extend();
+  approveSubscription: function () {
+    var p = XC.XMPP.Presence.extend(),
+        entity = this;
     p.attr('type', 'subscribed');
     p.to(entity.jid);
 
@@ -134,65 +142,14 @@ XC.Presence = {
 
   /**
    * Deny a pending subscription request from an entity.
-   * 
-   * @param {XC.Entity} entity      The entity requesting a presence subscription.
    */
-  denySubscription: function (entity) {
-    var p = XC.XMPP.Presence.extend();
+  denySubscription: function () {
+    var p = XC.XMPP.Presence.extend(),
+        entity = this;
     p.attr('type', 'unsubscribed');
     p.to(entity.jid);
 
     this.connection.send(p.convertToString());
-  },
-
-  /**
-   * Endpoint for requests to subscribe to your presence.
-   * 
-   * @param {XC.Entity} entity      The entity requesting a presence subscription.
-   */
-  onSubscribe: function (entity) {},
-
-  /**
-   * Endpoint notifying that you are subscribed to the entity's presence.
-   * 
-   * @param {XC.Entity} entity      The entity whose presence you are subscribed to.
-   */
-  onSubscribed: function (entity) {},
-
-  /**
-   * Endpoint notifying that you are unsubscribed from the entity's presence.
-   * 
-   * @param {XC.Entity} entity      The entity whose presence you are unsubscribed from.
-   */
-  onUnsubscribed: function (entity) {},
-
-  /**
-   * Handle out-of-band presence stanzas
-   *
-   * @param {Element} packet The incoming XML stanza.
-   */
-  _handlePresence: function (packet) {
-    var jid = packet.getAttribute('from'),
-        type = packet.getAttribute('type'),
-        entity = XC.Entity.extend({jid: jid});
-
-    switch (type) {
-    case 'error':
-      break;
-    case 'probe':
-      break;
-    case 'subscribe':
-      this.onSubscribe(entity);
-      break;
-    case 'subscribed':
-      this.onSubscribed(entity);
-      break;
-    case 'unsubscribe':
-      break;
-    case 'unsubscribed':
-      this.onUnsubscribed(entity);
-      break;
-    }
   }
-  
+
 };

@@ -1,42 +1,21 @@
 /**
+ * An entity is anything with a Jabber ID.
+ * 
  * @extends XC.Object
+ * @extends XC.Mixin.Presence
+ * @extends XC.Mixin.Roster
+ * @extends XC.Mixin.Chat
+ * @extends XC.Mixin.Disco
  * @class
  */
 XC.Entity = XC.Object.extend(/** @lends XC.Entity */{
   /**
+   * The Jabber Id of the entity.
    * @type {String}
    */
-  jid: null,
+  jid: null
 
-  /**
-   * @type {String}
-   */
-  name: null,
-
-  /**
-   * @type {Array}
-   */
-  groups: null,
-
-  /**
-   * @type {XC.DiscoItem}
-   */
-  disco: null,
-
-  /**
-   * @type {XC.Presence.SHOW}
-   */
-  show: null,
-
-  /**
-   * @type {String}
-   */
-  status: null,
-
-  /**
-   * A number between -128 and +127
-   * @type {Number}
-   */
-  priority: null
-  
-});
+}, XC.Mixin.Presence,
+   XC.Mixin.Roster,
+   XC.Mixin.Chat,
+   XC.Mixin.Disco);

@@ -1,51 +1,32 @@
 /**
  * One-to-one Chatting
- * @namespace
+ * @class
+ * @extends XC.Object
  * 
  * RFC 3921: XMPP IM; Section 4
  * @see http://ietf.org/rfc/rfc3921.txt
  */
-XC.Chat = {
-
-  TYPE: 'chat',
+XC.Service.Chat = XC.Object.extend(/** @lends XC.Service.Chat */{
 
   /**
-   * Send a message to another entity.
+   * Send a chat message to another entity.
    * 
-   * @param {XC.Message} message     The message to send to another entity.
-   * @param {Object}     [callbacks] An Object that has 'onError'.
+   * @param {String} jid         The jid to send the chat message to.
+   * @param {String} [body]      The body of the message.
+   * @param {String} [subject]   The subject of the message.
+   * @param {String} [thread]    The thread of the message.
+   * @param {Object} [callbacks] An Object that has 'onError'.
+   * 
+   * @returns {XC.Entity} The entity the message was sent to.
    */
-  send: function (message, callbacks) {
-    var msg = XC.XMPP.Message.extend(),
-        body = XC.XML.Element.extend({name: 'body'}),
-        subject = XC.XML.Element.extend({name: 'subject'}),
-        thread = XC.XML.Element.extend({name: 'thread'}),
-        active = XC.XML.Element.extend({name: 'active',
-                                        xmlns: this.XMLNS});
-    msg.from(message.from.jid);
-    msg.to(message.to.jid);
-    msg.attr('type', this.TYPE);
-
-    if (msg.body) {
-      body.text = message.body;
-      msg.addChild(body);
-    }
-
-    if (message.subject) {
-      subject.text = message.subject;
-      msg.addChild(subject);
-    }
-
-    if (message.thread) {
-      thread.text = message.thread;
-      msg.addChild(thread);
-    }
-
-    this.connection.send(msg.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
-        callbacks.onError(packet);
-      }
+  send: function (jid, body, subject, thread, callbacks) {
+    var entity = XC.Entity.extend({
+      jid: jid,
+      connection: this.connection
     });
+
+    entity.sendChat(body, subject, thread, callbacks);
+    return entity;
   },
 
   /**
@@ -86,4 +67,4 @@ XC.Chat = {
       this.onMessage(msg);
     }
   }
-};
+});

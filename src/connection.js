@@ -5,10 +5,10 @@
  *
  * @class
  * @extends XC.Object
- * @property {XC.Presence} Presence#
- * @property {XC.Roster} Roster#
- * @property {XC.Chat} Chat#
- * @property {XC.Disco} Disco#
+ * @property {XC.Service.Presence} Presence#
+ * @property {XC.Service.Roster} Roster#
+ * @property {XC.Service.Chat} Chat#
+ * @property {XC.Service.Disco} Disco#
  */
 XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
   /**
@@ -18,10 +18,10 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
    * @see XC.Connection#initConnection
    */
   services: {
-    Presence:   XC.Presence,
-    Roster:     XC.Roster,
-    Chat:       XC.Chat,
-    Disco:      XC.Disco
+    Presence:   XC.Service.Presence,
+    Roster:     XC.Service.Roster,
+    Chat:       XC.Service.Chat,
+    Disco:      XC.Service.Disco
   },
 
   /**
@@ -46,7 +46,6 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
     if (!this.getJID() || this.getJID() === '') {
       throw new XC.Error('Missing JID');
     }
-
     var serviceMap = {};
 
     for (var s in this.services) {
