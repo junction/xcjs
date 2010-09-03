@@ -18,20 +18,27 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
    * @see XC.Connection#initConnection
    */
   services: {
-    Presence:   XC.Service.Presence,
-    Roster:     XC.Service.Roster,
-    Chat:       XC.Service.Chat,
-    Disco:      XC.Service.Disco
+    Presence: XC.Service.Presence,
+    Roster:   XC.Service.Roster,
+    Chat:     XC.Service.Chat,
+    Disco:    XC.Service.Disco
   },
 
   /**
-   * Map of jids to event handler functions. Used when message events
-   * are received from the connection.
-   *
-   * @see XC.Connection#registerJIDHandler
-   * @see XC.Connection#unregisterJIDHandler
+   * Templates are extended with the connection (this) during initConnection()
    */
-  jidHandlers: {},
+  templates: {
+    Entity: XC.Entity
+  },
+
+  /**
+   * Stanza Handlers are registered by the Services to register a callback
+   * for a specific stanza based on various criteria
+   *
+   * @see XC.Connection#registerStanzaHandler
+   * @see XC.Connection#unregisterStanzaHandler
+   */
+  stanzaHandlers: [],
 
   /**
    * Initialize the service properties.
@@ -56,15 +63,17 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
       }
     }
 
-    // Register for incoming messages.
+    for (var t in this.templates) if (this.templates.hasOwnProperty(t)) {
+      this[t] = this.templates[t].extend({connection: this});
+    }
+
+    // Register for all incoming stanza types.
     var that = this;
-    this.connection.registerHandler('message', function (msg) {
-      var from = msg.getFrom();
-      var fn = that.jidHandlers[from];
-      if (fn) {
-        fn(msg);
-      }
-    });
+    for (var event in ['iq','message','presence']) {
+      this.connectionAdapter.registerHandler(s, function(event) {
+                                               that._dispatchStanza(stanza);
+                                             });
+    };
 
     return this;
   },
@@ -79,7 +88,7 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
    * @see XC.ConnectionAdapter#send
    */
   send: function (xml, callback, args) {
-    this.connection.send(xml, callback, args || []);
+    this.connectionAdapter.send(xml, callback, args || []);
   },
 
   /**
@@ -93,7 +102,7 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
    * @see XC.ConnectionAdapter#jid
    */
   getJID: function () {
-    return this.connection.jid();
+    return this.connectionAdapter.jid();
   }
 
 });
