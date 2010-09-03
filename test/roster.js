@@ -4,7 +4,7 @@ XC.Test.Roster = new YAHOO.tool.TestCase({
 
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend().init();
-    this.xc = XC.Connection.extend({connection: this.conn});
+    this.xc = XC.Connection.extend({connectionAdapter: this.conn});
     this.xc.initConnection();
 
     this.marvin = XC.Entity.extend({
@@ -36,7 +36,7 @@ XC.Test.Roster = new YAHOO.tool.TestCase({
            type="result" \
            id="test"\>'
     ));
-    
+
     var fail = false, win = false, that = this;
     this.marvin.rosterUpdate({
       onSuccess: function (entity) {
@@ -51,7 +51,7 @@ XC.Test.Roster = new YAHOO.tool.TestCase({
     });
 
     Assert.isTrue(win, "Was not successful in doing a roster update.");
-    Assert.isFalse(fail, "Roster update threw an error.");  
+    Assert.isFalse(fail, "Roster update threw an error.");
   }
 
 });

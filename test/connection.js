@@ -4,7 +4,7 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
 
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend().init();
-    this.xc = XC.Connection.extend({connection: this.conn});
+    this.xc = XC.Connection.extend({connectionAdapter: this.conn});
     this.xc.initConnection();
   },
 
@@ -20,7 +20,7 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
           jid: function () {
             return undefined;
           }}).init(),
-        badXC = XC.Connection.extend({connection: badAdapter});
+        badXC = XC.Connection.extend({connectionAdapter: badAdapter});
 
     Assert.throws(XC.Error, function () {
                     badXC.initConnection();
@@ -53,6 +53,9 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
   testEntity: function() {
     var Assert = YAHOO.util.Assert;
     Assert.isObject(this.xc.Entity);
+
+    Assert.areSame(this.xc, this.xc.Entity.connection,
+                  'extended connection.Entity template has the wrong connection');
   },
 
   testHandlerWithSingleCriteria: function () {

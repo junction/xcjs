@@ -4,7 +4,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend().init();
-    this.xc = XC.Connection.extend({connection: this.conn});
+    this.xc = XC.Connection.extend({connectionAdapter: this.conn});
     this.xc.initConnection();
   },
 
@@ -36,7 +36,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
   testOnSubscribed: function () {
   },
-  
+
   testOnUnsubscribed: function () {
   }
 

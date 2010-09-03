@@ -4,7 +4,7 @@ XC.Test.Disco = new YAHOO.tool.TestCase({
 
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend().init();
-    this.xc = XC.Connection.extend({connection: this.conn});
+    this.xc = XC.Connection.extend({connectionAdapter: this.conn});
     this.xc.initConnection();
 
     this.Disco = this.xc.Disco;
@@ -22,7 +22,7 @@ XC.Test.Disco = new YAHOO.tool.TestCase({
 
   textMixin: function () {
     var Assert = YAHOO.util.Assert;
-    
+
     Assert.isObject(XC.Service.Disco, "Disco is not available.");
     Assert.isObject(this.Disco, "Disco was not mixed in properly.");
     Assert.areSame(this.ox, this.Disco.connection);
@@ -51,19 +51,19 @@ XC.Test.Disco = new YAHOO.tool.TestCase({
       onSuccess: function (entity) {
         win = true;
         Assert.isObject(entity, "Entity should be an object.");
-        Assert.areEqual(entity.name, that.romeo.name, 
+        Assert.areEqual(entity.name, that.romeo.name,
                         "The entity's name is not the same.");
-        Assert.areEqual(entity.jid, that.romeo.jid, 
+        Assert.areEqual(entity.jid, that.romeo.jid,
                         "The entity's JID is not the same.");
-        Assert.isTrue(entity.hasFeature('jabber:iq:time'), 
+        Assert.isTrue(entity.hasFeature('jabber:iq:time'),
                         "The entity doesn't have an advertised feature.");
-        Assert.isTrue(entity.hasFeature('http://jabber.org/protocol/disco#info'), 
+        Assert.isTrue(entity.hasFeature('http://jabber.org/protocol/disco#info'),
                         "The entity doesn't have an advertised feature.");
-        Assert.areEqual(entity.disco.identities[0].name, 'JNX', 
+        Assert.areEqual(entity.disco.identities[0].name, 'JNX',
                         "The identity's name wasn't copied.");
-        Assert.areEqual(entity.disco.identities[0].category, 'client', 
+        Assert.areEqual(entity.disco.identities[0].category, 'client',
                         "The identity's category wasn't copied.");
-        Assert.areEqual(entity.disco.identities[0].type, 'web', 
+        Assert.areEqual(entity.disco.identities[0].type, 'web',
                         "The identity's type wasn't copied.");
         Assert.areEqual(entity, that.romeo);
       },
@@ -100,9 +100,9 @@ XC.Test.Disco = new YAHOO.tool.TestCase({
         win = true;
 
         Assert.isObject(entity, "Entity should be an object.");
-        Assert.areEqual(entity.name, that.romeo.name, 
+        Assert.areEqual(entity.name, that.romeo.name,
                         "The entity's name is not the same.");
-        Assert.areEqual(entity.jid, that.romeo.jid, 
+        Assert.areEqual(entity.jid, that.romeo.jid,
                         "The entity's JID is not the same.");
         Assert.areEqual("people.shakespeare.lit", entity.disco.items[0].jid,
                         "The entity doesn't contain an expected item.");
