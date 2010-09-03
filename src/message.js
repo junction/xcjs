@@ -35,18 +35,18 @@ XC.Message = XC.Object.extend({
    *   to = from,
    *   thread = thread
    * 
-   * @param {String} body The message body.
+   * @param {String} body        The message body.
+   * @param {Object} [callbacks] An Object with 'onError'.
    * @returns {XC.Message} The sent message.
    */
-  reply: function (body) {
+  reply: function (body, callbacks) {
     var msg = this.extend({
       to: this.from,
       from: this.connection.getJID(),
       body: body
     });
 
-    msg.send();
-    return msg;
+    msg.send(callbacks);
   },
 
   /**
@@ -62,9 +62,9 @@ XC.Message = XC.Object.extend({
         message = this;
 
     msg.to(message.to.jid);
-    msg.attr('type', this.TYPE);
+    msg.attr('type', this.type);
 
-    if (msg.body) {
+    if (message.body) {
       body.text = message.body;
       msg.addChild(body);
     }
@@ -80,7 +80,7 @@ XC.Message = XC.Object.extend({
     }
 
     this.connection.send(msg.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
+      if (packet.getType() === 'error' && callbacks) {
         callbacks.onError(packet);
       }
     });
