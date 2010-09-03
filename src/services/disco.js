@@ -8,7 +8,19 @@
 XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
   XC.Mixin.Discoverable,
 {
-  _rootItem: null,
+  disco: null,
+
+  _sendError: function (iq) {
+    iq.type('error');
+     var error = XC.XMPP.Error.extend(),
+         itemNotFound = XC.XML.Element.extend({name: 'item-not-found',
+                                               xmlns: 'urn:ietf:params:xml:ns:xmpp-stanzas'
+                                              });
+    error.attr('type', 'cancel');
+    error.addChild(itemNotFound);
+    iq.addChild(error);
+    this.connection.send(iq.convertToString());
+  },
 
   /**
    * Disco items request on this entity.
@@ -17,29 +29,36 @@ XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
    */
   _handleDiscoItems: function (packet) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
+        q = XC.XMPP.Query.extend({xmlns: XC.Mixin.Disco.XMLNS + '#items'}),
         Item = XC.XML.Element.extend({name: 'item'}),
-        item, node;
+        item, node, idx;
 
     iq.type('result');
-    iq.to(packet.getAttribute('from'));
-    
+    iq.to(packet.getFrom());
+    iq.addChild(q);
+
+    packet = packet.getNode();
     node = packet.getElementsByTagName('query')[0].getAttribute('node');
     if (node) {
-      node = this._rootItem[node];
+      node = this.disco[node];
+      if (!node) {
+        this._sendError(iq);
+        return;
+      }
     } else {
-      node = this._rootItem;
+      node = this.disco;
     }
 
-    for (var jid in node) {
+    idx = node.length;
+    while (idx--) {
       item = Item.extend();
-      item.attr('jid', jid);
-      if (this.items[jid]) {
-        item.attr('name', node.disco.items[jid]);
+      item.attr('jid', node.items[idx].jid);
+      if (this.items[idx]) {
+        item.attr('name', node.items[idx].name);
       }
       q.addChild(item);
     }
-    iq.addChild(q);
+
     this.connection.send(iq.convertToString());
   },
 
@@ -50,24 +69,30 @@ XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
    */
   _handleDiscoInfo: function (packet) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
+        q = XC.XMPP.Query.extend({xmlns: XC.Mixin.Disco.XMLNS + '#info'}),
         Feature = XC.XML.Element.extend({name: 'feature'}),
         Identity = XC.XML.Element.extend({name: 'identity'}),
         identity, elem, idx, node;
 
     iq.type('result');
     iq.to(packet.from);
+    iq.addChild(q);
 
+    packet = packet.getNode();
     node = packet.getElementsByTagName('query')[0].getAttribute('node');
     if (node) {
-      node = this._rootItem[node];
+      node = this.disco[node];
+      if (!node) {
+        this._sendError(iq);
+        return;
+      }
     } else {
-      node = this._rootItem;
+      node = this.disco;
     }
 
-    idx = node.disco.identities.length;
+    idx = node.identities.length;
     while (idx--) {
-      identity = node.disco.identities[idx];
+      identity = node.identities[idx];
       elem = Identity.extend();
       elem.attr('category', identity.category);
       elem.attr('type', identity.type);
@@ -77,14 +102,13 @@ XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
       q.addChild(elem);
     }
 
-    idx = node.disco.features.length;
+    idx = node.features.length;
     while (idx--) {
       elem = Feature.extend();
-      elem.attr('var', node.disco.features[idx]);
+      elem.attr('var', node.features[idx]);
       q.addChild(elem);
     }
 
-    iq.addChild(q);
     this.connection.send(iq.convertToString());
   }
 

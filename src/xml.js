@@ -206,6 +206,16 @@ XC.XMPP.Query = XC.XML.Element.extend(/** @lends XMPP.Query# */{
 });
 
 /**
+ * XMPP Error stanza.
+ *
+ * @extends XC.XMPP.Stanza
+ * @class
+ */
+XC.XMPP.Error = XC.XML.Element.extend(/** @lends XMPP.Error# */{
+  name: 'error'
+});
+
+/**
  * XMPP AdHoc Command element.
  *
  * @extends XC.XML.Element
