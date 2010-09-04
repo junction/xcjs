@@ -2,20 +2,26 @@
  * The Disco Service provides high level support,
  * responding to disco requests on behalf of the user.
  * 
- * @extends XC.Object, XC.Mixin.Discoverable
+ * @extends XC.Object
+ * @extends XC.Mixin.Discoverable
  * @class
  */
 XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
   XC.Mixin.Discoverable,
 {
-  disco: null,
 
-  _sendError: function (iq) {
+  /**
+   * Something went wrong- gracefully degrade and provide an
+   * error message to the querying JID.
+   *
+   * @param {Element} iq  The iq containing the elements to send.
+   */
+  _handleError: function (iq) {
     iq.type('error');
-     var error = XC.XMPP.Error.extend(),
-         itemNotFound = XC.XML.Element.extend({name: 'item-not-found',
-                                               xmlns: 'urn:ietf:params:xml:ns:xmpp-stanzas'
-                                              });
+    var error = XC.XMPP.Error.extend(),
+        itemNotFound = XC.XML.Element.extend({name: 'item-not-found',
+                                              xmlns: 'urn:ietf:params:xml:ns:xmpp-stanzas'
+                                             });
     error.attr('type', 'cancel');
     error.addChild(itemNotFound);
     iq.addChild(error);
@@ -29,32 +35,36 @@ XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
    */
   _handleDiscoItems: function (packet) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Mixin.Disco.XMLNS + '#items'}),
+        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
         Item = XC.XML.Element.extend({name: 'item'}),
-        item, node, idx;
+        item, node, value;
 
     iq.type('result');
     iq.to(packet.getFrom());
     iq.addChild(q);
 
-    packet = packet.getNode();
-    node = packet.getElementsByTagName('query')[0].getAttribute('node');
+    node = packet.getNode();
+    node = node.getElementsByTagName('query')[0].getAttribute('node');
     if (node) {
-      node = this.disco[node];
+      q.attr('node', node);
+      node = this._rootNode.items[node];
       if (!node) {
-        this._sendError(iq);
+        this._handleError(iq);
         return;
       }
     } else {
-      node = this.disco;
+      node = this._rootNode;
     }
 
-    idx = node.length;
-    while (idx--) {
+    for (var key in node.items) {
+      value = node.items[key];
       item = Item.extend();
-      item.attr('jid', node.items[idx].jid);
-      if (this.items[idx]) {
-        item.attr('name', node.items[idx].name);
+      item.attr('jid', value.jid);
+      if (value.name) {
+        item.attr('name', value.name);
+      }
+      if (value.node) {
+        item.attr('node', value.node);
       }
       q.addChild(item);
     }
@@ -69,30 +79,31 @@ XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
    */
   _handleDiscoInfo: function (packet) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Mixin.Disco.XMLNS + '#info'}),
+        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
         Feature = XC.XML.Element.extend({name: 'feature'}),
         Identity = XC.XML.Element.extend({name: 'identity'}),
-        identity, elem, idx, node;
+        identity, elem, len, node, i;
 
     iq.type('result');
     iq.to(packet.from);
     iq.addChild(q);
 
-    packet = packet.getNode();
-    node = packet.getElementsByTagName('query')[0].getAttribute('node');
+    node = packet.getNode();
+    node = node.getElementsByTagName('query')[0].getAttribute('node');
     if (node) {
-      node = this.disco[node];
+      q.attr('node', node);
+      node = this._rootNode.items[node];
       if (!node) {
-        this._sendError(iq);
+        this._handleError(iq);
         return;
       }
     } else {
-      node = this.disco;
+      node = this._rootNode;
     }
 
-    idx = node.identities.length;
-    while (idx--) {
-      identity = node.identities[idx];
+    len = node.identities ? node.identities.length : 0;
+    for (i = 0; i < len; i++) {
+      identity = node.identities[i];
       elem = Identity.extend();
       elem.attr('category', identity.category);
       elem.attr('type', identity.type);
@@ -102,15 +113,15 @@ XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
       q.addChild(elem);
     }
 
-    idx = node.features.length;
-    while (idx--) {
+    len = node.features ? node.features.length : 0;
+    for (i = 0; i < len; i++) {
       elem = Feature.extend();
-      elem.attr('var', node.features[idx]);
+      elem.attr('var', node.features[i]);
       q.addChild(elem);
     }
 
     this.connection.send(iq.convertToString());
   }
 
-}).addFeature(XC.Mixin.Disco.XMLNS + '#info')
-  .addFeature(XC.Mixin.Disco.XMLNS + '#items');
+}).addFeature(XC.Disco.XMLNS + '#info')
+  .addFeature(XC.Disco.XMLNS + '#items');

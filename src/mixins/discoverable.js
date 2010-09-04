@@ -9,42 +9,68 @@
 XC.Mixin.Discoverable = {
 
   /**
-   * Add a feature to this item.
+   * The root of the Disco tree.
    * 
-   * @param {String} xmlns The namespace of the feature to add.
+   * @type {XC.DiscoItem}
+   */
+  _rootNode: null,
+
+  getNode: function (node) {
+    return node ? this._rootNode.items[node] : this._rootNode;
+  },
+
+  _createNode: function (node) {
+    if (!this._rootNode) {
+      this._rootNode = XC.DiscoItem.extend({
+        identities: [],
+        features: [],
+        items: {}
+      });
+    }
+
+    if (node && !this._rootNode.items[node]) {
+      this._rootNode.items[node] = XC.DiscoItem.extend({
+        identities: [],
+        features: [],
+        items: []
+      });
+    }
+
+    return this.getNode(node);
+  },
+
+  /**
+   * Add a feature to the Disco tree.
+   *
+   * @param {String} xmlns   The namespace of the feature to add.
    * @param {String} [node]  The name of the node to add the feature to.
    * 
    * @returns {XC.Discoverable} The calling object.
    */
   addFeature: function (xmlns, node) {
-    if (!this.disco) {
-      this.disco = XC.DiscoItem.extend();      
+    node = this._createNode(node);
+
+    if (!node.features) {
+      node.features = [];
     }
 
-    if (node) {
-      this.disco.items[node].features.push(xmlns);
-    } else {
-      this.disco.features.push(xmlns);
-    }
+    node.features.push(xmlns);
+
     return this;
   },
 
   /**
    * Remove a pre-existing feature from this item.
    * 
-   * @param {String} xmlns The namespace of the feature to remove.
+   * @param {String} xmlns   The namespace of the feature to remove.
    * @param {String} [node]  The name of the node to add the feature to.
    * 
    * @returns {Boolean} True if it was removed; false if it doesn't exist.
    */
   removeFeature: function (xmlns, node) {
     var idx,
-        features = this.disco.features;
+        features = this.getNode(node).features;
 
-    if (node) {
-      features = this.disco.items[node].features;
-    }
-    
     idx = features.length;
 
     while (idx--) {
@@ -61,16 +87,27 @@ XC.Mixin.Discoverable = {
   /**
    * Add a child item to this item.
    * 
-   * @param {XC.DiscoItem} discoItem The item to add.
+   * @param {XC.DiscoItem} discoItem  The item to add.
+   * @param {String}       [nodeName] The name of the node to add the item to.
    * 
    * @returns {XC.Discoverable} The calling object.
    */
-  addItem: function (discoItem) {
-    if (!this.disco) {
-      this.disco = XC.DiscoItem.extend();   
-    }
+  addItem: function (discoItem, nodeName) {
+    var node = this._createNode(nodeName);
 
-    this.disco.items.push(discoItem);
+    if (node) {
+      if (!nodeName) {
+        if (!node.items) {
+          node.items = {};
+        }
+        node.items[discoItem.node] = discoItem;
+      } else {
+        if (!node.items) {
+          node.items = [];
+        }
+        node.items.push(discoItem);
+      }
+    }
     return this;
   },
 
@@ -78,14 +115,21 @@ XC.Mixin.Discoverable = {
    * Remove a pre-existing item from this item.
    * 
    * @param {XC.DiscoItem} discoItem The item to remove.
+   * @param {String}       [node]    The name of the node to remove the item from.
    *
    * @returns {Boolean} True if it was removed; false if it doesn't exist.
    */
-  removeItem: function (discoItem) {
-    if (this.disco.items[discoItem.node]) {
-      delete this.disco.items[discoItem.node];
-      return true;
+  removeItem: function (discoItem, node) {
+    node = this.getNode(node);
+    var idx = node.items.length;
+
+    while (idx--) {
+      if (node.items[idx] === discoItem) {
+        delete node.items[idx];
+        return true;
+      }
     }
+
     return false;
   },
 
@@ -97,15 +141,18 @@ XC.Mixin.Discoverable = {
    *   type: {String}
    * }
    * @param {Object} identity The identity to add.
+   * @param {String} [node]   The name of the node to add the identity to.
    * 
    * @returns {XC.Discoverable} The calling object.
    */
-  addIdentity: function (identity) {
-    if (!this.disco) {
-      this.disco = XC.DiscoItem.extend();      
+  addIdentity: function (identity, node) {
+    node = this._createNode(node);
+
+    if (!node.identities) {
+      node.identities = [];
     }
 
-    this.disco.identities.push(identity);
+    node.identities.push(identity);
     return this;
   },
 
@@ -113,18 +160,19 @@ XC.Mixin.Discoverable = {
    * Remove a pre-existing identity from this item.
    * 
    * @param {Object} identity The identity to remove.
+   * @param {String} [node]   The name of the node to remove the identity from.
    * 
    * @returns {Boolean} True if it was removed; false if it doesn't exist.
    */
-  removeIdentity: function (identity) {
-    var idx = this.identities.length,
-        i;
+  removeIdentity: function (identity, node) {
+    var idx, i;
+    node = this.getNode(node);
+
+    idx = node ? node.identities.length : 0;
     while (idx--) {
-      i = this.identities[idx];
-      if (identity.category === i.category &&
-          identity.type === i.type &&
-          identity.name && i.name && identity.name === i.name) {
-        delete this.identities[idx];
+      i = node.identities[idx];
+      if (identity === i) {
+        delete node.identities[idx];
         return true;
       }
     }

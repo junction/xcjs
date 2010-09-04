@@ -7,79 +7,108 @@
  * 
  * @requires rootItem  A list of features and items associated with your entity.
  */
+XC.Disco = {
+  XMLNS: 'http://jabber.org/protocol/disco'
+};
+
 XC.Mixin.Disco = {
 
-  XMLNS: 'http://jabber.org/protocol/disco',
+  _rootNode: null,
 
-  /**
-   * Check for features.
-   * 
-   * @param {String} xmls The namespace of the feature.
-   * @param {String} node The node to check for the feature in.
-   * 
-   * @returns {Boolean} True if the feature exists.
-   */
-  hasFeature: function (xmlns, node) {
-    var features = node ? this.disco.items[node].features : this.disco.features,
-        idx = features.length;
-    while (idx--) {
-      if (features[idx] === xmlns) {
-        return true;
-      }
+  _createNode: function (node) {
+    if (!this._rootNode) {
+      this._rootNode = XC.DiscoItem.extend({
+        identities: [],
+        features: [],
+        items: []
+      });
     }
-    return false;
+
+    if (node && !this._rootNode.items[node]) {
+      this._rootNode.items[node] = XC.DiscoItem.extend({
+        identities: [],
+        features: [],
+        items: []
+      });
+    }
+
+    return node ? this._rootNode.items[node] : this._rootNode;
   },
 
+  getDiscoFeatures: function (nodeName) {
+    var node = nodeName ? this._rootNode.items[nodeName] : this._rootNode;
+    if (node && node.features) {
+      return node.features;
+    }
+    return null;
+  },
+
+  getDiscoIdentities: function (nodeName) {
+    var node = nodeName ? this._rootNode.items[nodeName] : this._rootNode;
+    if (node && node.identities) {
+      return node.identities;
+    }
+    return null;
+  },
+
+  getDiscoItems: function (nodeName) {
+    var node = nodeName ? this._rootNode.items[nodeName] : this._rootNode;
+    if (node && node.items) {
+      return node.items;
+    }
+    return null;
+  },
 
   /**
    * Discover information about an entity.
    * 
    * @param {Object}    [callbacks]
    */
-  discoInfo: function (callbacks) {
+  requestDiscoInfo: function (node, callbacks) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Mixin.Disco.XMLNS + '#info'}),
+        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
         entity = this;
+
+    if (arguments.length === 1) {
+      callbacks = node;
+      node = null;
+    }
 
     iq.type('get');
     iq.to(entity.jid);
-
-    if (entity.disco && entity.disco.name) {
-      q.attr('node', entity.disco.name);
-    }
-
     iq.addChild(q);
 
-    entity.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
+    if (node) {
+      q.attr('node', node);
+    }
+
+    this.connection.send(iq.convertToString(), function (packet) {
+      if (packet.getAttribute('type') === 'error') {
         callbacks.onError(packet);
       } else {
-        packet = packet.getNode();
         var identities = packet.getElementsByTagName('identity'),
             features = packet.getElementsByTagName('feature'),
-            iFeat = features ? features.length : 0,
-            iIdent = identities ? identities.length : 0,
-            identity;
+            node = packet.getElementsByTagName('query')[0].getAttribute('node'),
+            len, i, identity;
 
-        if (!entity.disco) {
-          entity.disco = XC.DiscoItem.extend();
+        node = entity._createNode(node);
+
+        node.features = [];
+        len = features ? features.length : 0;
+        for (i = 0; i < len; i++) {
+          node.features.push(features[i].getAttribute('var'));
         }
 
-        entity.disco.features = [];
-        while (iFeat--) {
-          entity.disco.features.push(features[iFeat].getAttribute('var'));
-        }
-
-        entity.disco.identities = [];
-        while (iIdent--) {
-          identity = identities[iIdent];
-          entity.disco.identities.push({
+        node.identities = [];
+        len = identities ? identities.length : 0;
+        for (i = 0; i < len; i++) {
+          identity = identities[i];
+          node.identities.push({
             category: identity.getAttribute('category'),
             type: identity.getAttribute('type'),
             name: identity.getAttribute('name')
           });
         }
-
         callbacks.onSuccess(entity);
       }
     });
@@ -90,46 +119,44 @@ XC.Mixin.Disco = {
    * 
    * @param {Object}    [callbacks]
    */
-  discoItems: function (callbacks) {
+  requestDiscoItems: function (node, callbacks) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Mixin.Disco.XMLNS + '#items'}),
+        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
         entity = this;
+
+    if (arguments.length === 1) {
+      callbacks = node;
+      node = null;
+    }
 
     iq.type('get');
     iq.to(entity.jid);
     iq.addChild(q);
 
     this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
+      if (packet.getAttribute('type') === 'error') {
         callbacks.onError(packet);
       } else {
-        packet = packet.getNode();
         var items = packet.getElementsByTagName('item'),
-            item, idx = items ? items.length : 0;
+            node = packet.getElementsByTagName('query')[0].getAttribute('node'),
+            item, len = items ? items.length : 0;
 
-        if (!entity.disco) {
-          entity.disco = XC.DiscoItem.extend();
-        }
+        node = entity._createNode(node);
 
-        entity.disco.items = [];
-        while (idx--) {
-          entity.disco.items.push(XC.DiscoItem.extend({
-            jid: items[idx].getAttribute('jid'),
-            node: items[idx].getAttribute('node'),
-            name: items[idx].getAttribute('name')
+        node.items = [];
+        for (var i = 0; i < len; i++) {
+          node.items.push(XC.DiscoItem.extend({
+            jid: items[i].getAttribute('jid'),
+            node: items[i].getAttribute('node'),
+            name: items[i].getAttribute('name')
           }));
         }
 
         callbacks.onSuccess(entity);
       }
     });
-  },
+  }
 
-  /**
-   * The root item of the Disco Item tree.
-   * @type {XC.DiscoItem}
-   */
-  disco: null
 };
 
 /**
@@ -157,18 +184,18 @@ XC.DiscoItem = XC.Object.extend(/** @lends XC.DiscoItem */{
    * Namespaces of supported features.
    * @type {Array{String}}
    */
-  features: [],
+  features: null,
 
   /**
    * Array of all items in this item.
    * @type {Array{XC.DiscoItem}}
    */
-  items: [],
+  items: null,
 
   /**
    * Identities that this item represents.
    * @type {Array{Object}}
    */
-  identities: []
+  identities: null
 
 });
