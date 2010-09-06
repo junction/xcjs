@@ -41,11 +41,14 @@ XC.Test.Message = new YAHOO.tool.TestCase({
                     "The expected entity to was incorrect.");
 
     packet = packet.getNode();
-    Assert.areEqual(packet.getElementsByTagName('body')[0].textContent, msg.body,
+    var el = packet.getElementsByTagName('body')[0];
+    Assert.areEqual(el.textContent || el.text, msg.body,
                     "The expected body was incorrect.");
-    Assert.areEqual(packet.getElementsByTagName('subject')[0].textContent, msg.subject,
+    el = packet.getElementsByTagName('subject')[0];
+    Assert.areEqual(el.textContent || el.text, msg.subject,
                     "The expected subject was incorrect.");
-    Assert.areEqual(packet.getElementsByTagName('thread')[0].textContent, msg.thread,
+    el = packet.getElementsByTagName('thread')[0];
+    Assert.areEqual(el.textContent || el.text, msg.thread,
                     "The expected thread was incorrect.");
   },
 
@@ -76,11 +79,15 @@ XC.Test.Message = new YAHOO.tool.TestCase({
                     "The expected entity to was incorrect.");
 
     packet = packet.getNode();
-    Assert.areEqual(packet.getElementsByTagName('body')[0].textContent, "Big bad badger mole coming right toward me- help me guys.",
+
+    var el = packet.getElementsByTagName('body')[0];
+    Assert.areEqual(el.textContent || el.text, "Big bad badger mole coming right toward me- help me guys.",
                     "The expected body was incorrect.");
-    Assert.areEqual(packet.getElementsByTagName('subject')[0].textContent, msg.subject,
+    el = packet.getElementsByTagName('subject')[0];
+    Assert.areEqual(el.textContent || el.text, msg.subject,
                     "The expected subject was incorrect.");
-    Assert.areEqual(packet.getElementsByTagName('thread')[0].textContent, msg.thread,
+    el = packet.getElementsByTagName('thread')[0];
+    Assert.areEqual(el.textContent || el.text, msg.thread,
                     "The expected thread was incorrect.");
   }
 
