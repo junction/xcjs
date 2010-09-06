@@ -166,10 +166,12 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
 
     var id = this.xc.registerStanzaHandler(criteria, handler);
 
+    // all registered criteria must match
     var matchingXML = '<message from="sender@source.org" to="me@dest.com" xmlns="xcjs:test"></message>';
     this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(matchingXML));
     Assert.isTrue(handlerFired, 'handler with multiple matching criteria did not fire');
 
+    // if only some match the handler shouldn't fire
     var unmatchingXML = '<message from="sender@source.org" to="me@dest.com" xmlns="xcjs:badtest"></message>';
     this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(unmatchingXML));
     handlerFired = false;
