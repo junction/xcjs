@@ -4,23 +4,35 @@
  */
 XC.Object = {
 
+  isFunction: function(o) { return (typeof o === "function"); },
+
   /**
    * Iterates over all arguments, adding their own
    * properties to the reciever.
-   * 
+   *
    * @example
    * obj.mixin({param: value});
-   * 
+   *
    * @returns {XC.Object} the reciever
-   * 
+   *
    * @see XC.Object.extend
    */
   mixin: function () {
-    var len = arguments.length;
+    var len = arguments.length,
+      val, cur;
     for (var i = 0; i < len; i++) {
       for (var k in arguments[i]) {
         if (arguments[i].hasOwnProperty(k)) {
-          this[k] = arguments[i][k];
+          val = arguments[i][k];
+          cur = this[k];
+
+          if (XC.Object.isFunction(val)
+              && XC.Object.isFunction(cur)
+              && val._isAround) {
+            val = val.curry(cur);
+          }
+
+          this[k] = val;
         }
       }
     }
@@ -31,12 +43,12 @@ XC.Object = {
    * Creates a new object which extends the current object.
    * Any arguments are mixed into the new object as if {@link XC.Object.mixin}
    * was called on the new object with remaining args.
-   * 
+   *
    * @example
    * var obj = XC.Object.extend({param: value});
-   * 
+   *
    * @returns {XC.Object} The new object.
-   * 
+   *
    * @see XC.Object.mixin
    */
   extend: function () {
