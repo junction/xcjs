@@ -1,10 +1,10 @@
 /**
  * Service Discovery provides the ability to discover information about entities.
  * @namespace
- * 
+ *
  * XEP-0030: Service Discovery
  * @see http://xmpp.org/extensions/xep-0030.html
- * 
+ *
  * @requires rootItem  A list of features and items associated with your entity.
  */
 XC.Disco = {
@@ -61,7 +61,7 @@ XC.Mixin.Disco = {
 
   /**
    * Discover information about an entity.
-   * 
+   *
    * @param {Object}    [callbacks]
    */
   requestDiscoInfo: function (node, callbacks) {
@@ -116,7 +116,7 @@ XC.Mixin.Disco = {
 
   /**
    * Discover the items on an entity.
-   * 
+   *
    * @param {Object}    [callbacks]
    */
   requestDiscoItems: function (node, callbacks) {
@@ -161,12 +161,12 @@ XC.Mixin.Disco = {
 
 /**
  * Represents an item (node) in Service Discovery.
- * 
- * @extends XC.Object
+ *
+ * @extends XC.Base
  * @class
  * @see XC.Disco
  */
-XC.DiscoItem = XC.Object.extend(/** @lends XC.DiscoItem */{
+XC.DiscoItem = XC.Base.extend(/** @lends XC.DiscoItem */{
 
   /**
    * The JID of the node

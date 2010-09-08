@@ -1,23 +1,23 @@
 /*globals YAHOO */
 XC.Test.Base = new YAHOO.tool.TestCase({
-  name: 'XC.Object Tests',
+  name: 'XC.Base Tests',
 
   testIsFunction: function() {
     var Assert = YAHOO.util.Assert;
 
-    Assert.isFunction(XC.Object.isFunction, 'XC.Object.isFunction does not exist');
+    Assert.isFunction(XC.Base.isFunction, 'XC.Base.isFunction does not exist');
 
-    Assert.isTrue(XC.Object.isFunction(function() {}), 'function is not a function');
-    Assert.isFalse(XC.Object.isFunction({}), 'object should not be a function');
+    Assert.isTrue(XC.Base.isFunction(function() {}), 'function is not a function');
+    Assert.isFalse(XC.Base.isFunction({}), 'object should not be a function');
   },
 
   testExtend: function () {
     var Assert = YAHOO.util.Assert;
 
-    var tmp = XC.Object.extend();
+    var tmp = XC.Base.extend();
     Assert.isObject(tmp);
     Assert.isFunction(tmp.extend);
-    Assert.areNotSame(tmp, XC.Object);
+    Assert.areNotSame(tmp, XC.Base);
 
     var tmp2 = tmp.extend({foo: 'foo'});
     Assert.areSame('foo', tmp2.foo);
@@ -27,7 +27,7 @@ XC.Test.Base = new YAHOO.tool.TestCase({
   testMixin: function () {
     var Assert = YAHOO.util.Assert;
 
-    var tmp = XC.Object.extend();
+    var tmp = XC.Base.extend();
     tmp.mixin({foo: 'foo'});
     Assert.areSame('foo', tmp.foo);
   },
@@ -35,7 +35,7 @@ XC.Test.Base = new YAHOO.tool.TestCase({
   testMixinAround: function() {
     var Assert = YAHOO.util.Assert;
 
-    var orig = XC.Object.extend({
+    var orig = XC.Base.extend({
       doStuff: function() {
         return 'a';
       }

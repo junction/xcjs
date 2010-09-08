@@ -1,14 +1,14 @@
 /**
  * An entity is anything with a Jabber ID.
- * 
- * @extends XC.Object
+ *
+ * @extends XC.Base
  * @extends XC.Mixin.Presence
  * @extends XC.Mixin.Roster
  * @extends XC.Mixin.Chat
  * @extends XC.Mixin.Disco
  * @class
  */
-XC.Entity = XC.Object.extend(/** @lends XC.Entity */{
+XC.Entity = XC.Base.extend(/** @lends XC.Entity */{
   /**
    * The Jabber Id of the entity.
    * @type {String}

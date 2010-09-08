@@ -1,22 +1,22 @@
 /**
  * One-to-one Chatting
  * @class
- * @extends XC.Object
- * 
+ * @extends XC.Base
+ *
  * RFC 3921: XMPP IM; Section 4
  * @see http://ietf.org/rfc/rfc3921.txt
  */
-XC.Service.Chat = XC.Object.extend(/** @lends XC.Service.Chat */{
+XC.Service.Chat = XC.Base.extend(/** @lends XC.Service.Chat */{
 
   /**
    * Send a chat message to another entity.
-   * 
+   *
    * @param {String} jid         The jid to send the chat message to.
    * @param {String} [body]      The body of the message.
    * @param {String} [subject]   The subject of the message.
    * @param {String} [thread]    The thread of the message.
    * @param {Object} [callbacks] An Object that has 'onError'.
-   * 
+   *
    * @returns {XC.Entity} The entity the message was sent to.
    */
   send: function (jid, body, subject, thread, callbacks) {
@@ -31,7 +31,7 @@ XC.Service.Chat = XC.Object.extend(/** @lends XC.Service.Chat */{
 
   /**
    * Endpoint to recieve out-of-band messages.
-   * 
+   *
    * @param {XC.Message} message     A message from another entity.
    */
   onMessage: function (message) {},
@@ -39,7 +39,7 @@ XC.Service.Chat = XC.Object.extend(/** @lends XC.Service.Chat */{
   /**
    * Handles out-of-band messages (All incoming messages)
    * from another entity.
-   * 
+   *
    * @param {Element} packet        The incoming XML stanza.
    */
   _handleMessages: function (packet) {

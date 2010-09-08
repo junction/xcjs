@@ -12,10 +12,10 @@ XC.XML = {};
  * newElement.attr('bar', 'bam');
  * newElement.addChild(XC.XML.Element.extend({name: 'child'});
  *
- * @extends XC.Object
+ * @extends XC.Base
  * @class
  */
-XC.XML.Element = XC.Object.extend(/** @lends XC.XML.Element# */{
+XC.XML.Element = XC.Base.extend(/** @lends XC.XML.Element# */{
   name: null,
   attributes: null,
   xmlns: null,
@@ -67,7 +67,7 @@ XC.XML.Element = XC.Object.extend(/** @lends XC.XML.Element# */{
     if (this.attributes) {
       for (var name in this.attributes) {
         var val = this.attributes[name];
-        if (!val) { 
+        if (!val) {
           continue;
         }
 
@@ -187,7 +187,7 @@ XC.XMPP.Message = XC.XMPP.Stanza.extend(/** @lends XC.XMPP.Message# */{
 
 /**
  * XMPP Presence stanza.
- * 
+ *
  * @extends XC.XMPP.Stanza
  * @class
  */

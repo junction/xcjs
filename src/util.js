@@ -6,7 +6,7 @@
 /*
  * Function.prototype
  */
-XC.Object.mixin.call(Function.prototype, /** @lends Function.prototype */ {
+XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
   around: function() {
     this._isAround = true;
     return this;
@@ -23,7 +23,7 @@ XC.Object.mixin.call(Function.prototype, /** @lends Function.prototype */ {
 /*
  * Array
  */
-XC.Object.mixin.call(Array, /** @lends Array */ {
+XC.Base.mixin.call(Array, /** @lends Array */ {
   from: function(iterable) {
     var ret = [];
     for(var i=0,len=iterable.length; i<len; i++) ret.push(iterable[i]);

@@ -9,7 +9,7 @@ XC.Test.MockConnection = XC.ConnectionAdapter.extend({
 
   _responses: [],
 
-  jid: function () { 
+  jid: function () {
     return 'mock@example.com';
   },
 
@@ -56,7 +56,7 @@ XC.Test.MockConnection = XC.ConnectionAdapter.extend({
   }
 });
 
-XC.Test.DOMParser = XC.Object.extend({
+XC.Test.DOMParser = XC.Base.extend({
   parser: function () {
     var parser;
     try {
@@ -95,7 +95,7 @@ XC.Test.DOMParser = XC.Object.extend({
       doc = parser.parseFromString(xml, 'text/xml');
     }
 
-    return XC.Object.extend({
+    return XC.Base.extend({
       doc: doc,
 
       getPath: function (path) {
@@ -136,7 +136,7 @@ XC.Test.DOMParser = XC.Object.extend({
   }
 });
 
-XC.Test.Packet = XC.Object.extend({
+XC.Test.Packet = XC.Base.extend({
   from:    null,
   to:      null,
   type:    null,

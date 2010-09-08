@@ -18,7 +18,7 @@ XC.Test.ChatRecipient = new YAHOO.tool.TestCase({
 
     Assert.isObject(XC.Mixins.ChatRecipient, '');
 
-    var tmp = XC.Object.extend(XC.Mixins.ChatRecipient);
+    var tmp = XC.Base.extend(XC.Mixins.ChatRecipient);
 
     Assert.isFunction(tmp.sendChat, 'sendChat is not a function');
   },

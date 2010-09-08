@@ -4,13 +4,13 @@
  * extending this object.
  *
  * @class
- * @extends XC.Object
+ * @extends XC.Base
  * @property {XC.Service.Presence} Presence#
  * @property {XC.Service.Roster} Roster#
  * @property {XC.Service.Chat} Chat#
  * @property {XC.Service.Disco} Disco#
  */
-XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
+XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   /**
    * Map of instance names to instance objects. Used during
    * initConnection().
@@ -150,7 +150,7 @@ XC.Connection = XC.Object.extend(/** @lends XC.Connection# */{
    * @see XC.Connection#registerStanzaHandler
    * @see XC.Connection#unregisterStanzaHandler
    */
-  _stanzaHandlers: XC.Object.extend({
+  _stanzaHandlers: XC.Base.extend({
     lastID: 0,
     store: {},
 

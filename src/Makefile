@@ -1,4 +1,4 @@
-SRC =	core.js object.js util.js error.js xml.js	\
+SRC =	core.js base.js util.js error.js xml.js	\
 	mixins/roster.js mixins/chat.js mixins/presence.js mixins/discoverable.js mixins/disco.js \
   services/roster.js services/chat.js services/presence.js services/disco.js	\
 	entity.js message.js	\

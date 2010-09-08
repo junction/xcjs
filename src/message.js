@@ -1,8 +1,8 @@
 /**
- * @extends XC.Object
+ * @extends XC.Base
  * @class
  */
-XC.Message = XC.Object.extend({
+XC.Message = XC.Base.extend({
   /**
    * @type {XC.Entity}
    */
@@ -11,7 +11,7 @@ XC.Message = XC.Object.extend({
   /**
    * @type {XC.Entity}
    */
-  from: null,  
+  from: null,
 
   /**
    * @type {String}
@@ -34,7 +34,7 @@ XC.Message = XC.Object.extend({
    *   from = to,
    *   to = from,
    *   thread = thread
-   * 
+   *
    * @param {String} body        The message body.
    * @param {Object} [callbacks] An Object with 'onError'.
    * @returns {XC.Message} The sent message.
@@ -51,7 +51,7 @@ XC.Message = XC.Object.extend({
 
   /**
    * Send a message.
-   * 
+   *
    * @param {Object} [callbacks]   An Object with 'onError'.
    */
   send: function (callbacks) {

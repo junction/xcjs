@@ -2,7 +2,7 @@
  * Object class for XC. All objects inherit from this one.
  * @namespace
  */
-XC.Object = {
+XC.Base = {
 
   isFunction: function(o) { return (typeof o === "function"); },
 
@@ -13,9 +13,9 @@ XC.Object = {
    * @example
    * obj.mixin({param: value});
    *
-   * @returns {XC.Object} the reciever
+   * @returns {XC.Base} the reciever
    *
-   * @see XC.Object.extend
+   * @see XC.Base.extend
    */
   mixin: function () {
     var len = arguments.length,
@@ -26,8 +26,8 @@ XC.Object = {
           val = arguments[i][k];
           cur = this[k];
 
-          if (XC.Object.isFunction(val)
-              && XC.Object.isFunction(cur)
+          if (XC.Base.isFunction(val)
+              && XC.Base.isFunction(cur)
               && val._isAround) {
             val = val.curry(cur);
           }
@@ -41,15 +41,15 @@ XC.Object = {
 
   /**
    * Creates a new object which extends the current object.
-   * Any arguments are mixed into the new object as if {@link XC.Object.mixin}
+   * Any arguments are mixed into the new object as if {@link XC.Base.mixin}
    * was called on the new object with remaining args.
    *
    * @example
-   * var obj = XC.Object.extend({param: value});
+   * var obj = XC.Base.extend({param: value});
    *
-   * @returns {XC.Object} The new object.
+   * @returns {XC.Base} The new object.
    *
-   * @see XC.Object.mixin
+   * @see XC.Base.mixin
    */
   extend: function () {
     var F = function () {},

@@ -1,17 +1,17 @@
 /**
  * Presence
  * @class
- * @extends XC.Object
- * 
+ * @extends XC.Base
+ *
  * RFC 3921: XMPP IM; Section 5 & 6
  * @see http://www.ietf.org/rfc/rfc3921.txt
  */
-XC.Service.Presence = XC.Object.extend(/** @lends XC.Service.Presence */{
+XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
 
   /**
    * Broadcast presence to all users
    * subscribed to your presence.
-   * 
+   *
    * @param {Object} [callbacks]  An Object with 'onSuccess' and 'onError'.
    */
   send: function (callbacks) {
@@ -32,21 +32,21 @@ XC.Service.Presence = XC.Object.extend(/** @lends XC.Service.Presence */{
 
   /**
    * Endpoint for requests to subscribe to your presence.
-   * 
+   *
    * @param {XC.Entity} entity      The entity requesting a presence subscription.
    */
   onSubscribe: function (entity) {},
 
   /**
    * Endpoint notifying that you are subscribed to the entity's presence.
-   * 
+   *
    * @param {XC.Entity} entity      The entity whose presence you are subscribed to.
    */
   onSubscribed: function (entity) {},
 
   /**
    * Endpoint notifying that you are unsubscribed from the entity's presence.
-   * 
+   *
    * @param {XC.Entity} entity      The entity whose presence you are unsubscribed from.
    */
   onUnsubscribed: function (entity) {},
@@ -79,5 +79,5 @@ XC.Service.Presence = XC.Object.extend(/** @lends XC.Service.Presence */{
       break;
     }
   }
-  
+
 });

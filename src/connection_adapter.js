@@ -28,9 +28,9 @@
  * var tmp = XC.Connection.extend({connection: adapter});
  *
  * @class
- * @extends XC.Object
+ * @extends XC.Base
  */
-XC.ConnectionAdapter = XC.Object.extend(/** @lends XC.ConnectionAdapter# */{
+XC.ConnectionAdapter = XC.Base.extend(/** @lends XC.ConnectionAdapter# */{
   /** The JID of this connection. */
   jid: function () {},
 

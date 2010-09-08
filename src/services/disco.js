@@ -1,12 +1,12 @@
 /**
  * The Disco Service provides high level support,
  * responding to disco requests on behalf of the user.
- * 
- * @extends XC.Object
+ *
+ * @extends XC.Base
  * @extends XC.Mixin.Discoverable
  * @class
  */
-XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
+XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
   XC.Mixin.Discoverable,
 {
 
@@ -30,7 +30,7 @@ XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
 
   /**
    * Disco items request on this entity.
-   * 
+   *
    * @param {Element} packet
    */
   _handleDiscoItems: function (packet) {
@@ -74,7 +74,7 @@ XC.Service.Disco = XC.Object.extend(/**@lends XC.Service.Disco */
 
   /**
    * Disco info request on this entity.
-   * 
+   *
    * @param {XC.Entity} entity
    */
   _handleDiscoInfo: function (packet) {

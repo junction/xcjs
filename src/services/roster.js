@@ -1,16 +1,16 @@
 /**
  * Roster Management
  * @class
- * @extends XC.Object
- * 
+ * @extends XC.Base
+ *
  * RFC 3921: XMPP IM; Section 7 & 8
  * @see http://ietf.org/rfc/rfc3921.txt
  */
-XC.Service.Roster = XC.Object.extend(/** @lends XC.Service.Roster */{
+XC.Service.Roster = XC.Base.extend(/** @lends XC.Service.Roster */{
 
   /**
    * Request your roster from the server.
-   * 
+   *
    * @param {Object}   [callbacks] An Object with 'onError' and 'onSuccess'.
    */
   request: function (callbacks) {
@@ -53,11 +53,11 @@ XC.Service.Roster = XC.Object.extend(/** @lends XC.Service.Roster */{
   /**
    * Add a new entity to your roster.
    * (Same as Update + Subscribe.)
-   * 
+   *
    * @param   {String}    jid     The Jabber ID of the entity to add.
    * @param   {String}    name    The name of the entity.
    * @param   {Array}     groups  The list of groups that the entity belongs to.
-   * 
+   *
    * @returns {XC.Entity} entity  The entity added to your roster.
    */
   add: function (jid, name, groups) {
@@ -75,7 +75,7 @@ XC.Service.Roster = XC.Object.extend(/** @lends XC.Service.Roster */{
 
     entity.subscribeToPresence({
       onError: function () {},
-      onSuccess: function () {}      
+      onSuccess: function () {}
     });
 
     return entity;
