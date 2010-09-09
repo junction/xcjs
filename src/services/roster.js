@@ -13,72 +13,50 @@ XC.Service.Roster = XC.Base.extend(/** @lends XC.Service.Roster */{
    *
    * @param {Object}   [callbacks] An Object with 'onError' and 'onSuccess'.
    */
-  request: function (callbacks) {
+  requestItems: function (callbacks) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS});
+        q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
+        that = this.connection;
     iq.type('get');
     iq.addChild(q);
 
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error') {
-        callbacks.onError(packet);
+        if (callbacks) {
+          callbacks.onError(packet);
+        }
       } else {
+        packet = packet.getNode();
         var items = packet.getElementsByTagName('item'),
-            entities = [], idx = items.length,
+            entities = [], itemsLength = items.length,
             entity, item, groups, len;
-        while (idx--) {
-          item = items[idx];
-          entity = XC.Entity.extend({
+
+        for (var i = 0; i < itemsLength; i++) {
+          item = items[i];
+          entity = that.Entity.extend({
             jid: item.getAttribute('jid'),
             subscription: item.getAttribute('subscription'),
+            ask: item.getAttribute('ask'),
             name: item.getAttribute('name')
           });
-          groups = item.getElemengsByTagName('group');
+          groups = item.getElementsByTagName('group');
           len = groups ? groups.length : 0;
 
           if (len) {
             entity.groups = [];
           }
 
-          while (len--) {
-            entity.groups.push(groups[len].text);
+          for (var j = 0; j < len; j++) {
+            entity.groups.push(groups[j].textContent || groups[j].text);
           }
           entities.push(entity);
         }
-        this.onSuccess(entities);
+
+        if (callbacks) {
+          callbacks.onSuccess(entities);
+        }
       }
     });
-  },
-
-  /**
-   * Add a new entity to your roster.
-   * (Same as Update + Subscribe.)
-   *
-   * @param   {String}    jid     The Jabber ID of the entity to add.
-   * @param   {String}    name    The name of the entity.
-   * @param   {Array}     groups  The list of groups that the entity belongs to.
-   *
-   * @returns {XC.Entity} entity  The entity added to your roster.
-   */
-  add: function (jid, name, groups) {
-    var entity = XC.Entity.extend({
-      jid: jid,
-      name: name,
-      groups: groups,
-      connection: this.connection
-    });
-
-    entity.rosterSet({
-      onError: function () {},
-      onSuccess: function () {}
-    });
-
-    entity.subscribeToPresence({
-      onError: function () {},
-      onSuccess: function () {}
-    });
-
-    return entity;
   },
 
   /**
@@ -91,10 +69,13 @@ XC.Service.Roster = XC.Base.extend(/** @lends XC.Service.Roster */{
   /**
    * Handle incoming out-of-band Roster IQs
    *
+   * @private
    * @param {Element} packet The incoming XML stanza.
    */
-  _handleRoster: function (packet) {
-    var type = packet.getAttribute('type');
+  _handleRosterPush: function (packet) {
+    var type = packet.getType();
+
+    packet = packet.getNode();
 
     // Acknowledge a roster push.
     if (type === 'set') {
@@ -104,30 +85,30 @@ XC.Service.Roster = XC.Base.extend(/** @lends XC.Service.Roster */{
       this.connection.send(iq.convertToString());
 
     // Process the items passed from the roster.
-    } else {
-      var items = packet.getElementsByTagName('item'),
-          idx = items.length,
-          entity, item, groups, len;
+    }
+    var items = packet.getElementsByTagName('item'),
+        itemsLength = items.length,
+        entity, item, groups, len;
 
-      while (idx--) {
-        item = items[idx];
-        entity = XC.Entity.extend({
-          jid: item.getAttribute('jid'),
-          subscription: item.getAttribute('subscription'),
-          name: item.getAttribute('name')
-        });
-        groups = item.getElemengsByTagName('group');
-        len = groups ? groups.length : 0;
+    for (var i = 0; i < itemsLength; i++) {
+      item = items[i];
+      entity = XC.Entity.extend({
+        jid: item.getAttribute('jid'),
+        subscription: item.getAttribute('subscription'),
+        ask: item.getAttribute('ask'),
+        name: item.getAttribute('name')
+      });
+      groups = item.getElementsByTagName('group');
+      len = groups ? groups.length : 0;
 
-        if (len) {
-          entity.groups = [];
-        }
-
-        while (len--) {
-          entity.groups.push(groups[len].text);
-        }
-        this.onRosterItem(entity);
+      if (len) {
+        entity.groups = [];
       }
+
+      for (var j = 0; j < len; j++) {
+        entity.groups.push(groups[j].textContent || groups[j].text);
+      }
+      this.onRosterItem(entity);
     }
   }
 

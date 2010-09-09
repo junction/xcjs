@@ -7,8 +7,6 @@
  */
 XC.Mixin.Roster = {
 
-  XMLNS: 'jabber:iq:roster',
-
   /**
    * The optional name of the entity.
    * @type {String}
@@ -27,10 +25,10 @@ XC.Mixin.Roster = {
    * 
    * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
    */
-  rosterUpdate: function (callbacks) {
+  setRosterItem: function (callbacks) {
     var entity = this,
         iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Mixin.Roster.XMLNS}),
+        q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
         item = XC.XML.Element.extend({name: 'item'}),
         Group = XC.XML.Element.extend({name: 'group'}),
         idx = !entity.groups ? 0 : entity.groups.length,
@@ -48,7 +46,8 @@ XC.Mixin.Roster = {
       item.addChild(group);
     }
 
-    iq.addChild(item);
+    q.addChild(item);
+    iq.addChild(q);
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error') {
         callbacks.onError(packet);
@@ -63,15 +62,19 @@ XC.Mixin.Roster = {
    * 
    * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
    */
-  rosterRemove: function (callbacks) {
+  removeRosterItem: function (callbacks) {
     var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Mixin.Roster.XMLNS}),
+        q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
         item = XC.XML.Element.extend({name: 'item'}),
         entity = this;
 
+    iq.from(this.connection.getJID());
+    iq.attr('type', 'set');
     item.attr('jid', entity.jid);
     item.attr('subscription', 'remove');
 
+    q.addChild(item);
+    iq.addChild(q);
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error') {
         callbacks.onError(packet);
