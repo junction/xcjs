@@ -1,6 +1,6 @@
 /**
- * Object class for XC. All objects inherit from this one.
  * @namespace
+ * Object class for XC. All objects inherit from this one.
  */
 XC.Base = {
 
