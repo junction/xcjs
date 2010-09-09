@@ -25,24 +25,33 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     //   <status>Out to lunch</status>
     //   <priority>5</priority>
     // </presence>
-    var response = XC.Test.Packet.extendWithXML(this.conn._data).getNode(),
-        show = response.getElementsByTagName('show')[0],
-        status = response.getElementsByTagName('status')[0],
-        priority = response.getElementsByTagName('priority')[0],
-        getText = function (el) {
-          return el.textContent || el.text;
-        };
-
-    Assert.areEqual(getText(show), "away");
-    Assert.areEqual(getText(status), "Out to lunch");
-    Assert.areEqual(getText(priority), "5");
+    Assert.XPathTests(this.conn._data, {
+      show: {
+        xpath: '/presence/show/text()',
+        value: 'away'
+      },
+      status: {
+        xpath: '/presence/status/text()',
+        value: 'Out to lunch'
+      },
+      priority: {
+        xpath: '/presence/priority/text()',
+        value: '5'
+      }
+    });
 
     // <presence/>
     this.Presence.send();
-    response = XC.Test.Packet.extendWithXML(this.conn._data).getNode();
-
-    Assert.areEqual(response.firstChild, null);
-    Assert.areEqual(response.getAttribute('type'), null);
+    Assert.XPathTests(this.conn._data, {
+      type: {
+        xpath: '/presence/@type',
+        value: undefined
+      },
+      noChildren: {
+        xpath: '/presence/*',
+        value: undefined
+      }
+    });
   },
 
   testUnavailable: function () {
@@ -50,19 +59,27 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     // <presence type="unavailable"/>
     this.Presence.sendUnavailable();
-    var response = XC.Test.Packet.extendWithXML(this.conn._data);
-
-    Assert.areEqual(response.getType(), 'unavailable');
+    Assert.XPathTests(this.conn._data, {
+      type: {
+        xpath: '/presence/@type',
+        value: 'unavailable'
+      }
+    });
 
     // <presence type="unavailable">
     //   <status>Gone home.</status>
     // </presence>
-    this.Presence.sendUnavailable("Gone home.");
-    response = XC.Test.Packet.extendWithXML(this.conn._data);
-    Assert.areEqual(response.getType(), 'unavailable');
-
-    response = response.getNode();
-    Assert.areEqual(response.firstChild.textContent || response.firstChild.text, 'Gone home.');
+    this.Presence.sendUnavailable('Gone home.');
+    Assert.XPathTests(this.conn._data, {
+      type: {
+        xpath: '/presence/@type',
+        value: 'unavailable'
+      },
+      status: {
+        xpath: '/presence/status/text()',
+        value: 'Gone home.'
+      }
+    });
   },
 
   testOnSubscribe: function () {
@@ -84,17 +101,37 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'accept'
       request.accept();
-      var response = XC.Test.Packet.extendWithXML(that.conn._data);
-      Assert.areEqual(response.getType(), 'subscribed');
-      Assert.areEqual(response.getTo(), 'romeo@example.com');
-      Assert.areEqual(response.getNode().firstChild, null);
+      Assert.XPathTests(that.conn._data, {
+        type: {
+          xpath: '/presence/@type',
+          value: 'subscribed'
+        },
+        to: {
+          xpath: '/presence/@to',
+          value: 'romeo@example.com'
+        },
+        noChildren: {
+          xpath: '/presence/*',
+          value: undefined
+        }
+      });
 
       // Test 'deny'
       request.deny();
-      response = XC.Test.Packet.extendWithXML(that.conn._data);
-      Assert.areEqual(response.getType(), 'unsubscribed');
-      Assert.areEqual(response.getTo(), 'romeo@example.com');
-      Assert.areEqual(response.getNode().firstChild, null);
+      Assert.XPathTests(that.conn._data, {
+        type: {
+          xpath: '/presence/@type',
+          value: 'unsubscribed'
+        },
+        to: {
+          xpath: '/presence/@to',
+          value: 'romeo@example.com'
+        },
+        noChildren: {
+          xpath: '/presence/*',
+          value: undefined
+        }
+      });
     };
 
     this.Presence._handlePresence(packet);
@@ -119,17 +156,37 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'accept'
       request.accept();
-      var response = XC.Test.Packet.extendWithXML(that.conn._data);
-      Assert.areEqual(response.getType(), 'subscribe');
-      Assert.areEqual(response.getTo(), 'romeo@example.com');
-      Assert.areEqual(response.getNode().firstChild, null);
+      Assert.XPathTests(that.conn._data, {
+        type: {
+          xpath: '/presence/@type',
+          value: 'subscribe'
+        },
+        to: {
+          xpath: '/presence/@to',
+          value: 'romeo@example.com'
+        },
+        noChildren: {
+          xpath: '/presence/*',
+          value: undefined
+        }
+      });
 
       // Test 'deny'
       request.deny();
-      response = XC.Test.Packet.extendWithXML(that.conn._data);
-      Assert.areEqual(response.getType(), 'unsubscribe');
-      Assert.areEqual(response.getTo(), 'romeo@example.com');
-      Assert.areEqual(response.getNode().firstChild, null);
+      Assert.XPathTests(that.conn._data, {
+        type: {
+          xpath: '/presence/@type',
+          value: 'unsubscribe'
+        },
+        to: {
+          xpath: '/presence/@to',
+          value: 'romeo@example.com'
+        },
+        noChildren: {
+          xpath: '/presence/*',
+          value: undefined
+        }
+      });
     };
 
     this.Presence._handlePresence(packet);
@@ -154,17 +211,37 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'accept'
       request.accept();
-      var response = XC.Test.Packet.extendWithXML(that.conn._data);
-      Assert.areEqual(response.getType(), 'unsubscribed', "Accept should be 'unsubscribed'");
-      Assert.areEqual(response.getTo(), 'romeo@example.com');
-      Assert.areEqual(response.getNode().firstChild, null);
+      Assert.XPathTests(that.conn._data, {
+        type: {
+          xpath: '/presence/@type',
+          value: 'unsubscribed'
+        },
+        to: {
+          xpath: '/presence/@to',
+          value: 'romeo@example.com'
+        },
+        noChildren: {
+          xpath: '/presence/*',
+          value: undefined
+        }
+      });
 
       // Test 'deny'
       request.deny();
-      response = XC.Test.Packet.extendWithXML(that.conn._data);
-      Assert.areEqual(response.getType(), 'subscribed', "Accept should be 'subscribed'");
-      Assert.areEqual(response.getTo(), 'romeo@example.com');
-      Assert.areEqual(response.getNode().firstChild, null);
+      Assert.XPathTests(that.conn._data, {
+        type: {
+          xpath: '/presence/@type',
+          value: 'subscribed'
+        },
+        to: {
+          xpath: '/presence/@to',
+          value: 'romeo@example.com'
+        },
+        noChildren: {
+          xpath: '/presence/*',
+          value: undefined
+        }
+      });
     };
 
     this.Presence._handlePresence(packet);
@@ -189,17 +266,37 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'accept'
       request.accept();
-      var response = XC.Test.Packet.extendWithXML(that.conn._data);
-      Assert.areEqual(response.getType(), 'unsubscribe');
-      Assert.areEqual(response.getTo(), 'romeo@example.com');
-      Assert.areEqual(response.getNode().firstChild, null);
+      Assert.XPathTests(that.conn._data, {
+        type: {
+          xpath: '/presence/@type',
+          value: 'unsubscribe'
+        },
+        to: {
+          xpath: '/presence/@to',
+          value: 'romeo@example.com'
+        },
+        noChildren: {
+          xpath: '/presence/*',
+          value: undefined
+        }
+      });
 
       // Test 'deny'
       request.deny();
-      response = XC.Test.Packet.extendWithXML(that.conn._data);
-      Assert.areEqual(response.getType(), 'subscribe');
-      Assert.areEqual(response.getTo(), 'romeo@example.com');
-      Assert.areEqual(response.getNode().firstChild, null);
+      Assert.XPathTests(that.conn._data, {
+        type: {
+          xpath: '/presence/@type',
+          value: 'subscribe'
+        },
+        to: {
+          xpath: '/presence/@to',
+          value: 'romeo@example.com'
+        },
+        noChildren: {
+          xpath: '/presence/*',
+          value: undefined
+        }
+      });
     };
 
     this.Presence._handlePresence(packet);

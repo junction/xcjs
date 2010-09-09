@@ -69,13 +69,14 @@ XC.Test.DOMParser = XC.Base.extend({
       // Internet Explorer does not use the DOMParser
       parser = new ActiveXObject("Microsoft.XMLDOM");
       parser.async = "false";
-      parser.setProperty("SelectionLanguage","XPath");
-      var namespaces = "xmlns:";
-      for (var key in prefixMap) {
-        if (prefixMap.hasOwnProperty(key)) {
-          namespaces += key + "='" + prefixMap[key] + "' ";
+      parser.setProperty("SelectionLanguage", "XPath");
+      var namespaces = "";
+      for (var key in this.prefixMap) {
+        if (this.prefixMap.hasOwnProperty(key)) {
+          namespaces += "xmlns:" + key + "='" + this.prefixMap[key] + "' ";
         }
       }
+
       parser.setProperty("SelectionNamespaces", namespaces.slice(0, -1));
     } catch (e) {
       // Using FF or Safari
