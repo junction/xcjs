@@ -115,10 +115,9 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       to: this.chong,
       type: 'chat',
       body: "message with ID",
-      id: "message-1",
       connection: this.xc
     });
-    msg.send();
+    msg.send("message-1");
 
     Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
                         this.chong.jid,
@@ -134,15 +133,6 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
   testReply: function () {
     var Assert = YAHOO.util.Assert;
-
-/*
-    this.conn.addResponse(XC.Test.Packet.extendWithXML(
-      '<iq from="chong@wandering-hippies.com" \
-           to="sokka@water-tribe.com" \
-           type="result"> \
-      </iq>'
-    ));
-*/
 
     var msg = XC.Message.extend({
       from: this.chong,

@@ -186,15 +186,15 @@ XC.Test.IQ = XC.Test.Packet.extend({
   pType: 'iq'
 });
 
-YAHOO.util.Assert.isXMPPMessage = function(xml, jid, type, addlFields) {
+YAHOO.util.Assert.isXMPPMessage = function(xml, toJID, type, addlFields) {
   var doc = XC.Test.DOMParser.parse(xml);
 
   this.areSame(type,
                doc.getPathValue('/message/@type'),
                'message type is not correct');
-  this.areSame(jid,
+  this.areSame(toJID,
                doc.getPathValue('/message/@to'),
-               'message to is to wrong jid');
+               'message to is to wrong toJID');
 
   if (addlFields) {
     var xpath, val, msg;
