@@ -37,17 +37,17 @@ XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
     var iq = XC.XMPP.IQ.extend(),
         q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
         Item = XC.XML.Element.extend({name: 'item'}),
-        item, node, value;
+        item, node, value, len;
 
     iq.type('result');
     iq.to(packet.getFrom());
     iq.addChild(q);
 
-    node = packet.getNode();
-    node = node.getElementsByTagName('query')[0].getAttribute('node');
+    packet = packet.getNode();
+    node = packet.getElementsByTagName('query')[0].getAttribute('node');
     if (node) {
       q.attr('node', node);
-      node = this._rootNode.items[node];
+      node = this._rootNode.nodes[node];
       if (!node) {
         this._handleError(iq);
         return;
@@ -56,8 +56,9 @@ XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
       node = this._rootNode;
     }
 
-    for (var key in node.items) {
-      value = node.items[key];
+    len = node.items.length;
+    for (var i = 0; i < len; i++) {
+      value = node.items[i];
       item = Item.extend();
       item.attr('jid', value.jid);
       if (value.name) {
@@ -88,11 +89,11 @@ XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
     iq.to(packet.from);
     iq.addChild(q);
 
-    node = packet.getNode();
-    node = node.getElementsByTagName('query')[0].getAttribute('node');
+    packet = packet.getNode();
+    node = packet.getElementsByTagName('query')[0].getAttribute('node');
     if (node) {
       q.attr('node', node);
-      node = this._rootNode.items[node];
+      node = this._rootNode.nodes[node];
       if (!node) {
         this._handleError(iq);
         return;

@@ -15,28 +15,49 @@ XC.Mixin.Discoverable = {
    */
   _rootNode: null,
 
-  getNode: function (node) {
-    return node ? this._rootNode.items[node] : this._rootNode;
+  getFeatures: function (nodeName) {
+    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
+    if (node && node.features) {
+      return node.features;
+    }
+    return null;
+  },
+
+  getIdentities: function (nodeName) {
+    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
+    if (node && node.identities) {
+      return node.identities;
+    }
+    return null;
+  },
+
+  getItems: function (nodeName) {
+    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
+    if (node && node.items) {
+      return node.items;
+    }
+    return null;
   },
 
   _createNode: function (node) {
     if (!this._rootNode) {
-      this._rootNode = XC.DiscoItem.extend({
+      this._rootNode = {
         identities: [],
         features: [],
-        items: {}
-      });
+        items: [],
+        nodes: {}
+      };
     }
 
-    if (node && !this._rootNode.items[node]) {
-      this._rootNode.items[node] = XC.DiscoItem.extend({
+    if (node && !this._rootNode.nodes[node]) {
+      this._rootNode.nodes[node] = {
         identities: [],
         features: [],
         items: []
-      });
+      };
     }
 
-    return this.getNode(node);
+    return node ? this._rootNode.nodes[node] : this._rootNode;
   },
 
   /**
@@ -69,17 +90,15 @@ XC.Mixin.Discoverable = {
    */
   removeFeature: function (xmlns, node) {
     var idx,
-        features = this.getNode(node).features;
+        features = this.getFeatures(node);
 
-    idx = features.length;
+    idx = features.indexOf(xmlns);
 
-    while (idx--) {
-      if (features[idx] === xmlns) {
-        var rest = features.slice(idx + 1);
-        features.length = idx;
-        features.push(rest);
-        return true;
-      }
+    if (idx !== -1) {
+      var rest = features.slice(idx + 1);
+      features.length = idx;
+      features.concat(rest);
+      return true;
     }
     return false;
   },
@@ -98,9 +117,9 @@ XC.Mixin.Discoverable = {
     if (node) {
       if (!nodeName) {
         if (!node.items) {
-          node.items = {};
+          node.items = [];
         }
-        node.items[discoItem.node] = discoItem;
+        node.items.push(discoItem);
       } else {
         if (!node.items) {
           node.items = [];
@@ -119,17 +138,16 @@ XC.Mixin.Discoverable = {
    *
    * @returns {Boolean} True if it was removed; false if it doesn't exist.
    */
-  removeItem: function (discoItem, node) {
-    node = this.getNode(node);
-    var idx = node.items.length;
+  removeItem: function (item, node) {
+    var idx, items = this.getItems(node);
 
-    while (idx--) {
-      if (node.items[idx] === discoItem) {
-        delete node.items[idx];
-        return true;
-      }
+    idx = items.indexOf(item);
+    if (idx !== -1) {
+      var rest = items.slice(idx + 1);
+      items.length = idx;
+      items.concat(rest);
+      return true;
     }
-
     return false;
   },
 
@@ -165,16 +183,14 @@ XC.Mixin.Discoverable = {
    * @returns {Boolean} True if it was removed; false if it doesn't exist.
    */
   removeIdentity: function (identity, node) {
-    var idx, i;
-    node = this.getNode(node);
+    var idx, identities = this.getIdentities(node);
 
-    idx = node ? node.identities.length : 0;
-    while (idx--) {
-      i = node.identities[idx];
-      if (identity === i) {
-        delete node.identities[idx];
-        return true;
-      }
+    idx = identities.indexOf(identity);
+    if (idx !== -1) {
+      var rest = identities.slice(idx + 1);
+      identities.length = idx;
+      identities.concat(rest);
+      return true;
     }
     return false;
   }

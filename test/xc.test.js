@@ -1,6 +1,8 @@
 /*globals YAHOO */
 /* Namespace for XC tests. */
 XC.Test = {};
+XC.Test.Mixin = {};
+XC.Test.Service = {};
 
 XC.Test.MockConnection = XC.ConnectionAdapter.extend({
   _handlers: {},

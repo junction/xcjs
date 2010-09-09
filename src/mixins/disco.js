@@ -17,26 +17,27 @@ XC.Mixin.Disco = {
 
   _createNode: function (node) {
     if (!this._rootNode) {
-      this._rootNode = XC.DiscoItem.extend({
+      this._rootNode = {
+        identities: [],
+        features: [],
+        items: [],
+        nodes: {}
+      };
+    }
+
+    if (node && !this._rootNode.nodes[node]) {
+      this._rootNode.nodes[node] = {
         identities: [],
         features: [],
         items: []
-      });
+      };
     }
 
-    if (node && !this._rootNode.items[node]) {
-      this._rootNode.items[node] = XC.DiscoItem.extend({
-        identities: [],
-        features: [],
-        items: []
-      });
-    }
-
-    return node ? this._rootNode.items[node] : this._rootNode;
+    return node ? this._rootNode.nodes[node] : this._rootNode;
   },
 
   getDiscoFeatures: function (nodeName) {
-    var node = nodeName ? this._rootNode.items[nodeName] : this._rootNode;
+    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.features) {
       return node.features;
     }
@@ -44,7 +45,7 @@ XC.Mixin.Disco = {
   },
 
   getDiscoIdentities: function (nodeName) {
-    var node = nodeName ? this._rootNode.items[nodeName] : this._rootNode;
+    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.identities) {
       return node.identities;
     }
@@ -52,7 +53,7 @@ XC.Mixin.Disco = {
   },
 
   getDiscoItems: function (nodeName) {
-    var node = nodeName ? this._rootNode.items[nodeName] : this._rootNode;
+    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.items) {
       return node.items;
     }
@@ -83,9 +84,10 @@ XC.Mixin.Disco = {
     }
 
     this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getAttribute('type') === 'error') {
+      if (packet.getType() === 'error') {
         callbacks.onError(packet);
       } else {
+        packet = packet.getNode();
         var identities = packet.getElementsByTagName('identity'),
             features = packet.getElementsByTagName('feature'),
             node = packet.getElementsByTagName('query')[0].getAttribute('node'),
@@ -134,9 +136,10 @@ XC.Mixin.Disco = {
     iq.addChild(q);
 
     this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getAttribute('type') === 'error') {
+      if (packet.getType() === 'error') {
         callbacks.onError(packet);
       } else {
+        packet = packet.getNode();
         var items = packet.getElementsByTagName('item'),
             node = packet.getElementsByTagName('query')[0].getAttribute('node'),
             item, len = items ? items.length : 0;
@@ -145,11 +148,11 @@ XC.Mixin.Disco = {
 
         node.items = [];
         for (var i = 0; i < len; i++) {
-          node.items.push(XC.DiscoItem.extend({
+          node.items.push({
             jid: items[i].getAttribute('jid'),
             node: items[i].getAttribute('node'),
             name: items[i].getAttribute('name')
-          }));
+          });
         }
 
         callbacks.onSuccess(entity);
@@ -158,44 +161,3 @@ XC.Mixin.Disco = {
   }
 
 };
-
-/**
- * Represents an item (node) in Service Discovery.
- *
- * @extends XC.Base
- * @class
- * @see XC.Disco
- */
-XC.DiscoItem = XC.Base.extend(/** @lends XC.DiscoItem */{
-
-  /**
-   * The JID of the node
-   * @type {String}
-   */
-  jid: null,
-
-  /**
-   * The name of the node.
-   * @type {String}
-   */
-  name: null,
-
-  /**
-   * Namespaces of supported features.
-   * @type {Array{String}}
-   */
-  features: null,
-
-  /**
-   * Array of all items in this item.
-   * @type {Array{XC.DiscoItem}}
-   */
-  items: null,
-
-  /**
-   * Identities that this item represents.
-   * @type {Array{Object}}
-   */
-  identities: null
-
-});
