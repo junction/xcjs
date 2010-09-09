@@ -85,3 +85,18 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
     return Array.prototype.slice.apply(iterable);
   }
 });
+
+/**
+ * Internet Explorer doesn't implement indexOf,
+ * so implement it here.
+ * 
+ * @lends Array.prototype
+ */
+Array.prototype.indexOf = Array.prototype.indexOf || function (o) {
+  for (var i = 0; i < this.length; i++)  {
+    if (this[i] === o) {
+      return i;
+    }
+  }
+  return -1;
+};

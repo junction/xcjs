@@ -136,7 +136,7 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
            type="error" \
            id="test"> \
         <query xmlns="http://jabber.org/protocol/disco#info" \
-               error="bollocks"\> \
+               error="bollocks"/> \
         <error type="cancel">\
           <item-not-found xmlns="urn:ietf:params:xml:ns:xmpp-stanzas"/> \
         </error> \
@@ -273,7 +273,7 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
            type="error" \
            id="test"> \
         <query xmlns="http://jabber.org/protocol/disco#items" \
-               error="bollocks"\> \
+               error="bollocks"/> \
         <error type="cancel">\
           <item-not-found xmlns="urn:ietf:params:xml:ns:xmpp-stanzas"/> \
         </error> \
