@@ -46,6 +46,7 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
                         "The entity's name is not the same.");
         Assert.areEqual(entity.jid, that.romeo.jid,
                         "The entity's JID is not the same.");
+
         var features = entity.getDiscoFeatures(),
             identities = entity.getDiscoIdentities();
         Assert.areEqual(features[0], 'jabber:iq:time',

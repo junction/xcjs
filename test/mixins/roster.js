@@ -41,16 +41,20 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
       }
     });
 
-    var response = XC.Test.Packet.extendWithXML(this.conn._data);
-
-    Assert.areEqual(response.getType(), 'set');
-    response = response.getNode();
-
-    Assert.areEqual(response.firstChild.getAttribute('xmlns'), 'jabber:iq:roster');
-
-    var item = response.firstChild.firstChild;
-    Assert.areEqual(item.getAttribute('jid'), 'marvin@heart-of-gold.com');
-    Assert.areEqual(item.getAttribute('subscription'), 'remove');
+    Assert.XPathTests(this.conn._data, {
+      Set: {
+        xpath: '/iq/@type',
+        value: 'set'
+      },
+      itemJID: {
+        xpath: '/iq/roster:query/roster:item/@jid',
+        value: 'marvin@heart-of-gold.com'
+      },
+      itemName: {
+        xpath: '/iq/roster:query/roster:item/@subscription',
+        value: 'remove'
+      }
+    });
 
     Assert.isTrue(win, "Was not successful in doing a roster update.");
     Assert.isFalse(fail, "Roster update threw an error.");
@@ -78,16 +82,20 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
       }
     });
 
-    var response = XC.Test.Packet.extendWithXML(this.conn._data);
-
-    Assert.areEqual(response.getType(), 'set');
-    response = response.getNode();
-
-    Assert.areEqual(response.firstChild.getAttribute('xmlns'), 'jabber:iq:roster');
-
-    var item = response.firstChild.firstChild;
-    Assert.areEqual(item.getAttribute('jid'), 'marvin@heart-of-gold.com');
-    Assert.areEqual(item.getAttribute('name'), 'Marvin');
+    Assert.XPathTests(this.conn._data, {
+      Set: {
+        xpath: '/iq/@type',
+        value: 'set'
+      },
+      itemJID: {
+        xpath: '/iq/roster:query/roster:item/@jid',
+        value: 'marvin@heart-of-gold.com'
+      },
+      itemName: {
+        xpath: '/iq/roster:query/roster:item/@name',
+        value: 'Marvin'
+      }
+    });
 
     Assert.isTrue(win, "Was not successful in doing a roster remove.");
     Assert.isFalse(fail, "Roster remove threw an error.");

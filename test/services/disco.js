@@ -58,25 +58,25 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoInfo(packet);
 
-    var result = XC.Test.Packet.extendWithXML(this.conn._data),
-        query = result.getNode().firstChild;
-    Assert.areEqual(query.getAttribute('xmlns'), "http://jabber.org/protocol/disco#info",
-                   "The xml namespaces do not match.");
-    Assert.areEqual(result.getTo(), packet.getFrom(),
-                   "The to jid does not match the from jid.");
-    Assert.areEqual(result.getType(), "result",
-                   "The return type is not 'result'.");
-    var implemented = {
-      "http://jabber.org/protocol/disco#info": true,
-      "http://jabber.org/protocol/disco#items": true
-    },
-    features = query.getElementsByTagName('feature'),
-    idx = features.length;
+    Assert.XPathTests(this.conn._data, {
+      to: {
+        xpath: '/iq/@to',
+        value: packet.getFrom()
+      },
+      type: {
+        xpath: '/iq/@type',
+        value: 'result'
+      },
+      info: {
+        xpath: '/iq/discoInfo:query/discoInfo:feature[1]/@var',
+        value: 'http://jabber.org/protocol/disco#info'
+      },
+      items: {
+        xpath: '/iq/discoInfo:query/discoInfo:feature[2]/@var',
+        value: 'http://jabber.org/protocol/disco#items'
+      }
+    });
 
-    while (idx--) {
-      Assert.isTrue(features[idx].getAttribute('var') in implemented,
-                    features[idx].getAttribute('var') + " is not documented as being implemented.");
-    }
   },
 
   testDiscoInfoNode: function () {
@@ -93,29 +93,33 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoInfo(packet);
 
-    var result = XC.Test.Packet.extendWithXML(this.conn._data),
-        query = result.getNode().firstChild;
-    Assert.areEqual(query.getAttribute('xmlns'), "http://jabber.org/protocol/disco#info",
-                   "The xml namespaces do not match.");
-    Assert.areEqual(query.getAttribute('node'), "http://jabber.org/protocol/tune",
-                   "The nodes do not match.");
-    Assert.areEqual(result.getTo(), packet.getFrom(),
-                   "The to jid does not match the from jid.");
-    Assert.areEqual(result.getType(), "result",
-                   "The return type is not 'result'.");
+    Assert.XPathTests(this.conn._data, {
+      to: {
+        xpath: '/iq/@to',
+        value: packet.getFrom()
+      },
+      type: {
+        xpath: '/iq/@type',
+        value: 'result'
+      },
+      node: {
+        xpath: '/iq/discoInfo:query/@node',
+        value: 'http://jabber.org/protocol/tune'
+      },
+      A: {
+        xpath: '/iq/discoInfo:query/discoInfo:feature[1]/@var',
+        value: 'A'
+      },
+      B: {
+        xpath: '/iq/discoInfo:query/discoInfo:feature[2]/@var',
+        value: 'B'
+      },
+      C: {
+        xpath: '/iq/discoInfo:query/discoInfo:feature[3]/@var',
+        value: 'C'
+      }
+    });
 
-    var implemented = {
-      "A": true,
-      "B": true,
-      "C": true
-    },
-    features = query.getElementsByTagName('feature'),
-    idx = features.length;
-
-    while (idx--) {
-      Assert.isTrue(features[idx].getAttribute('var') in implemented,
-                    features[idx].getAttribute('var') + " is not documented as being implemented.");
-    }
   },
 
   testDiscoItems: function () {
@@ -131,24 +135,29 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoItems(packet);
 
-    var result = XC.Test.Packet.extendWithXML(this.conn._data);
-    Assert.areEqual(result.getNode().firstChild.getAttribute('xmlns'), "http://jabber.org/protocol/disco#items",
-                   "The xml namespaces do not match.");
-    Assert.areEqual(result.getTo(), packet.getFrom(),
-                   "The to jid does not match the from jid.");
-    Assert.areEqual(result.getType(), "result",
-                   "The return type is not 'result'.");
-    Assert.areEqual(result.getNode().getElementsByTagName('item').length, 1,
-                  "There are items that were not registered.");
-    var item = result.getNode().getElementsByTagName('item')[0];
+    Assert.XPathTests(this.conn._data, {
+      to: {
+        xpath: '/iq/@to',
+        value: packet.getFrom()
+      },
+      type: {
+        xpath: '/iq/@type',
+        value: 'result'
+      },
+      itemJID: {
+        xpath: '/iq/discoItems:query/discoItems:item[1]/@jid',
+        value: this.conn.jid()
+      },
+      itemNode: {
+        xpath: '/iq/discoItems:query/discoItems:item[1]/@node',
+        value: 'http://jabber.org/protocol/tune'
+      },
+      itemName: {
+        xpath: '/iq/discoItems:query/discoItems:item[1]/@name',
+        value: 'Romeo\'s slow jams'
+      }
+    });
 
-    // Test the root node's item collection.
-    Assert.areEqual(item.getAttribute('jid'), this.conn.jid(),
-                   "The expected JID for the item was incorrect.");
-    Assert.areEqual(item.getAttribute('node'), "http://jabber.org/protocol/tune",
-                    "The expected node was incorrect.");
-    Assert.areEqual(item.getAttribute('name'), "Romeo's slow jams",
-                    "The expected name was incorrect.");
   },
 
   testDiscoItemsNode: function () {
@@ -165,33 +174,45 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoItems(packet);
 
-    var result = XC.Test.Packet.extendWithXML(this.conn._data),
-        query = result.getNode().firstChild;
+    Assert.XPathTests(this.conn._data, {
+      to: {
+        xpath: '/iq/@to',
+        value: packet.getFrom()
+      },
+      type: {
+        xpath: '/iq/@type',
+        value: 'result'
+      },
+      node: {
+        xpath: '/iq/discoItems:query/@node',
+        value: 'http://jabber.org/protocol/tune'
+      },
+      firstJID: {
+        xpath: '/iq/discoItems:query/discoItems:item[1]/@jid',
+        value: "pubsub.shakespeare.lit"
+      },
+      firstNode: {
+        xpath: '/iq/discoItems:query/discoItems:item[1]/@node',
+        value: 'CD'
+      },
+      firstName: {
+        xpath: '/iq/discoItems:query/discoItems:item[1]/@name',
+        value: 'Romeo\'s CD player'
+      },
+      secondJID: {
+        xpath: '/iq/discoItems:query/discoItems:item[2]/@jid',
+        value: "pubsub.montague.net"
+      },
+      secondNode: {
+        xpath: '/iq/discoItems:query/discoItems:item[2]/@node',
+        value: 'music/R/Romeo/iPod'
+      },
+      secondName: {
+        xpath: '/iq/discoItems:query/discoItems:item[2]/@name',
+        value: undefined
+      }
+    });
 
-    Assert.areEqual(query.getAttribute('xmlns'), "http://jabber.org/protocol/disco#items",
-                   "The xml namespaces do not match.");
-    Assert.areEqual(query.getAttribute('node'), "http://jabber.org/protocol/tune",
-                   "The nodes do not match.");
-    Assert.areEqual(result.getTo(), packet.getFrom(),
-                   "The to jid does not match the from jid.");
-    Assert.areEqual(result.getType(), "result",
-                   "The return type is not 'result'.");
-    Assert.areEqual(query.getElementsByTagName('item').length, 2,
-                  "There are items that were not registered.");
-
-    var items = query.getElementsByTagName('item');
-
-    Assert.areEqual(items[0].getAttribute('jid'), "pubsub.shakespeare.lit",
-                   "The expected JID for the item was incorrect.");
-    Assert.areEqual(items[0].getAttribute('node'), "CD",
-                    "The expected node was incorrect.");
-    Assert.areEqual(items[0].getAttribute('name'), "Romeo's CD player",
-                    "The expected name was incorrect.");
-
-    Assert.areEqual(items[1].getAttribute('jid'), "pubsub.montague.net",
-                   "The expected JID for the item was incorrect.");
-    Assert.areEqual(items[1].getAttribute('node'), "music/R/Romeo/iPod",
-                    "The expected node was incorrect.");
   },
 
   testDiscoInfoNodeError: function () {
@@ -208,22 +229,30 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoInfo(packet);
 
-    var result = XC.Test.Packet.extendWithXML(this.conn._data);
-    Assert.areEqual(result.getNode().firstChild.getAttribute('xmlns'), "http://jabber.org/protocol/disco#info",
-                   "The xml namespaces do not match.");
-    Assert.areEqual(result.getTo(), packet.getFrom(),
-                   "The to jid does not match the from jid.");
-    Assert.areEqual(result.getType(), "error",
-                   "The return type is not 'error'.");
+    Assert.XPathTests(this.conn._data, {
+      to: {
+        xpath: '/iq/@to',
+        value: packet.getFrom()
+      },
+      type: {
+        xpath: '/iq/@type',
+        value: 'error'
+      },
+      node: {
+        xpath: '/iq/discoInfo:query/@node',
+        value: 'bollocks'
+      },
+      errorType: {
+        xpath: '/iq/error/@type',
+        value: 'cancel'
+      },
+      errorChild: {
+        xpath: '/iq/error/err:item-not-found',
+        value: null,
+        assert: Assert.areNotEqual
+      }
+    });
 
-    var error = result.getNode().getElementsByTagName('error')[0];
-    Assert.areEqual(error.getAttribute('type'), 'cancel',
-                    "The error is not of type 'cancel'");
-    Assert.areEqual(error.firstChild.tagName, 'item-not-found',
-                    "The error's child element is not 'item-not-found'");
-    Assert.areEqual(error.firstChild.getAttribute('xmlns'), 'urn:ietf:params:xml:ns:xmpp-stanzas',
-                    "The error's child element does not have the xml namespace \
-                     'urn:ietf:params:xml:ns:xmpp-stanzas'");
   },
 
   testDiscoItemsNodeError: function () {
@@ -241,22 +270,29 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
 
     this.Disco._handleDiscoItems(packet);
 
-    var result = XC.Test.Packet.extendWithXML(this.conn._data);
-    Assert.areEqual(result.getNode().firstChild.getAttribute('xmlns'), "http://jabber.org/protocol/disco#items",
-                   "The xml namespaces do not match.");
-    Assert.areEqual(result.getTo(), packet.getFrom(),
-                   "The to jid does not match the from jid.");
-    Assert.areEqual(result.getType(), "error",
-                   "The return type is not 'error'.");
-    
-    var error = result.getNode().getElementsByTagName('error')[0];
-    Assert.areEqual(error.getAttribute('type'), 'cancel',
-                    "The error is not of type 'cancel'");
-    Assert.areEqual(error.firstChild.tagName, 'item-not-found',
-                    "The error's child element is not 'item-not-found'");
-    Assert.areEqual(error.firstChild.getAttribute('xmlns'), 'urn:ietf:params:xml:ns:xmpp-stanzas',
-                    "The error's child element does not have the xml namespace \
-                     'urn:ietf:params:xml:ns:xmpp-stanzas'");
+    Assert.XPathTests(this.conn._data, {
+      to: {
+        xpath: '/iq/@to',
+        value: packet.getFrom()
+      },
+      type: {
+        xpath: '/iq/@type',
+        value: 'error'
+      },
+      node: {
+        xpath: '/iq/discoItems:query/@node',
+        value: 'bollocks'
+      },
+      errorType: {
+        xpath: '/iq/error/@type',
+        value: 'cancel'
+      },
+      errorChild: {
+        xpath: '/iq/error/err:item-not-found',
+        value: null,
+        assert: Assert.areNotEqual
+      }
+    });
   }
 
 });

@@ -88,15 +88,21 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
     };
     this.Roster._handleRosterPush(packet);
 
-    var response = XC.Test.Packet.extendWithXML(this.conn._data);
+    Assert.XPathTests(this.conn._data, {
+      type: {
+        xpath: '/iq/@type',
+        value: 'result'
+      },
+      checkID: {
+        xpath: '/iq/@id',
+        value: 'set1'
+      },
+      noChildren: {
+        xpath: '/iq[0]',
+        value: undefined
+      }
+    });
 
-    Assert.areEqual(response.getType(), 'result',
-                    "The response did not have the type 'result'");
-    response = response.getNode();
-    Assert.areEqual(response.getAttribute('id'), 'set1',
-                    "The response did not have the id 'set1'");
-    Assert.areEqual(response.firstChild, null,
-                    "The response is not supposed to have any children");
   },
 
   testRosterPush: function () {
