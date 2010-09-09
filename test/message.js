@@ -13,6 +13,12 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     });
   },
 
+  tearDown: function() {
+    delete this.conn;
+    delete this.xc;
+    delete this.chong;
+  },
+
   testSend: function () {
     var Assert = YAHOO.util.Assert;
 
@@ -34,7 +40,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     msg.send();
 
     var packet = XC.Test.Packet.extendWithXML(this.conn._data);
-    
+
     Assert.areEqual(packet.getType(), msg.type,
                     "The expected packet type was incorrect.");
     Assert.areEqual(packet.getTo(), this.chong.jid,
@@ -72,7 +78,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     msg.reply("Big bad badger mole coming right toward me- help me guys.");
 
     var packet = XC.Test.Packet.extendWithXML(this.conn._data);
-    
+
     Assert.areEqual(packet.getType(), msg.type,
                     "The expected packet type was incorrect.");
     Assert.areEqual(packet.getTo(), this.chong.jid,
