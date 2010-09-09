@@ -27,3 +27,20 @@ XC.Disco = {
    */
   XMLNS: 'http://jabber.org/protocol/disco'
 };
+
+/**
+ * Presence
+ * @namespace
+ * 
+ * RFC 3921: XMPP IM; Section 5 & 6
+ * @see http://www.ietf.org/rfc/rfc3921.txt
+ */
+XC.Presence = {
+  SHOW: {
+    AWAY: 'away',  // The entity or resource is temporarily away.
+    CHAT: 'chat',  // The entity or resource is actively interested in chatting.
+    DND:  'dnd',   // The entity or resource is is busy (dnd = "Do Not Disturb").
+    XA:   'xa'     // The entity or resource is away for an extended period 
+                   // (xa = "eXtended Away").
+  }
+};

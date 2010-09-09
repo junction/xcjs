@@ -15,7 +15,6 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
 
   testInitConnection: function() {
     var Assert = YAHOO.util.Assert;
-    console.log(this.xc);
   },
 
   testNoJID: function () {

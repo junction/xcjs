@@ -7,14 +7,6 @@
  */
 XC.Mixin.Presence = {
 
-  SHOW: {
-    AWAY: 'away',  // The entity or resource is temporarily away.
-    CHAT: 'chat',  // The entity or resource is actively interested in chatting.
-    DND:  'dnd',   // The entity or resource is is busy (dnd = "Do Not Disturb").
-    XA:   'xa'     // The entity or resource is away for an extended period 
-                   // (xa = "eXtended Away").
-  },
-
   /**
    * What the status of the entity is.
    * @type {XC.Presence.SHOW}
@@ -39,47 +31,46 @@ XC.Mixin.Presence = {
    * Send presence to all subscribed entities / resources
    * or send direced presence to a specific entity.
    * 
-   * @param {Object}    [callbacks] An Object with 'onError'.
+   * @param {String} [show]       'away', 'chat', 'dnd', or 'xa' as defined in XC.Presence.SHOW
+   * @param {String} [status]     The custom status message to send.
+   * @param {Number} [priority]   An integer between -127 and +128 giving the priority of the presence.
+   * @param {Object} [callbacks]  An Object with 'onSuccess' and 'onError'.
    */
-  sendPresence: function (callbacks) {
-    var p = XC.XMPP.Presence.extend(),
-        presence = this.presence,
-        entity = this;
+  sendPresence: function (show, status, priority, callbacks) {
+    var p = XC.XMPP.Presence.extend();
 
     // Send directed presence.
-    if (entity.jid !== this.connnection.getJID()) {
-      p.to(entity.jid);
-    }
+    p.to(this.jid);
 
-    if (this.status) {
-      var status = XC.XML.Element.extend({
+    if (status) {
+      var statusEl = XC.XML.Element.extend({
         name: 'status'
       });
-      status.text = presence.status.toString();
-      p.addChild(status);
+      statusEl.text = status.toString();
+      p.addChild(statusEl);
     }
 
-    if (presence.show !== XC.Presence.SHOW.AVAILABLE) {
-      var show = XC.XML.Element.extend({
+    if (show !== XC.Presence.SHOW.AVAILABLE) {
+      var showEl = XC.XML.Element.extend({
         name: 'show'
       });
 
       // Show must be one of the pre-defined constants
-      if (XC.Presence.SHOW[presence.show.toUpperCase()]) {
-        show.text = presence.show;
-        p.addChild(show);
+      if (XC.Presence.SHOW[show.toUpperCase()]) {
+        showEl.text = show;
+        p.addChild(showEl);
       }
     }
 
-    if (presence.priority) {
-      var priority = XC.XML.Element.extend({
+    if (priority) {
+      var priorityEl = XC.XML.Element.extend({
         name: 'priority'
       }), iPriority = parseInt(presence.priority, 10);
 
       // The priority MUST be an integer between -128 and +127
       if (iPriority > -128 && iPriority < 127) {
-        priority.text = presence.priority;
-        p.addChild(priority);
+        priorityEl.text = priority;
+        p.addChild(priorityEl);
       }
     }
 
