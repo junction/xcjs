@@ -55,6 +55,10 @@ XC.Test.MockConnection = XC.ConnectionAdapter.extend({
 
   unregisterHandler: function (event, handler) {
     delete this._handlers[event];
+  },
+
+  getLastStanzaXML: function() {
+    return this._data;
   }
 });
 
@@ -78,7 +82,9 @@ XC.Test.DOMParser = XC.Base.extend({
   prefixMap: {
     cmd: 'http://jabber.org/protocol/commands',
     x:   'jabber:x:data',
-    ps:  'http://jabber.org/protocol/pubsub'
+    ps:  'http://jabber.org/protocol/pubsub',
+    roster: 'jabber:iq:roster',
+    client: 'jabber:client'
   },
 
   nsResolver: function (ns) {
@@ -179,6 +185,28 @@ XC.Test.Message = XC.Test.Packet.extend({
 XC.Test.IQ = XC.Test.Packet.extend({
   pType: 'iq'
 });
+
+YAHOO.util.Assert.isXMPPMessage = function(xml, jid, type, addlFields) {
+  var doc = XC.Test.DOMParser.parse(xml);
+
+  this.areSame(type,
+               doc.getPathValue('/message/@type'),
+               'message type is not correct');
+  this.areSame(jid,
+               doc.getPathValue('/message/@to'),
+               'message to is to wrong jid');
+
+  if (addlFields) {
+    var xpath, val, msg;
+    for (var field in addlFields) if (addlFields.hasOwnProperty(field)) {
+      xpath = addlFields[field].xpath;
+      val = addlFields[field].value;
+      msg = field + " is incorrect";
+      this.areSame(val, doc.getPathValue(xpath), msg);
+      console.log("%o: are same %o and %o", field, val, doc.getPathValue(xpath));
+    }
+  }
+};
 
 YAHOO.util.Assert.isCommand = function (xml, jid, node, fields) {
   var doc = XC.Test.DOMParser.parse(xml);

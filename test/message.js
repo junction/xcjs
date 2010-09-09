@@ -19,15 +19,43 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     delete this.chong;
   },
 
-  testSend: function () {
+  testMessageSlots: function() {
     var Assert = YAHOO.util.Assert;
 
-    this.conn.addResponse(XC.Test.Packet.extendWithXML(
-      '<iq from="chong@wandering-hippies.com" \
-           to="sokka@water-tribe.com" \
-           type="result"> \
-      </iq>'
-    ));
+    var msg = XC.Message.extend({
+      to: this.chong,
+      type: 'chat',
+      subject: "The Cave of the Two Lovers",
+      body: "Don't let the cave-in get you down... Sokka",
+      thread: "Avatar",
+      connection: this.xc
+    });
+
+    Assert.areEqual('chat', msg.type, 'msg.chat is incorrect');
+    Assert.areEqual(this.chong, msg.to, 'msg.to is incorrect');
+    Assert.areEqual("The Cave of the Two Lovers", msg.subject, 'msg.subject is incorrect');
+    Assert.areEqual("Don't let the cave-in get you down... Sokka", msg.body, 'msg.body is incorrect');
+    Assert.areEqual("Avatar", msg.thread, 'msg.thread is incorrect');
+  },
+
+  testToXML: function() {
+    var Assert = YAHOO.util.Assert;
+
+    var msg = XC.Message.extend({
+      to: this.chong,
+      type: 'chat',
+      subject: "The Cave of the Two Lovers",
+      body: "Don't let the cave-in get you down... Sokka",
+      thread: "Avatar",
+      connection: this.xc
+    });
+
+    Assert.isFunction(msg.toXML, 'XC.Message.toXML should be a function');
+    Assert.isString(msg.toXML(), 'XC.Message.toXML shoudl return a string');
+  },
+
+  testSend: function () {
+    var Assert = YAHOO.util.Assert;
 
     var msg = XC.Message.extend({
       to: this.chong,
@@ -39,34 +67,82 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     });
     msg.send();
 
-    var packet = XC.Test.Packet.extendWithXML(this.conn._data);
+    Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
+                        this.chong.jid,
+                        'chat',
+                        {
+                          subject: {
+                            value: msg.subject,
+                            xpath: '/message/subject/text()'
+                          },
+                          body: {
+                            value: msg.body,
+                            xpath: '/message/body/text()'
+                          },
+                          thread: {
+                            value: msg.thread,
+                            xpath: '/message/thread/text()'
+                          }
+                        });
 
-    Assert.areEqual(packet.getType(), msg.type,
-                    "The expected packet type was incorrect.");
-    Assert.areEqual(packet.getTo(), this.chong.jid,
-                    "The expected entity to was incorrect.");
+    msg = XC.Message.extend({
+      to: this.chong,
+      type: 'chat',
+      body: "No subject and no thread",
+      connection: this.xc
+    });
+    msg.send();
 
-    packet = packet.getNode();
-    var el = packet.getElementsByTagName('body')[0];
-    Assert.areEqual(el.textContent || el.text, msg.body,
-                    "The expected body was incorrect.");
-    el = packet.getElementsByTagName('subject')[0];
-    Assert.areEqual(el.textContent || el.text, msg.subject,
-                    "The expected subject was incorrect.");
-    el = packet.getElementsByTagName('thread')[0];
-    Assert.areEqual(el.textContent || el.text, msg.thread,
-                    "The expected thread was incorrect.");
+    Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
+                        this.chong.jid,
+                        'chat',
+                        {
+                          subject: {
+                            value: undefined,
+                            xpath: '/message/subject/text()'
+                          },
+                          body: {
+                            value: msg.body,
+                            xpath: '/message/body/text()'
+                          },
+                          thread: {
+                            value: undefined,
+                            xpath: '/message/thread/text()'
+                          }
+                        });
+
+    msg = XC.Message.extend({
+      to: this.chong,
+      type: 'chat',
+      body: "message with ID",
+      id: "message-1",
+      connection: this.xc
+    });
+    msg.send();
+
+    Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
+                        this.chong.jid,
+                        'chat',
+                        {
+                          id: {
+                            value: msg.id,
+                            xpath: '/message/@id'
+                          }
+                        });
+
   },
 
   testReply: function () {
     var Assert = YAHOO.util.Assert;
 
+/*
     this.conn.addResponse(XC.Test.Packet.extendWithXML(
       '<iq from="chong@wandering-hippies.com" \
            to="sokka@water-tribe.com" \
            type="result"> \
       </iq>'
     ));
+*/
 
     var msg = XC.Message.extend({
       from: this.chong,

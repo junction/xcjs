@@ -52,9 +52,8 @@ XC.Message = XC.Base.extend(/** @lends XC.Message */{
   /**
    * Send a message.
    *
-   * @param {Object} [callbacks]   An Object with 'onError'.
    */
-  send: function (callbacks) {
+  send: function () {
     var msg = XC.XMPP.Message.extend(),
         body = XC.XML.Element.extend({name: 'body'}),
         subject = XC.XML.Element.extend({name: 'subject'}),
@@ -79,11 +78,7 @@ XC.Message = XC.Base.extend(/** @lends XC.Message */{
       msg.addChild(thread);
     }
 
-    this.connection.send(msg.convertToString(), function (packet) {
-      if (packet.getType() === 'error' && callbacks) {
-        callbacks.onError(packet);
-      }
-    });
+    this.connection.send(msg.convertToString());
   }
 
 });
