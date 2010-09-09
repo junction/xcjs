@@ -2,7 +2,7 @@
  * @extends XC.Base
  * @class
  */
-XC.Message = XC.Base.extend({
+XC.Message = XC.Base.extend(/** @lends XC.Message */{
   /**
    * @type {XC.Entity}
    */

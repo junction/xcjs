@@ -4,14 +4,23 @@
  */
 XC.Base = {
 
-  isFunction: function(o) { return (typeof o === "function"); },
+  /**
+   * Returns whether or not the Object passed in
+   * is a function.
+   *
+   * @param {Object} o The Object to test.
+   * @returns {Boolean} True if the Object is a function, false otherwise.
+   */
+  isFunction: function (o) {
+    return (typeof o === "function");
+  },
 
   /**
    * Iterates over all arguments, adding their own
    * properties to the reciever.
    *
    * @example
-   * obj.mixin({param: value});
+   *   obj.mixin({param: value});
    *
    * @returns {XC.Base} the reciever
    *
@@ -19,16 +28,16 @@ XC.Base = {
    */
   mixin: function () {
     var len = arguments.length,
-      val, cur;
+        val, cur;
     for (var i = 0; i < len; i++) {
       for (var k in arguments[i]) {
         if (arguments[i].hasOwnProperty(k)) {
           val = arguments[i][k];
           cur = this[k];
 
-          if (XC.Base.isFunction(val)
-              && XC.Base.isFunction(cur)
-              && val._isAround) {
+          if (XC.Base.isFunction(val) &&
+              XC.Base.isFunction(cur) &&
+              val._isAround) {
             val = val.curry(cur);
           }
 

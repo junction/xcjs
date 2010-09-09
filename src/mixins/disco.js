@@ -4,17 +4,25 @@
  *
  * XEP-0030: Service Discovery
  * @see http://xmpp.org/extensions/xep-0030.html
- *
- * @requires rootItem  A list of features and items associated with your entity.
  */
-XC.Disco = {
-  XMLNS: 'http://jabber.org/protocol/disco'
-};
-
 XC.Mixin.Disco = {
 
+  /**
+   * The root node of the Disco 'tree' that contains
+   * all of the information queried.
+   * 
+   * @private
+   * @type {Object}
+   */
   _rootNode: null,
 
+  /**
+   * Creates nodes through lazy instantiation.
+   *
+   * @private
+   * @param {String} [node] The node to create
+   * @returns {Object} The node that was asked to be created.
+   */
   _createNode: function (node) {
     if (!this._rootNode) {
       this._rootNode = {
@@ -36,6 +44,13 @@ XC.Mixin.Disco = {
     return node ? this._rootNode.nodes[node] : this._rootNode;
   },
 
+  /**
+   * Returns a list of features on a given node,
+   * or the features on the root node.
+   * 
+   * @param [nodeName] The name of the node to query for features on.
+   * @returns {Array} A list of features on the node.
+   */
   getDiscoFeatures: function (nodeName) {
     var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.features) {
@@ -44,6 +59,13 @@ XC.Mixin.Disco = {
     return null;
   },
 
+  /**
+   * Returns a list of identities on a given node,
+   * or the identities on the root node.
+   * 
+   * @param [nodeName] The name of the node to query for identites on.
+   * @returns {Array} A list of identites on the node.
+   */
   getDiscoIdentities: function (nodeName) {
     var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.identities) {
@@ -52,6 +74,13 @@ XC.Mixin.Disco = {
     return null;
   },
 
+  /**
+   * Returns a list of  items on a given node,
+   * or the items on the root node.
+   * 
+   * @param [nodeName] The name of the node to query for items on.
+   * @returns {Array} A list of items on the node.
+   */
   getDiscoItems: function (nodeName) {
     var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.items) {
@@ -63,7 +92,8 @@ XC.Mixin.Disco = {
   /**
    * Discover information about an entity.
    *
-   * @param {Object}    [callbacks]
+   * @param {Object}  [node]      The node to query for info on the entity.
+   * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
    */
   requestDiscoInfo: function (node, callbacks) {
     var iq = XC.XMPP.IQ.extend(),
@@ -119,7 +149,8 @@ XC.Mixin.Disco = {
   /**
    * Discover the items on an entity.
    *
-   * @param {Object}    [callbacks]
+   * @param {Object}  [node]      The node to query for i on the entity.
+   * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
    */
   requestDiscoItems: function (node, callbacks) {
     var iq = XC.XMPP.IQ.extend(),

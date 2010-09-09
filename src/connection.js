@@ -56,19 +56,22 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       }
     }
 
-    for (var t in this.templates) if (this.templates.hasOwnProperty(t)) {
-      this[t] = this.templates[t].extend({connection: this});
+    for (var t in this.templates) {
+      if (this.templates.hasOwnProperty(t)) {
+        this[t] = this.templates[t].extend({connection: this});
+      }
     }
 
     // Register for all incoming stanza types.
     var that = this,
-      events = ['iq','message','stanza'];
-    for (var i=0;i<events.length; i++) {
-      this.connectionAdapter.registerHandler(events[i], function(stanza) {
-                                               that._dispatchStanza(stanza);
-                                               return true;
-                                             });
-    };
+        events = ['iq', 'message', 'stanza'],
+        dispatch = function (stanza) {
+          that._dispatchStanza(stanza);
+          return true;
+        };
+    for (var i = 0; i < events.length; i++) {
+      this.connectionAdapter.registerHandler(events[i], dispatch);
+    }
 
     return this;
   },
@@ -119,14 +122,14 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * @param {Function} callback
    * @returns id
    */
-  registerStanzaHandler: function(criteria, callback) {
-    return this._stanzaHandlers.insert(criteria,callback);
+  registerStanzaHandler: function (criteria, callback) {
+    return this._stanzaHandlers.insert(criteria, callback);
   },
 
   /**
    * @private
    */
-  unregisterStanzaHandler: function(id) {
+  unregisterStanzaHandler: function (id) {
     return this._stanzaHandlers.remove(id);
   },
 
@@ -135,9 +138,9 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * and call the callbacks with the stanza
    * @private
    */
-  _dispatchStanza: function(stanza) {
+  _dispatchStanza: function (stanza) {
     var callbacks = this._stanzaHandlers.findCallbacks(stanza);
-    for (var i=0, len=callbacks.length; i<len; i++) {
+    for (var i = 0, len = callbacks.length; i < len; i++) {
       callbacks[i](stanza);
     }
   },
@@ -154,7 +157,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
     lastID: 0,
     store: {},
 
-    insert: function(criteria,cb) {
+    insert: function (criteria, cb) {
       var id = this.lastID++;
       this.store[id] = {
         criteria: criteria,
@@ -164,7 +167,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       return id;
     },
 
-    remove: function(id) {
+    remove: function (id) {
       if (this.store[id]) {
         delete this.store[id];
         return true;
@@ -172,39 +175,45 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       return false;
     },
 
-    findCallbacks: function(stanza) {
+    findCallbacks: function (stanza) {
       var resultSet = [];
 
-      for (var id in this.store) if (this.store.hasOwnProperty(id)) {
-        var callbackSet = this.store[id];
+      for (var id in this.store) {
+        if (this.store.hasOwnProperty(id)) {
+          var callbackSet = this.store[id],
+              criteria = callbackSet.criteria,
+              cb = callbackSet.callback,
+              domEl = stanza.doc.firstChild;
 
-        var criteria = callbackSet.criteria,
-          cb = callbackSet.callback;
+          if (!cb || !criteria) {
+            continue;
+          }
 
-        var domEl = stanza.doc.firstChild;
+          if (criteria.element && domEl.tagName !== criteria.element) {
+            continue;
+          }
 
-        if (!cb || !criteria)
-          continue;
+          if (criteria.xmlns &&
+              !(domEl.getAttribute('xmlns') === criteria.xmlns ||
+              (domEl.firstChild && domEl.firstChild.getAttribute('xmlns') === criteria.xmlns))) {
+            continue;
+          }
 
-        if (criteria.element && domEl.tagName != criteria.element)
-          continue;
+          if (criteria.from && stanza.getFrom() !== criteria.from) {
+            continue;
+          }
 
-        if (criteria.xmlns &&
-            !(domEl.getAttribute('xmlns') === criteria.xmlns
-              || (domEl.firstChild && domEl.firstChild.getAttribute('xmlns') == criteria.xmlns)))
-          continue;
+          if (criteria.type && stanza.getType() !== criteria.type) {
+            continue;
+          }
 
-        if (criteria.from && stanza.getFrom() != criteria.from)
-          continue;
+          if (criteria.id && domEl.getAttribute('id') !== criteria.id) {
+            continue;
+          }
 
-        if (criteria.type && stanza.getType() != criteria.type)
-          continue;
-
-        if (criteria.id && domEl.getAttribute('id') != criteria.id)
-          continue;
-
-        // we've passed all of our criteria tests
-        resultSet.push(cb);
+          // we've passed all of our criteria tests
+          resultSet.push(cb);
+        }
       }
       return resultSet;
     }

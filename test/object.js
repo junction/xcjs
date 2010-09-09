@@ -2,12 +2,12 @@
 XC.Test.Base = new YAHOO.tool.TestCase({
   name: 'XC.Base Tests',
 
-  testIsFunction: function() {
+  testIsFunction: function () {
     var Assert = YAHOO.util.Assert;
 
     Assert.isFunction(XC.Base.isFunction, 'XC.Base.isFunction does not exist');
 
-    Assert.isTrue(XC.Base.isFunction(function() {}), 'function is not a function');
+    Assert.isTrue(XC.Base.isFunction(function () {}), 'function is not a function');
     Assert.isFalse(XC.Base.isFunction({}), 'object should not be a function');
   },
 
@@ -32,29 +32,29 @@ XC.Test.Base = new YAHOO.tool.TestCase({
     Assert.areSame('foo', tmp.foo);
   },
 
-  testMixinAround: function() {
+  testMixinAround: function () {
     var Assert = YAHOO.util.Assert;
 
     var orig = XC.Base.extend({
-      doStuff: function() {
+      doStuff: function () {
         return 'a';
       }
     });
 
     var secondary = orig.extend({
-      doStuff: function($orig) {
+      doStuff: function ($orig) {
         return $orig.call(this) + 'b';
       }.around()
     });
 
     var tertiary = secondary.extend({
-      doStuff:function($orig) {
+      doStuff: function ($orig) {
         return $orig.call(this) + 'c';
       }.around()
     });
 
-   var quartenary = secondary.extend({
-      doStuff:function() {
+    var quartenary = secondary.extend({
+      doStuff: function () {
         return arguments.length;
       }
     });

@@ -1,5 +1,5 @@
 /**
- * An entity is anything with a Jabber ID.
+ * An entity is anything with a Jabber ID (JID).
  *
  * @extends XC.Base
  * @extends XC.Mixin.Presence

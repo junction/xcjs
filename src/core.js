@@ -6,23 +6,19 @@
  */
 var XC = {
   debug: function () {
-    var message = Array.prototype.join.apply(arguments, [' ']);
-    return window.console && window.console.debug && window.console.debug.apply(window.console, [message]);
+    return window.console && window.console.debug && window.console.debug.apply(window.console, arguments);
   },
 
   log: function () {
-    var message = Array.prototype.join.apply(arguments, [' ']);
-    return window.console && window.console.log && window.console.log.apply(window.console, [message]);
+    return window.console && window.console.log && window.console.log.apply(window.console, arguments);
   },
 
   warn: function () {
-    var message = Array.prototype.join.apply(arguments, [' ']);
-    return window.console && window.console.warn && window.console.warn.apply(window.console, [message]);
+    return window.console && window.console.warn && window.console.warn.apply(window.console, arguments);
   },
 
   error: function () {
-    var message = Array.prototype.join.apply(arguments, [' ']);
-    return window.console && window.console.error && window.console.error.apply(window.console, [message]);
+    return window.console && window.console.error && window.console.error.apply(window.console, arguments);
   },
 
   group: function () {
@@ -41,7 +37,7 @@ var XC = {
 };
 
 /**
- * Namespaces for services.
+ * Namespace for services.
  * @namespace
  */
 XC.Service = {};
