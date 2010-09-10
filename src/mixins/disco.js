@@ -52,7 +52,7 @@ XC.Mixin.Disco = {
    * @returns {Array} A list of features on the node.
    */
   getDiscoFeatures: function (nodeName) {
-    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
+    var node = this._rootNode && nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.features) {
       return node.features;
     }
@@ -67,7 +67,7 @@ XC.Mixin.Disco = {
    * @returns {Array} A list of identites on the node.
    */
   getDiscoIdentities: function (nodeName) {
-    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
+    var node = this._rootNode && nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.identities) {
       return node.identities;
     }
@@ -82,7 +82,7 @@ XC.Mixin.Disco = {
    * @returns {Array} A list of items on the node.
    */
   getDiscoItems: function (nodeName) {
-    var node = nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
+    var node = this._rootNode && nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
     if (node && node.items) {
       return node.items;
     }

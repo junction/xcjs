@@ -19,6 +19,54 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
     delete this.xc;
   },
 
+  testDiscoInfoSlots: function () {
+    var Assert = YAHOO.util.Assert;
+
+    this.conn.addResponse(XC.Test.Packet.extendWithXML(
+      '<iq from="' + this.conn.jid() + '" \
+           to="juliet@example.com" \
+           type="result" \
+           id="test"> \
+        <query xmlns="http://jabber.org/protocol/disco#info"> \
+          <identity category="client" \
+                    type="web" \
+                    name="JNX"/> \
+          <feature var="jabber:iq:time"/> \
+          <feature var="http://jabber.org/protocol/disco#info"/> \
+        </query> \
+      </iq>'
+    ));
+
+    Assert.isFunction(this.romeo.getDiscoFeatures,
+                      "'getDiscoFeatures' should be a function.");
+    Assert.isFunction(this.romeo.getDiscoIdentities,
+                      "'getDiscoIdentities' should be a function.");
+    Assert.areEqual(null, this.romeo.getDiscoFeatures(),
+                    "'getDiscoFeatures' should be null.");
+    Assert.areEqual(null, this.romeo.getDiscoIdentities(),
+                    "'getDiscoIdentities' should be null.");
+
+    var fail = false, win = false, that = this;
+    this.romeo.requestDiscoInfo({
+      onSuccess: function (entity) {
+        win = true;
+        Assert.isObject(entity, "Entity should be an object.");
+        Assert.areEqual(entity, that.romeo, "Entity should be === to romeo.");
+
+        Assert.isArray(entity.getDiscoFeatures(),
+                       "'getDiscoFeatures' should be an Array.");
+        Assert.isArray(entity.getDiscoIdentities(),
+                       "'getDiscoIdentities' should be an Array.");
+      },
+      onError: function (packet) {
+        fail = true;
+      }
+    });
+
+    Assert.isTrue(win, "Was not successful in doing a disco#info.");
+    Assert.isFalse(fail, "Disco#info threw an error.");
+  },
+
   testDiscoInfo: function () {
     var Assert = YAHOO.util.Assert;
 
@@ -41,11 +89,6 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
     this.romeo.requestDiscoInfo({
       onSuccess: function (entity) {
         win = true;
-        Assert.isObject(entity, "Entity should be an object.");
-        Assert.areEqual(entity.name, that.romeo.name,
-                        "The entity's name is not the same.");
-        Assert.areEqual(entity.jid, that.romeo.jid,
-                        "The entity's JID is not the same.");
 
         var features = entity.getDiscoFeatures(),
             identities = entity.getDiscoIdentities();
@@ -59,9 +102,58 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
                         "The identity's category wasn't copied.");
         Assert.areEqual(identities[0].type, 'web',
                         "The identity's type wasn't copied.");
-        Assert.areEqual(entity, that.romeo);
       },
 
+      onError: function (packet) {
+        fail = true;
+      }
+    });
+
+    Assert.isTrue(win, "Was not successful in doing a disco#info.");
+    Assert.isFalse(fail, "Disco#info threw an error.");
+  },
+
+  testDiscoInfoNodeSlots: function () {
+    var Assert = YAHOO.util.Assert;
+
+    this.conn.addResponse(XC.Test.Packet.extendWithXML(
+      '<iq from="' + this.conn.jid() + '" \
+           to="juliet@example.com" \
+           type="result" \
+           id="test"> \
+        <query xmlns="http://jabber.org/protocol/disco#info" \
+               node="http://jabber.org/protocol/tune"> \
+          <identity category="service" \
+                    type="music" \
+                    name="Tunes"/> \
+          <feature var="A"/> \
+          <feature var="B"/> \
+          <feature var="C"/> \
+        </query> \
+      </iq>'
+    ));
+
+    Assert.isFunction(this.romeo.getDiscoFeatures,
+                      "'getDiscoFeatures' should be a function.");
+    Assert.isFunction(this.romeo.getDiscoIdentities,
+                      "'getDiscoIdentities' should be a function.");
+    Assert.areEqual(null, this.romeo.getDiscoFeatures('http://jabber.org/protocol/tune'),
+                    "'getDiscoFeatures' should be null.");
+    Assert.areEqual(null, this.romeo.getDiscoIdentities('http://jabber.org/protocol/tune'),
+                    "'getDiscoIdentities' should be null.");
+
+    var fail = false, win = false, that = this;
+    this.romeo.requestDiscoInfo({
+      onSuccess: function (entity) {
+        win = true;
+        Assert.isObject(entity, "Entity should be an object.");
+        Assert.areEqual(entity, that.romeo, "Entity should be === to romeo.");
+
+        Assert.isArray(entity.getDiscoFeatures('http://jabber.org/protocol/tune'),
+                       "'getDiscoFeatures' should be an Array.");
+        Assert.isArray(entity.getDiscoIdentities('http://jabber.org/protocol/tune'),
+                       "'getDiscoIdentities' should be an Array.");
+      },
       onError: function (packet) {
         fail = true;
       }
@@ -95,11 +187,6 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
     this.romeo.requestDiscoInfo('http://jabber.org/protocol/tune', {
       onSuccess: function (entity) {
         win = true;
-        Assert.isObject(entity, "Entity should be an object.");
-        Assert.areEqual(entity.name, that.romeo.name,
-                        "The entity's name is not the same.");
-        Assert.areEqual(entity.jid, that.romeo.jid,
-                        "The entity's JID is not the same.");
 
         var features = entity.getDiscoFeatures('http://jabber.org/protocol/tune'),
             identities = entity.getDiscoIdentities('http://jabber.org/protocol/tune');
@@ -116,7 +203,6 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
                         "The identity's category wasn't copied.");
         Assert.areEqual(identities[0].type, 'music',
                         "The identity's type wasn't copied.");
-        Assert.areEqual(entity, that.romeo);
       },
 
       onError: function (packet) {
@@ -160,6 +246,47 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
     Assert.isTrue(fail, "Was not successful in doing a disco#info.");
   },
 
+  testDiscoItemsSlots: function () {
+    var Assert = YAHOO.util.Assert;
+
+    this.conn.addResponse(XC.Test.Packet.extendWithXML(
+      '<iq from="' + this.conn.jid() + '" \
+           to="juliet@example.com" \
+           type="result" \
+           id="test"> \
+        <query xmlns="http://jabber.org/protocol/disco#info"> \
+          <item jid="romeo@example.com" \
+                node="http://jabber.org/protocol/tune"/> \
+          <item jid="people.shakespeare.lit" \
+                name="Directory of Characters"/> \
+        </query> \
+      </iq>'
+    ));
+
+    Assert.isFunction(this.romeo.getDiscoItems,
+                   "'getDiscoItems' should be a function.");
+    Assert.areEqual(this.romeo.getDiscoItems(), null,
+                   "'getDiscoItems' should return null.");
+
+    var fail = false, win = false, that = this;
+    this.romeo.requestDiscoItems({
+      onSuccess: function (entity) {
+        win = true;
+        Assert.isObject(entity, "Entity should be an object.");
+        Assert.areEqual(entity, that.romeo, "The entity should be === to romeo.");
+        Assert.isArray(entity.getDiscoItems(),
+                       "'getDiscoItems' should return an Array.");
+      },
+
+      onError: function (packet) {
+        fail = true;
+      }
+    });
+
+    Assert.isTrue(win, "Was not successful in doing a disco#items.");
+    Assert.isFalse(fail, "Disco#items threw an error.");
+  },
+
   testDiscoItems: function () {
     var Assert = YAHOO.util.Assert;
 
@@ -183,11 +310,6 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
         win = true;
 
         var items = entity.getDiscoItems();
-        Assert.isObject(entity, "Entity should be an object.");
-        Assert.areEqual(entity.name, that.romeo.name,
-                        "The entity's name is not the same.");
-        Assert.areEqual(entity.jid, that.romeo.jid,
-                        "The entity's JID is not the same.");
         Assert.areEqual("romeo@example.com", items[0].jid,
                         "The entity doesn't contain an expected item.");
         Assert.areEqual("http://jabber.org/protocol/tune", items[0].node,
@@ -199,6 +321,48 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
                         "The entity doesn't contain an expected item.");
         Assert.areEqual("Directory of Characters", items[1].name,
                         "The entity doesn't contain an expected item.");
+      },
+
+      onError: function (packet) {
+        fail = true;
+      }
+    });
+
+    Assert.isTrue(win, "Was not successful in doing a disco#items.");
+    Assert.isFalse(fail, "Disco#items threw an error.");
+  },
+
+  testDiscoItemsNodeSlots: function () {
+    var Assert = YAHOO.util.Assert;
+
+    this.conn.addResponse(XC.Test.Packet.extendWithXML(
+      '<iq from="' + this.conn.jid() + '" \
+           to="juliet@example.com" \
+           type="result" \
+           id="test"> \
+        <query xmlns="http://jabber.org/protocol/disco#info" \
+               node="http://jabber.org/protocol/tune"> \
+          <item jid="romeo@example.com" \
+                node="http://jabber.org/protocol/tune"/> \
+          <item jid="people.shakespeare.lit" \
+                name="Directory of Characters"/> \
+        </query> \
+      </iq>'
+    ));
+
+    Assert.isFunction(this.romeo.getDiscoItems,
+                   "'getDiscoItems' should be a function.");
+    Assert.areEqual(this.romeo.getDiscoItems('http://jabber.org/protocol/tune'), null,
+                   "'getDiscoItems' should return null.");
+
+    var fail = false, win = false, that = this;
+    this.romeo.requestDiscoItems('http://jabber.org/protocol/tune', {
+      onSuccess: function (entity) {
+        win = true;
+        Assert.isObject(entity, "Entity should be an object.");
+        Assert.areEqual(entity, that.romeo, "The entity should be === to romeo.");
+        Assert.isArray(entity.getDiscoItems(),
+                       "'getDiscoItems' should return an Array.");
       },
 
       onError: function (packet) {
@@ -233,13 +397,6 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
     this.romeo.requestDiscoItems('http://jabber.org/protocol/tune', {
       onSuccess: function (entity) {
         win = true;
-
-        Assert.isObject(entity, "Entity should be an object.");
-        Assert.areEqual(entity.name, that.romeo.name,
-                        "The entity's name is not the same.");
-        Assert.areEqual(entity.jid, that.romeo.jid,
-                        "The entity's JID is not the same.");
-
         var items = entity.getDiscoItems('http://jabber.org/protocol/tune');
         Assert.areEqual("pubsub.shakespeare.lit", items[0].jid,
                         "The entity doesn't contain an expected item.");
