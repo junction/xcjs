@@ -33,11 +33,9 @@ XC.Base = {
       for (var k in arguments[i]) {
         if (arguments[i].hasOwnProperty(k)) {
           val = arguments[i][k];
-          cur = this[k];
 
-          if (XC.Base.isFunction(val) &&
-              XC.Base.isFunction(cur) &&
-              val._isAround) {
+          if (XC.Base.isFunction(val) && val._isAround) {
+            cur = (this[k] && XC.Base.isFunction(this[k])) ? this[k] : null;
             val = val.curry(cur);
           }
 

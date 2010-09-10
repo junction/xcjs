@@ -12,7 +12,8 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    * Around adds a flag to a function
    * that lets {@link XC.Base.mixin} know
    * to mixin the function curried with the
-   * its base function.
+   * base function.  If no base function exits
+   * the around function will be curried with null
    *
    * @example
    *   var foo = XC.Base.extend({
@@ -89,7 +90,7 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
 /**
  * Internet Explorer doesn't implement indexOf,
  * so implement it here.
- * 
+ *
  * @lends Array.prototype
  */
 Array.prototype.indexOf = Array.prototype.indexOf || function (o) {
