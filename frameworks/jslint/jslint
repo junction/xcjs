@@ -80,7 +80,7 @@ $path = "." unless -d $path;
 
 $ENV{JSLINT_HOME} = $path;
 my $js = "";
-for my $bin ( qw(smjs js) ) {
+for my $bin ( qw(smjs js v8 rhino) ) {
     $js = `which $bin`;
     chomp($js);
     last if -e $js;
