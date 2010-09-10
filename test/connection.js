@@ -112,6 +112,27 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     Assert.isFalse(handlerFired, 'handler should not fire');
   },
 
+  testHandlerFiringContext: function() {
+    var Assert = YAHOO.util.Assert;
+
+    var handlerContext;
+    var handler = function (packet) { handlerContext = this; };
+    var id = this.xc.registerStanzaHandler({element: 'message'}, handler);
+
+    // test this.xc is handlerContext
+    var xml = '<message from="sender@source.org" to="me@dest.com" type="get"></message>';
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.areSame(window, handlerContext, 'handlerContext should equal window');
+
+    this.xc.unregisterStanzaHandler(id);
+    handlerContext = null;
+
+    var otherContext = {};
+    id = this.xc.registerStanzaHandler({element: 'message'}, handler, otherContext);
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.areSame(otherContext, handlerContext, 'handlerContext should equal otherContext');
+  },
+
   testHandlerRegistrationCriteria: function() {
     var Assert = YAHOO.util.Assert;
 

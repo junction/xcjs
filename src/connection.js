@@ -11,6 +11,7 @@
  * @property {XC.Service.Disco} Disco#
  */
 XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
+
   /**
    * Map of instance names to instance objects. Used during
    * initConnection().
@@ -51,8 +52,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
     for (var s in this.services) {
       if (this.services.hasOwnProperty(s)) {
         var service = this.services[s];
-
-        this[s] = service.extend({connection: this}).activate();
+        this[s] = service.extend({connection: this});
       }
     }
 
@@ -120,10 +120,16 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * @private
    * @param {Object} criteria has any of the members listed above
    * @param {Function} callback
-   * @returns id
+   * @param {Object} [target] scope for 'this'
+   * @returns {Mixed} id indicates success or false indicates failure
    */
-  registerStanzaHandler: function (criteria, callback) {
-    return this._stanzaHandlers.insert(criteria, callback);
+  registerStanzaHandler: function (criteria, callback, target) {
+    if (!XC.Base.isFunction(callback)) return false;
+
+    target = target || window || this;
+    return this._stanzaHandlers.insert(criteria, function() {
+                                         callback.apply(target, arguments);
+                                       });
   },
 
   /**
