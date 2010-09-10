@@ -25,6 +25,12 @@ XC.Mixin.Presence = {
    */
   priority: null,
 
+  /**
+   * Whether or not the user is available.
+   * @type {Boolean}
+   */
+  available: null,
+
   // In band
 
   /**
@@ -34,9 +40,8 @@ XC.Mixin.Presence = {
    * @param {String} [show]       'away', 'chat', 'dnd', or 'xa' as defined in XC.Presence.SHOW
    * @param {String} [status]     The custom status message to send.
    * @param {Number} [priority]   An integer between -127 and +128 giving the priority of the presence.
-   * @param {Object} [callbacks]  An Object with 'onSuccess' and 'onError'.
    */
-  sendPresence: function (show, status, priority, callbacks) {
+  sendDirectedPresence: function (show, status, priority) {
     var p = XC.XMPP.Presence.extend();
 
     // Send directed presence.
@@ -65,7 +70,7 @@ XC.Mixin.Presence = {
     if (priority) {
       var priorityEl = XC.XML.Element.extend({
         name: 'priority'
-      }), iPriority = parseInt(presence.priority, 10);
+      }), iPriority = parseInt(priority, 10);
 
       // The priority MUST be an integer between -128 and +127
       if (iPriority > -128 && iPriority < 127) {
@@ -74,67 +79,37 @@ XC.Mixin.Presence = {
       }
     }
 
-    this.connection.send(p.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
-        callbacks.onError(packet);
-      }
-    });
+    this.connection.send(p.convertToString());
   },
-  
+
   /**
    * Request a subscription to an entity's presence.
-   * 
-   * @param {Object}    [callbacks] An Object with 'onError'.
    */
-  subscribe: function (callbacks) {
+  sendPresenceSubscribe: function () {
     var p = XC.XMPP.Presence.extend(),
         entity = this;
     p.attr('type', 'subscribe');
-    p.to(entity.jid);
-
-    this.connection.send(p.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
-        callbacks.onError();
-      }
-    });
-  },
-
-  /**
-   * Unsubscribe from an entity's presence.
-   * 
-   * @param {Object}    [callbacks] An Object with 'onError'.
-   */
-  unsubscribe: function (callbacks) {
-    var p = XC.XMPP.Presence.extend(),
-        entity = this;
-    p.attr('type', 'unsubscribe');
-    p.to(entity.jid);
-
-    this.connection.send(p.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
-        callbacks.onError();
-      }
-    });
-  },
-
-  // Out of band
-
-  /**
-   * Approve a pending subscription request from an entity.
-   */
-  approveSubscription: function () {
-    var p = XC.XMPP.Presence.extend(),
-        entity = this;
-    p.attr('type', 'subscribed');
     p.to(entity.jid);
 
     this.connection.send(p.convertToString());
   },
 
   /**
-   * Deny a pending subscription request from an entity.
+   * Unsubscribe from an entity's presence.
    */
-  denySubscription: function () {
+  sendPresenceUnsubscribe: function () {
+    var p = XC.XMPP.Presence.extend(),
+        entity = this;
+    p.attr('type', 'unsubscribe');
+    p.to(entity.jid);
+
+    this.connection.send(p.convertToString());
+  },
+
+  /**
+   * Cancel a Presence subscription.
+   */
+  cancelPresenceSubscription: function () {
     var p = XC.XMPP.Presence.extend(),
         entity = this;
     p.attr('type', 'unsubscribed');

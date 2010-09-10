@@ -145,6 +145,7 @@ XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
           status = packet.getElementsByTagName('status')[0],
           priority = packet.getElementsByTagName('priority')[0];
 
+      entity.available = true;
       if (show) {
         entity.show = show.textContent || show.text;
       }
@@ -184,6 +185,10 @@ XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
       if (this.onUnsubscribed) {
         this.onUnsubscribe(response('unsubscribe', 'subscribe'));
       }
+      break;
+    case 'unavailable':
+      entity.available = false;
+      this.onPresence(entity);
       break;
     }
   }

@@ -25,8 +25,7 @@ XC.Mixin.Chat = XC.Base.extend(/** @lends XC.Mixin.Chat */{
       subject: subject,
       thread: thread,
       to: this,
-      id: id,
-      connection: this.connections // for Message.reply
+      id: id
     });
 
     this.connection.send(msg.toXML().convertToString());
