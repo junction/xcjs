@@ -14,21 +14,23 @@ XC.Mixin.Chat = XC.Base.extend(/** @lends XC.Mixin.Chat */{
    * @param {String} [body]      The body of the message.
    * @param {String} [subject]   The subject of the message.
    * @param {String} [thread]    The thread of the message.
-   * @param {Object} [callbacks] An Object that has 'onError'.
+   * @param {String} [id]        The id of the message.
    *
    * @returns {XC.Entity} The entity the message was sent to.
    */
-  sendChat: function (body, subject, thread, callbacks) {
+  sendChat: function (body, subject, thread, id) {
     var msg = XC.Message.extend({
       type: 'chat',
       body: body,
       subject: subject,
       thread: thread,
       to: this,
-      connection: this.connection
+      id: id,
+      connection: this.connections // for Message.reply
     });
 
-    return msg.send(callbacks);
+    this.connection.send(msg.toXML().convertToString());
+    return this;
   }
 
 });

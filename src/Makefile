@@ -1,7 +1,7 @@
 SRC =	core.js base.js util.js error.js xml.js namespaces.js	\
 	mixins/roster.js mixins/chat.js mixins/presence.js mixins/discoverable.js mixins/disco.js \
   services/roster.js services/chat.js services/presence.js services/disco.js	\
-	entity.js message.js	\
+	entity.js message.js mixins/chat_state_notification.js	\
 	connection_adapter.js connection.js
 
 DOCDIR = ../doc

@@ -29,56 +29,63 @@ XC.Message = XC.Base.extend(/** @lends XC.Message */{
   thread: null,
 
   /**
+   * @type {String}
+   */
+  id: null,
+
+  /**
    * Reply to a message using this
-   * message as a template:
-   *   from = to,
-   *   to = from,
-   *   thread = thread
+   * message as a template, switching the
+   * to and from attributes.
    *
-   * @param {String} body        The message body.
-   * @param {Object} [callbacks] An Object with 'onError'.
+   * @param {String} body  The message body.
+   * @param {String} [id]  The id to associate with the message.
    * @returns {XC.Message} The sent message.
    */
-  reply: function (body, callbacks) {
+  reply: function (body, id) {
     var msg = this.extend({
       to: this.from,
       from: this.connection.getJID(),
-      body: body
+      body: body,
+      id: id
     });
 
-    msg.send(callbacks);
+    this.connection.send(msg.toXML().convertToString());
   },
 
   /**
-   * Send a message.
-   *
+   * Converts a message into an XML Fragment.
+   * 
+   * @returns {Element} A XML Fragment.
    */
-  send: function () {
+  toXML: function () {
     var msg = XC.XMPP.Message.extend(),
         body = XC.XML.Element.extend({name: 'body'}),
         subject = XC.XML.Element.extend({name: 'subject'}),
-        thread = XC.XML.Element.extend({name: 'thread'}),
-        message = this;
+        thread = XC.XML.Element.extend({name: 'thread'});
 
-    msg.to(message.to.jid);
+    msg.to(this.to.jid);
+    if (this.id) {
+      msg.attr('id', this.id);
+    }
     msg.attr('type', this.type);
 
-    if (message.body) {
-      body.text = message.body;
+    if (this.body) {
+      body.text = this.body;
       msg.addChild(body);
     }
 
-    if (message.subject) {
-      subject.text = message.subject;
+    if (this.subject) {
+      subject.text = this.subject;
       msg.addChild(subject);
     }
 
-    if (message.thread) {
-      thread.text = message.thread;
+    if (this.thread) {
+      thread.text = this.thread;
       msg.addChild(thread);
     }
 
-    this.connection.send(msg.convertToString());
+    return msg;
   }
 
 });
