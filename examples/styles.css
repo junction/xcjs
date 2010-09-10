@@ -1,0 +1,128 @@
+#roster {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  top: 0px;
+  border-right: 1px solid #AAA;
+  width: 200px;
+}
+
+#roster .item {
+  border-bottom: 1px solid #CCC;
+}
+
+#composer {
+  position: fixed;
+  right: 250px;
+  bottom: 0px;
+  height: 50px;
+  left: 201px;
+  border: 0px;
+  border-top: 1px solid #AAA;
+  background:-webkit-gradient(linear,0% 0%,0% 45%,from(#eee),to(#ccc));
+  background:-moz-linear-gradient(45% 45% 90deg,#ccc,#eee)))))
+}
+
+#composer textarea {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  right: 70px;
+  bottom: 10px;
+  margin: 0px auto;
+  border-radius:3px;
+  moz-border-radius:3px;
+  border: 1px solid #AAA;
+}
+
+#composer button {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  bottom: 10px;
+}
+
+button {
+  border-radius:3px;
+  moz-border-radius:3px;
+  text-shadow: #eee 1px 1px 0px;
+  border: 1px solid #888;
+  background:-webkit-gradient(linear,0% 0%,0% 45%,from(#bbb),to(#999));
+  background:-moz-linear-gradient(45% 45% 90deg,#999,#bbb)))));
+}
+
+button:active {
+  background:-webkit-gradient(linear,0% 0%,0% 45%,from(#999),to(#bbb));
+  background:-moz-linear-gradient(45% 45% 90deg,#bbb,#999)))));
+}
+
+#messages {
+  position: absolute;
+  left: 201px;
+  top: 0px;
+  bottom: 50px;
+  right: 249px;
+  font-family: Lucinda-Sans, Arial, Helvetica;
+  font-size: 13px;
+  overflow: auto;
+}
+
+#messages .message {
+  float: left;
+  width: 100%;
+  padding: 10px;
+  position: relative;
+  right: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+#messages .message .body {
+  position: absolute;
+  left: 50px;
+  padding-left: 20px;
+}
+
+#messages .message .from {
+  color: #999;
+  padding-left: 20px;
+}
+
+#raw-xml {
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  border-left: 1px solid #AAA;
+  width: 249px;
+  overflow: auto;
+}
+
+#raw-xml pre {
+  font-family:Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+  font-size: 12px;
+  padding: 5px;
+}
+
+#raw-xml pre:nth-child(even) {
+  background-color: #eee;
+}
+
+#raw-xml .incoming {
+  color: red;
+}
+
+#raw-xml .outgoing {
+  color: blue;
+}
+
+button#toggle-xml {
+  position: absolute;
+  z-index: 5;
+  top: 5px;
+  right: 10px;
+  opacity: 0.5;
+}
+
+button#toggle-xml:hover {
+  opacity: 1;
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<head>
+  <title>XMPP Client Example</title>
+  <link rel="stylesheet" type="text/css" href="styles.css"/>
+  <script type="text/javascript" src="../frameworks/strophejs/strophe.js"></script>
+  <script type="text/javascript" src="../xc.js"></script>
+  <script type="text/javascript" src="glue.js"></script>
+</head>
+<body>
+  <div id="roster"></div>
+  <div id="messages">
+    <div class="message">
+      <span class="from">Bob</span>
+      <span class="body">hi</span>
+    </div>
+    <div class="message">
+      <span class="from">Bob</span>
+      <span class="body">bye</span>
+    </div>
+  </div>
+  <div id="composer">
+    <textarea placeholder="Type here to compose a message."></textarea>
+    <button>Send</button>
+  </div>
+  <button id="toggle-xml">Hide</button>
+  <div id="raw-xml">
+    <pre class="incoming">
+&lt;iq type="get"&gt;
+&lt/iq&gt;</pre>
+    <pre class="outgoing">
+&lt;iq type="get"&gt;
+&lt/iq&gt;</pre>    <pre class="incoming">
+&lt;iq type="get"&gt;
+&lt/iq&gt;</pre>
+    <pre class="outgoing">
+&lt;iq type="get"&gt;
+&lt/iq&gt;</pre>    <pre class="incoming">
+&lt;iq type="get"&gt;
+&lt/iq&gt;</pre>
+    <pre class="outgoing">
+&lt;iq type="get"&gt;
+&lt/iq&gt;</pre>
+  </div>
+</body>
