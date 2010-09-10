@@ -61,6 +61,20 @@ XC.Test.HandlerRegistration = new YAHOO.tool.TestCase({
                         }, target);
     tmp.fireHandler('onEvent3');
     Assert.areSame(target, assertionThis, 'registered handler has wrong target in 3 arg case');
+
+    // extend a registration service
+
+    // try handler after extends
+    assertionThis = null;
+    assertion = false;
+
+    var extended = tmp.extend();
+    extended.fireHandler('onEvent3');
+    Assert.areSame(target, assertionThis, 'registered handler did not fire after extend');
+
+    extended.registerHandler('onEvent4', function() { assertion = true; });
+    tmp.fireHandler('onEvent4');
+    Assert.isFalse(assertion, 'a handler registered after extension should not fire from the parent');
   },
 
   testFireHandlerWithArguments: function() {

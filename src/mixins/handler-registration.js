@@ -4,9 +4,17 @@
  *
  * @namespace
  */
-XC.Mixin.HandlerRegistration = XC.Base.extend({
+XC.Mixin.HandlerRegistration = {
+
+  /**
+   * @private
+   */
   init: function($super) {
-    this._registeredHandlers = {};
+    var tmp = {};
+    if (this._registeredHandlers)
+      tmp = XC.Base.extend(this._registeredHandlers);
+
+    this._registeredHandlers = tmp;
 
     if (XC.Base.isFunction($super))
       $super.apply(this, Array.from(arguments).slice(1));
@@ -46,4 +54,4 @@ XC.Mixin.HandlerRegistration = XC.Base.extend({
       action.apply(target,Array.from(arguments).slice(1));
     }
   }
-});
+};
