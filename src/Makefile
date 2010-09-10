@@ -19,6 +19,7 @@ doc:	$(DOCDIR)/private/index.html $(DOCDIR)/public/index.html
 
 xc.js:	Makefile $(SRC)
 	cat $(SRC) > ../$@
+	jslint ../xc.js
 
 $(DOCDIR)/private/index.html: Makefile $(SRC)
 	$(JAVA) -jar $(JSDOCDIR)/jsrun.jar $(JSDOCDIR)/app/run.js --allfunctions --private -t=$(TEMPLATE) -d=$(DOCDIR)/private $(SRC)
