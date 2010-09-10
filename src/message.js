@@ -45,20 +45,19 @@ XC.Message = XC.Base.extend(/** @lends XC.Message */{
   reply: function (body, id) {
     var msg = this.extend({
       to: this.from,
-      from: this.connection.getJID(),
       body: body,
       id: id
     });
 
-    this.connection.send(msg.toXML().convertToString());
+    msg.to.connection.send(msg.toMessageStanza().convertToString());
   },
 
   /**
    * Converts a message into an XML Fragment.
-   * 
+   *
    * @returns {Element} A XML Fragment.
    */
-  toXML: function () {
+  toMessageStanza: function () {
     var msg = XC.XMPP.Message.extend(),
         body = XC.XML.Element.extend({name: 'body'}),
         subject = XC.XML.Element.extend({name: 'subject'}),

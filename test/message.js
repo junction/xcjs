@@ -38,7 +38,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     Assert.areEqual("Avatar", msg.thread, 'msg.thread is incorrect');
   },
 
-  testToXML: function() {
+  testToMessageStanza: function() {
     var Assert = YAHOO.util.Assert;
 
     var msg = XC.Message.extend({
@@ -46,12 +46,11 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       type: 'chat',
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
-      thread: "Avatar",
-      connection: this.xc
+      thread: "Avatar"
     });
 
-    Assert.isFunction(msg.toXML, 'XC.Message.toXML should be a function.');
-    Assert.isObject(msg.toXML(), 'XC.Message.toXML shoudl return an Object.');
+    Assert.isFunction(msg.toMessageStanza, 'XC.Message.toMessageStanza should be a function.');
+    Assert.isObject(msg.toMessageStanza(), 'XC.Message.toMessageStanza shoudl return an Object.');
   },
 
   testXML: function () {
@@ -62,11 +61,10 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       type: 'chat',
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
-      thread: "Avatar",
-      connection: this.xc
+      thread: "Avatar"
     });
 
-    Assert.isXMPPMessage(msg.toXML().convertToString(),
+    Assert.isXMPPMessage(msg.toMessageStanza().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -87,11 +85,10 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     msg = XC.Message.extend({
       to: this.chong,
       type: 'chat',
-      body: "No subject and no thread",
-      connection: this.xc
+      body: "No subject and no thread"
     });
 
-    Assert.isXMPPMessage(msg.toXML().convertToString(),
+    Assert.isXMPPMessage(msg.toMessageStanza().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -113,11 +110,10 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       to: this.chong,
       type: 'chat',
       body: "message with ID",
-      id: 'message-1',
-      connection: this.xc
+      id: 'message-1'
     });
 
-    Assert.isXMPPMessage(msg.toXML().convertToString(),
+    Assert.isXMPPMessage(msg.toMessageStanza().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -136,8 +132,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       from: this.chong,
       type: 'chat',
       subject: "The Cave of the Two Lovers",
-      thread: "Avatar",
-      connection: this.xc
+      thread: "Avatar"
     });
     msg.reply("Badger moles coming toward me, come on guys, help me out.");
 
