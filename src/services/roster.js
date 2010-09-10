@@ -9,6 +9,17 @@
 XC.Service.Roster = XC.Base.extend(/** @lends XC.Service.Roster */{
 
   /**
+   * Register for incoming stanzas
+   */
+  activate: function () {
+    this.connection.registerStanzaHandler({
+      element: 'iq',
+      xmlns: XC.Roster.XMLNS
+    }, this._handleRosterPush);
+    return this;
+  },
+
+  /**
    * Request your roster from the server.
    *
    * @param {Object}   [callbacks] An Object with 'onError' and 'onSuccess'.

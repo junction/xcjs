@@ -52,7 +52,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       if (this.services.hasOwnProperty(s)) {
         var service = this.services[s];
 
-        this[s] = service.extend({connection: this});
+        this[s] = service.extend({connection: this}).activate();
       }
     }
 

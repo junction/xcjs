@@ -9,6 +9,17 @@
 XC.Service.Chat = XC.Base.extend(/** @lends XC.Service.Chat */{
 
   /**
+   * Register for incoming stanzas
+   */
+  activate: function () {
+    this.connection.registerStanzaHandler({
+      element: 'message',
+      type: 'chat'
+    }, this._handleMessages);
+    return this;
+  },
+
+  /**
    * Send a chat message to another entity.
    *
    * @param {String} jid         The jid to send the chat message to.
@@ -48,23 +59,21 @@ XC.Service.Chat = XC.Base.extend(/** @lends XC.Service.Chat */{
       from: XC.Entity.extend({jid: packet.getAttribute('from')})
     }), subject, body, thread;
 
-    if (packet.getType() === 'chat') {
-      subject = packet.getElementsByTagName('subject');
-      if (subject && subject[0]) {
-        msg.subject = subject[0].text;
-      }
-
-      body = packet.getElementsByTagName('body');
-      if (body && body[0]) {
-        msg.body = body[0].text;
-      }
-
-      thread = packet.getElementsByTagName('thread');
-      if (thread && thread[0]) {
-        msg.thread = thread[0].text;
-      }
-
-      this.onMessage(msg);
+    subject = packet.getElementsByTagName('subject');
+    if (subject && subject[0]) {
+      msg.subject = subject[0].text;
     }
+
+    body = packet.getElementsByTagName('body');
+    if (body && body[0]) {
+      msg.body = body[0].text;
+    }
+
+    thread = packet.getElementsByTagName('thread');
+    if (thread && thread[0]) {
+      msg.thread = thread[0].text;
+    }
+
+    this.onMessage(msg);
   }
 });

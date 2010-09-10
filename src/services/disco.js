@@ -9,6 +9,20 @@
 XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
   XC.Mixin.Discoverable,
 {
+  /**
+   * Register for incoming stanzas
+   */
+  activate: function () {
+    this.connection.registerStanzaHandler({
+      element: 'iq',
+      xmlns: XC.Disco.XMLNS + '#info'
+    }, this._handleDiscoInfo);
+    this.connection.registerStanzaHandler({
+      element: 'iq',
+      xmlns: XC.Disco.XMLNS + '#items'
+    }, this._handleDiscoItems);
+    return this;
+  },
 
   /**
    * Something went wrong- gracefully degrade and provide an

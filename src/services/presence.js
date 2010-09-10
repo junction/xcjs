@@ -9,6 +9,16 @@
 XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
 
   /**
+   * Register for incoming stanzas
+   */
+  activate: function () {
+    this.connection.registerStanzaHandler({
+      element: 'presence'
+    }, this._handlePresence);
+    return this;
+  },
+
+  /**
    * Broadcast presence to all users subscribed to your presence.
    *
    * @param {String} [show]      'away', 'chat', 'dnd', or 'xa' as defined in XC.Presence.SHOW
