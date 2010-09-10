@@ -50,11 +50,11 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       connection: this.xc
     });
 
-    Assert.isFunction(msg.toXML, 'XC.Message.toXML should be a function');
-    Assert.isString(msg.toXML(), 'XC.Message.toXML shoudl return a string');
+    Assert.isFunction(msg.toXML, 'XC.Message.toXML should be a function.');
+    Assert.isObject(msg.toXML(), 'XC.Message.toXML shoudl return an Object.');
   },
 
-  testSend: function () {
+  testXML: function () {
     var Assert = YAHOO.util.Assert;
 
     var msg = XC.Message.extend({
@@ -65,9 +65,8 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       thread: "Avatar",
       connection: this.xc
     });
-    msg.send();
 
-    Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
+    Assert.isXMPPMessage(msg.toXML().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -91,9 +90,8 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       body: "No subject and no thread",
       connection: this.xc
     });
-    msg.send();
 
-    Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
+    Assert.isXMPPMessage(msg.toXML().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -115,11 +113,11 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       to: this.chong,
       type: 'chat',
       body: "message with ID",
+      id: 'message-1',
       connection: this.xc
     });
-    msg.send("message-1");
 
-    Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
+    Assert.isXMPPMessage(msg.toXML().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -141,26 +139,23 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       thread: "Avatar",
       connection: this.xc
     });
-    msg.reply("Big bad badger mole coming right toward me- help me guys.");
+    msg.reply("Badger moles coming toward me, come on guys, help me out.");
 
-    var packet = XC.Test.Packet.extendWithXML(this.conn._data);
-
-    Assert.areEqual(packet.getType(), msg.type,
-                    "The expected packet type was incorrect.");
-    Assert.areEqual(packet.getTo(), this.chong.jid,
-                    "The expected entity to was incorrect.");
-
-    packet = packet.getNode();
-
-    var el = packet.getElementsByTagName('body')[0];
-    Assert.areEqual(el.textContent || el.text, "Big bad badger mole coming right toward me- help me guys.",
-                    "The expected body was incorrect.");
-    el = packet.getElementsByTagName('subject')[0];
-    Assert.areEqual(el.textContent || el.text, msg.subject,
-                    "The expected subject was incorrect.");
-    el = packet.getElementsByTagName('thread')[0];
-    Assert.areEqual(el.textContent || el.text, msg.thread,
-                    "The expected thread was incorrect.");
+    Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
+                         this.chong.jid, 'chat', {
+      body: {
+        xpath: '/message/body/text()',
+        value: "Badger moles coming toward me, come on guys, help me out."
+      },
+      subject: {
+        xpath: '/message/subject/text()',
+        value: msg.subject
+      },
+      thread: {
+        xpath: '/message/thread/text()',
+        value: msg.thread
+      }
+    });
   }
 
 });

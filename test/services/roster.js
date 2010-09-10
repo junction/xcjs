@@ -77,6 +77,15 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
     this.Roster.onRosterPush = function (entities) {
       Assert.areEqual(entities.length, 1,
                       "Unexpected number of resulting entities.");
+      Assert.isObject(entities[0],
+                      "The entity should be an Object.");
+      Assert.isString(entities[0].jid,
+                      "The JID should be a String.");
+      Assert.isString(entities[0].name,
+                      "The name should be a String.");
+      Assert.isArray(entities[0].groups,
+                      "Groups should be an Array.");
+
       Assert.areEqual(entities[0].jid, 'ford@betelguice.net',
                       "The JID is incorrect.");
       Assert.areEqual(entities[0].name, 'Ford Prefect',
@@ -125,6 +134,11 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
     this.Roster.onRosterPush = function (entities) {
       Assert.areEqual(entities.length, 2,
                       "Unexpected number of resulting entities.");
+      Assert.isObject(entities[0],
+                      "The entity should be an Object.");
+      Assert.isObject(entities[1],
+                      "The entity should be an Object.");
+
       Assert.areEqual(entities[0].jid, 'ford@betelguice.net',
                       "The JID is incorrect.");
       Assert.areEqual(entities[0].name, 'Ford Prefect',

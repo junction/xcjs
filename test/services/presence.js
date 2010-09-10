@@ -313,6 +313,9 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
         ), that = this;
 
     this.Presence.onPresence = function (entity) {
+      Assert.isString(entity.jid);
+      Assert.isString(entity.show);
+      Assert.isNumber(entity.priority);
       Assert.areEqual(entity.jid, 'juliet@example.com/chamber');
       Assert.areEqual(entity.show, 'chat');
       Assert.areEqual(entity.priority, 1);
