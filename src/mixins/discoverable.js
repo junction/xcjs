@@ -2,7 +2,7 @@
  * Mixin for discoverable services.
  * This provides a registration mechanism for
  * features, items, and identities for Service Discovery.
- * 
+ *
  * @namespace
  * @see XC.Service.Disco
  */
@@ -10,8 +10,9 @@ XC.Mixin.Discoverable = {
 
   /**
    * The root of the Disco tree.
-   * 
+   *
    * @type {XC.DiscoItem}
+   * @private
    */
   _rootNode: null,
 
@@ -39,6 +40,9 @@ XC.Mixin.Discoverable = {
     return null;
   },
 
+  /**
+   * @private
+   */
   _createNode: function (node) {
     if (!this._rootNode) {
       this._rootNode = {
@@ -65,7 +69,7 @@ XC.Mixin.Discoverable = {
    *
    * @param {String} xmlns   The namespace of the feature to add.
    * @param {String} [node]  The name of the node to add the feature to.
-   * 
+   *
    * @returns {XC.Discoverable} The calling object.
    */
   addFeature: function (xmlns, node) {
@@ -82,10 +86,10 @@ XC.Mixin.Discoverable = {
 
   /**
    * Remove a pre-existing feature from this item.
-   * 
+   *
    * @param {String} xmlns   The namespace of the feature to remove.
    * @param {String} [node]  The name of the node to add the feature to.
-   * 
+   *
    * @returns {Boolean} True if it was removed; false if it doesn't exist.
    */
   removeFeature: function (xmlns, node) {
@@ -105,10 +109,10 @@ XC.Mixin.Discoverable = {
 
   /**
    * Add a child item to this item.
-   * 
+   *
    * @param {XC.DiscoItem} discoItem  The item to add.
    * @param {String}       [nodeName] The name of the node to add the item to.
-   * 
+   *
    * @returns {XC.Discoverable} The calling object.
    */
   addItem: function (discoItem, nodeName) {
@@ -132,7 +136,7 @@ XC.Mixin.Discoverable = {
 
   /**
    * Remove a pre-existing item from this item.
-   * 
+   *
    * @param {XC.DiscoItem} discoItem The item to remove.
    * @param {String}       [node]    The name of the node to remove the item from.
    *
@@ -160,7 +164,7 @@ XC.Mixin.Discoverable = {
    * }
    * @param {Object} identity The identity to add.
    * @param {String} [node]   The name of the node to add the identity to.
-   * 
+   *
    * @returns {XC.Discoverable} The calling object.
    */
   addIdentity: function (identity, node) {
@@ -176,10 +180,10 @@ XC.Mixin.Discoverable = {
 
   /**
    * Remove a pre-existing identity from this item.
-   * 
+   *
    * @param {Object} identity The identity to remove.
    * @param {String} [node]   The name of the node to remove the identity from.
-   * 
+   *
    * @returns {Boolean} True if it was removed; false if it doesn't exist.
    */
   removeIdentity: function (identity, node) {
