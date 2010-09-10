@@ -15,7 +15,8 @@ XC.Entity = XC.Base.extend(/** @lends XC.Entity */{
    */
   jid: null
 
-}, XC.Mixin.Presence,
+}, XC.Mixin.JID,
+   XC.Mixin.Presence,
    XC.Mixin.Roster,
    XC.Mixin.Chat,
    XC.Mixin.Disco);

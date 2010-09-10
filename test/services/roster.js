@@ -143,6 +143,8 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
                       "The JID is incorrect.");
       Assert.areEqual(entities[0].name, 'Ford Prefect',
                       "The name is incorrect.");
+      Assert.isArray(entities[0].groups,
+                      "Groups should be an Array.");
       Assert.areEqual(entities[0].groups.length, 1,
                       "The number of groups is incorrect.");
       Assert.areEqual(entities[0].groups[0], "Hitchhiker",
@@ -152,6 +154,8 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
                       "The JID is incorrect.");
       Assert.areEqual(entities[1].name, 'Zaphod',
                       "The name is incorrect.");
+      Assert.isArray(entities[1].groups,
+                      "Groups should be an Array.");
       Assert.areEqual(entities[1].groups.length, 2,
                       "The number of groups is incorrect.");
       Assert.areEqual(entities[1].groups[0], "President",

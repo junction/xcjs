@@ -22,7 +22,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
   testMixin: function () {
     var Assert = YAHOO.util.Assert;
 
-    Assert.isObject(XC.Mixin.Presence, '');
+    Assert.isObject(XC.Mixin.Presence);
 
     var tmp = XC.Base.extend(XC.Mixin.Presence);
 

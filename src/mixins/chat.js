@@ -28,7 +28,7 @@ XC.Mixin.Chat = XC.Base.extend(/** @lends XC.Mixin.Chat */{
       id: id
     });
 
-    this.connection.send(msg.toXML().convertToString());
+    this.connection.send(msg.toMessageStanza().convertToString());
     return this;
   }
 

@@ -237,6 +237,20 @@ YAHOO.util.Assert.XPathTests = function (xml, additionalFields) {
   }
 };
 
+YAHOO.util.Assert.mixesIn = function (object, mixin /* ... */) {
+  var mixins = Array.from(arguments).slice(1),
+      idx = mixins.length, key;
+
+  while (idx--) {
+    for (key in mixins[idx]) {
+      if (mixins[idx].hasOwnProperty(key)) {
+        YAHOO.util.Assert.areNotSame(object[key], undefined,
+                                     "The slot '" + key + "' was not defined.");
+      }
+    }
+  }
+};
+
 YAHOO.util.Assert.throws = function (errorClass, cb) {
   try {
     cb();
