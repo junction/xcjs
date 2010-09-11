@@ -15,6 +15,11 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
     delete this.xc;
   },
 
+  testMixin: function () {
+    var Assert = YAHOO.util.Assert;
+    Assert.mixesIn(this.Roster, XC.Mixin.HandlerRegistration);
+  },
+
   testRequest: function () {
     var Assert = YAHOO.util.Assert;
 

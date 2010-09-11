@@ -2,22 +2,28 @@
  * Roster Management
  * @class
  * @extends XC.Base
+ * @extends XC.Mixin.HandlerRegistration
  *
  * RFC 3921: XMPP IM; Section 7 & 8
- * @see http://ietf.org/rfc/rfc3921.txt
+ * @see http://www.ietf.org/rfc/rfc3921.txt
  */
-XC.Service.Roster = XC.Base.extend(/** @lends XC.Service.Roster */{
-
+XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.Service.Roster */{
   /**
    * Register for incoming stanzas
+   * @private
    */
-  activate: function () {
-    this.connection.registerStanzaHandler({
-      element: 'iq',
-      xmlns: XC.Roster.XMLNS
-    }, this._handleRosterPush);
+  init: function ($super) {
+    $super.apply(this, Array.from(arguments).slice(1));
+
+    if (this.connection) {
+      this.connection.registerStanzaHandler({
+        element: 'iq',
+        xmlns: XC.Roster.XMLNS
+      }, this._handleRosterItem, this);
+    }
+
     return this;
-  },
+  }.around(),
 
   /**
    * Request your roster from the server.
@@ -83,7 +89,7 @@ XC.Service.Roster = XC.Base.extend(/** @lends XC.Service.Roster */{
    * @private
    * @param {Element} packet The incoming XML stanza.
    */
-  _handleRosterPush: function (packet) {
+  _handleRosterItem: function (packet) {
     var type = packet.getType();
 
     packet = packet.getNode();

@@ -2,21 +2,27 @@
  * Presence
  * @class
  * @extends XC.Base
+ * @extends XC.Mixin.HandlerRegistration,
  *
  * RFC 3921: XMPP IM; Section 5 & 6
  * @see http://www.ietf.org/rfc/rfc3921.txt
  */
-XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
-
+XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
+  /** @lends XC.Service.Presence */ {
   /**
    * Register for incoming stanzas
+   * @private
    */
-  activate: function () {
-    this.connection.registerStanzaHandler({
-      element: 'presence'
-    }, this._handlePresence);
+  init: function ($super) {
+    $super.apply(this, Array.from(arguments).slice(1));
+
+    if (this.connection) {
+      this.connection.registerStanzaHandler({
+        element: 'presence'
+      }, this._handlePresence, this);
+    }
     return this;
-  },
+  }.around(),
 
   /**
    * Broadcast presence to all users subscribed to your presence.
@@ -65,7 +71,7 @@ XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
 
   /**
    * Send 'unavailable' presence.
-   * 
+   *
    * @param {String} [status]  A custom message, typically giving a reason why the user is unavailable.
    */
   sendUnavailable: function (status) {
@@ -113,7 +119,7 @@ XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
 
   /**
    * Endpoint notifying you of updated presence.
-   * 
+   *
    * @param {XC.Entity} entity  The entity whose presence changed.
    */
   onPresence: function (entity) {},
@@ -140,7 +146,7 @@ XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
               var p = XC.XMPP.Presence.extend();
               p.attr('type', denyType);
               p.to(jid);
-              connection.send(p.convertToString());          
+              connection.send(p.convertToString());
             },
             to: packet.getTo(),
             from: jid,
@@ -178,7 +184,7 @@ XC.Service.Presence = XC.Base.extend(/** @lends XC.Service.Presence */{
       break;
     case 'subscribe':
       if (this.onSubscribe) {
-        this.onSubscribe(response('subscribed', 'unsubscribed'));        
+        this.onSubscribe(response('subscribed', 'unsubscribed'));
       }
       break;
     case 'subscribed':

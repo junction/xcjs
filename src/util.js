@@ -13,7 +13,10 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    * that lets {@link XC.Base.mixin} know
    * to mixin the function curried with the
    * base function.  If no base function exits
-   * the around function will be curried with null
+   * the around function will be curried with a
+   * dummy Function.  It is up to the client
+   * to check the return value of the curried
+   * function
    *
    * @example
    *   var foo = XC.Base.extend({

@@ -1,23 +1,36 @@
 /**
- * One-to-one Chatting
  * @class
  * @extends XC.Base
+ * @extends XC.Mixin.Discoverable
+ * @extends XC.Mixin.HandlerRegistration
  *
+ * One-to-one Chatting
  * RFC 3921: XMPP IM; Section 4
  * @see http://ietf.org/rfc/rfc3921.txt
+ *
+ * @example
+ * var xc = XC.Connection.extend(... with connection adapter ...);
+ * xc.initConnection();
+ * xc.Chat.registerHandler('onMessge', function(xcMessage) {...});
  */
-XC.Service.Chat = XC.Base.extend(/** @lends XC.Service.Chat */{
-
+XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable, XC.Mixin.HandlerRegistration,
+  /** @lends XC.Service.Chat */{
   /**
    * Register for incoming stanzas
+   * @private
    */
-  activate: function () {
-    this.connection.registerStanzaHandler({
-      element: 'message',
-      type: 'chat'
-    }, this._handleMessages);
+  init: function ($super) {
+    $super.apply(this, Array.from(arguments).slice(1));
+
+    if (this.connection) {
+      this.connection.registerStanzaHandler({
+        element: 'message',
+        type: 'chat'
+      }, this._handleMessages, this);
+    }
+
     return this;
-  },
+  }.around(),
 
   /**
    * Send a chat message to another entity.
@@ -41,13 +54,6 @@ XC.Service.Chat = XC.Base.extend(/** @lends XC.Service.Chat */{
   },
 
   /**
-   * Endpoint to recieve out-of-band messages.
-   *
-   * @param {XC.Message} message     A message from another entity.
-   */
-  onMessage: function (message) {},
-
-  /**
    * Handles out-of-band messages (All incoming messages)
    * from another entity.
    *
@@ -55,25 +61,25 @@ XC.Service.Chat = XC.Base.extend(/** @lends XC.Service.Chat */{
    */
   _handleMessages: function (packet) {
     var msg = XC.Message.extend({
-      to: XC.Entity.extend({jid: packet.getAttribute('to')}),
-      from: XC.Entity.extend({jid: packet.getAttribute('from')})
+      to: XC.Entity.extend({jid: packet.getTo() }),
+      from: XC.Entity.extend({jid: packet.getFrom() })
     }), subject, body, thread;
 
-    subject = packet.getElementsByTagName('subject');
+    subject = packet.doc.getElementsByTagName('subject');
     if (subject && subject[0]) {
       msg.subject = subject[0].text;
     }
 
-    body = packet.getElementsByTagName('body');
+    body = packet.doc.getElementsByTagName('body');
     if (body && body[0]) {
       msg.body = body[0].text;
     }
 
-    thread = packet.getElementsByTagName('thread');
+    thread = packet.doc.getElementsByTagName('thread');
     if (thread && thread[0]) {
       msg.thread = thread[0].text;
     }
 
-    this.onMessage(msg);
+    this.fireHandler('onMessage',msg);
   }
 });

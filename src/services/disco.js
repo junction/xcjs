@@ -4,31 +4,41 @@
  *
  * @extends XC.Base
  * @extends XC.Mixin.Discoverable
+ *
  * @class
  */
-XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
-  XC.Mixin.Discoverable,
-{
+XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
+  /** @lends XC.Service.Disco */ {
   /**
    * Register for incoming stanzas
+   * @private
    */
-  activate: function () {
-    this.connection.registerStanzaHandler({
-      element: 'iq',
-      xmlns: XC.Disco.XMLNS + '#info'
-    }, this._handleDiscoInfo);
-    this.connection.registerStanzaHandler({
-      element: 'iq',
-      xmlns: XC.Disco.XMLNS + '#items'
-    }, this._handleDiscoItems);
+  init: function ($super) {
+    $super.apply(this, Array.from(arguments).slice(1));
+
+    if (this.connection) {
+      this.connection.registerStanzaHandler({
+                                              element: 'iq',
+                                              xmlns: XC.Disco.XMLNS + '#info'
+                                            }, this._handleDiscoInfo, this);
+      this.connection.registerStanzaHandler({
+                                              element: 'iq',
+                                              xmlns: XC.Disco.XMLNS + '#items'
+                                            }, this._handleDiscoItems, this);
+
+      this
+        .addFeature(XC.Disco.XMLNS + '#info')
+        .addFeature(XC.Disco.XMLNS + '#items');
+    }
     return this;
-  },
+  }.around(),
 
   /**
    * Something went wrong- gracefully degrade and provide an
    * error message to the querying JID.
    *
    * @param {Element} iq  The iq containing the elements to send.
+   * @private
    */
   _handleError: function (iq) {
     iq.type('error');
@@ -46,6 +56,7 @@ XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
    * Disco items request on this entity.
    *
    * @param {Element} packet
+   * @private
    */
   _handleDiscoItems: function (packet) {
     var iq = XC.XMPP.IQ.extend(),
@@ -91,6 +102,7 @@ XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
    * Disco info request on this entity.
    *
    * @param {XC.Entity} entity
+   * @private
    */
   _handleDiscoInfo: function (packet) {
     var iq = XC.XMPP.IQ.extend(),
@@ -138,5 +150,4 @@ XC.Service.Disco = XC.Base.extend(/**@lends XC.Service.Disco */
     this.connection.send(iq.convertToString());
   }
 
-}).addFeature(XC.Disco.XMLNS + '#info')
-  .addFeature(XC.Disco.XMLNS + '#items');
+});

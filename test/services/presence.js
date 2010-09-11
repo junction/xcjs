@@ -15,6 +15,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     delete this.xc;
   },
 
+  testMixin: function () {
+    var Assert = YAHOO.util.Assert;
+    Assert.mixesIn(this.Presence, XC.Mixin.HandlerRegistration);
+  },
+
   testSend: function () {
     var Assert = YAHOO.util.Assert;
 

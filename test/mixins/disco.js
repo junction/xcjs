@@ -4,7 +4,7 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
 
   ran: false,
   setUp: function () {
-    this.conn = XC.Test.MockConnection.extend().init();
+    this.conn = XC.Test.MockConnection.extend();
     this.xc = XC.Connection.extend({connectionAdapter: this.conn});
     this.xc.initConnection();
 
