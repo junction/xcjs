@@ -189,7 +189,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
           var callbackSet = this.store[id],
               criteria = callbackSet.criteria,
               cb = callbackSet.callback,
-              domEl = stanza.doc.firstChild;
+              domEl = stanza.getNode();
 
           if (!cb || !criteria) {
             continue;
