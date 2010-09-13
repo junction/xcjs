@@ -5,17 +5,6 @@
 XC.Base = {
 
   /**
-   * Returns whether or not the Object passed in
-   * is a function.
-   *
-   * @param {Object} o The Object to test.
-   * @returns {Boolean} True if the Object is a function, false otherwise.
-   */
-  isFunction: function (o) {
-    return (typeof o === "function");
-  },
-
-  /**
    * Iterates over all arguments, adding their own
    * properties to the reciever.
    *
@@ -34,8 +23,8 @@ XC.Base = {
         if (arguments[i].hasOwnProperty(k)) {
           val = arguments[i][k];
 
-          if (XC.Base.isFunction(val) && val._isAround) {
-            fn = (this[k] && XC.Base.isFunction(this[k])) ? this[k] : empty;
+          if (XC.isFunction(val) && val._isAround) {
+            fn = (this[k] && XC.isFunction(this[k])) ? this[k] : empty;
             val = val.curry(fn);
           }
 

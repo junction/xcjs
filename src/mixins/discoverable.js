@@ -22,8 +22,8 @@ XC.Mixin.Discoverable = {
       this._rootNode = this.connection._discoverableRootNode;
     }
 
-    if (XC.Base.isFunction($super)) {
-      $super.apply(this, Array.from(arguments).slice(1));      
+    if (XC.isFunction($super)) {
+      $super.apply(this, Array.from(arguments).slice(1));
     }
   }.around(),
 

@@ -17,7 +17,7 @@ XC.Mixin.HandlerRegistration = {
 
     this._registeredHandlers = tmp;
 
-    if (XC.Base.isFunction($super)) {
+    if (XC.isFunction($super)) {
       $super.apply(this, Array.from(arguments).slice(1));
     }
   }.around(),
@@ -35,7 +35,7 @@ XC.Mixin.HandlerRegistration = {
    * @returns {Boolean} True indicates success
    */
   registerHandler: function (event, callback, target) {
-    if (!XC.Base.isFunction(callback)) {
+    if (!XC.isFunction(callback)) {
       return false;
     }
 

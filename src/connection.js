@@ -71,7 +71,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       }
     }
 
-    if (XC.Base.isFunction($super)) {
+    if (XC.isFunction($super)) {
       $super.apply(this, Array.from(arguments).slice(1));
     }
   }.around(),
@@ -124,7 +124,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * @returns {Mixed} id indicates success or false indicates failure
    */
   registerStanzaHandler: function (criteria, callback, target) {
-    if (!XC.Base.isFunction(callback)) {
+    if (!XC.isFunction(callback)) {
       return false;
     }
 

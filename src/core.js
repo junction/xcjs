@@ -1,7 +1,7 @@
 /**
  * XC: XMPP Client Library.
  * @namespace
- * 
+ *
  * XMPP Client Library.
  */
 var XC = {
@@ -33,6 +33,17 @@ var XC = {
     if (window.console && window.console.groupEnd) {
       window.console.groupEnd();
     }
+  },
+
+  /**
+   * Returns whether or not the Object passed in
+   * is a function.
+   *
+   * @param {Object} o The Object to test.
+   * @returns {Boolean} True if the Object is a function, false otherwise.
+   */
+  isFunction: function (o) {
+    return (typeof o === "function");
   }
 };
 
