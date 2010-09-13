@@ -37,7 +37,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     this.arthur.sendDirectedPresence(XC.Presence.SHOW.AWAY, 'Running away from a room full of monkeys that wrote Macbeth', 3);
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/presence/@to',
         value: this.arthur.jid
@@ -62,7 +62,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     this.arthur.sendPresenceSubscribe();
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/presence/@to',
         value: this.arthur.jid
@@ -79,7 +79,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     this.arthur.sendPresenceUnsubscribe();
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/presence/@to',
         value: this.arthur.jid
@@ -96,7 +96,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     this.arthur.cancelPresenceSubscription();
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/presence/@to',
         value: this.arthur.jid

@@ -30,7 +30,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     //   <status>Out to lunch</status>
     //   <priority>5</priority>
     // </presence>
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       show: {
         xpath: '/presence/show/text()',
         value: 'away'
@@ -47,7 +47,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     // <presence/>
     this.Presence.send();
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
         xpath: '/presence/@type',
         value: undefined
@@ -64,7 +64,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     // <presence type="unavailable"/>
     this.Presence.sendUnavailable();
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
         xpath: '/presence/@type',
         value: 'unavailable'
@@ -75,7 +75,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     //   <status>Gone home.</status>
     // </presence>
     this.Presence.sendUnavailable('Gone home.');
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
         xpath: '/presence/@type',
         value: 'unavailable'
@@ -107,7 +107,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'accept'
       request.accept();
-      Assert.XPathTests(that.conn._data, {
+      Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
           xpath: '/presence/@type',
           value: 'subscribed'
@@ -124,7 +124,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'deny'
       request.deny();
-      Assert.XPathTests(that.conn._data, {
+      Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
           xpath: '/presence/@type',
           value: 'unsubscribed'
@@ -164,7 +164,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'accept'
       request.accept();
-      Assert.XPathTests(that.conn._data, {
+      Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
           xpath: '/presence/@type',
           value: 'subscribe'
@@ -181,7 +181,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'deny'
       request.deny();
-      Assert.XPathTests(that.conn._data, {
+      Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
           xpath: '/presence/@type',
           value: 'unsubscribe'
@@ -221,7 +221,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'accept'
       request.accept();
-      Assert.XPathTests(that.conn._data, {
+      Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
           xpath: '/presence/@type',
           value: 'unsubscribed'
@@ -238,7 +238,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'deny'
       request.deny();
-      Assert.XPathTests(that.conn._data, {
+      Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
           xpath: '/presence/@type',
           value: 'subscribed'
@@ -278,7 +278,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'accept'
       request.accept();
-      Assert.XPathTests(that.conn._data, {
+      Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
           xpath: '/presence/@type',
           value: 'unsubscribe'
@@ -295,7 +295,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
       // Test 'deny'
       request.deny();
-      Assert.XPathTests(that.conn._data, {
+      Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
           xpath: '/presence/@type',
           value: 'subscribe'

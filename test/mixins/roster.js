@@ -43,7 +43,7 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
       }
     });
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       Set: {
         xpath: '/iq/@type',
         value: 'set'
@@ -84,7 +84,7 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
       }
     });
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       Set: {
         xpath: '/iq/@type',
         value: 'set'

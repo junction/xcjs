@@ -34,7 +34,7 @@ XC.Test.Chat = new YAHOO.tool.TestCase({
 
     this.arthur.sendChat("Pardon me for breathing, which I never do anyway so I don't know why I bother to say it, oh God I'm so depressed. Here's another one of those self-satisfied doors. Life! Don't talk to me about life.", "Doors", "HHGTTG", '42');
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
         xpath: '/message/@type',
         value: 'chat'

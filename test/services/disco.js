@@ -51,7 +51,7 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoInfo(packet);
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/iq/@to',
         value: packet.getFrom()
@@ -86,7 +86,7 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoInfo(packet);
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/iq/@to',
         value: packet.getFrom()
@@ -128,7 +128,7 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoItems(packet);
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/iq/@to',
         value: packet.getFrom()
@@ -167,7 +167,7 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoItems(packet);
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/iq/@to',
         value: packet.getFrom()
@@ -222,7 +222,7 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     );
     this.Disco._handleDiscoInfo(packet);
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/iq/@to',
         value: packet.getFrom()
@@ -263,7 +263,7 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
 
     this.Disco._handleDiscoItems(packet);
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
         xpath: '/iq/@to',
         value: packet.getFrom()

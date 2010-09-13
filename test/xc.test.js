@@ -5,11 +5,9 @@ XC.Test.Mixin = {};
 XC.Test.Service = {};
 
 XC.Test.MockConnection = XC.ConnectionAdapter.extend({
-  _handlers: {},
-
+  _handlers: null,
   _data: null,
-
-  _responses: [],
+  _responses: null,
 
   jid: function () {
     return 'mock@example.com';

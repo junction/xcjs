@@ -102,7 +102,7 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
     this.conn.fireEvent('iq', packet);
 
     Assert.isTrue(fired, 'callback did not fire');
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
         xpath: '/iq/@type',
         value: 'result'
