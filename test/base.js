@@ -2,15 +2,6 @@
 XC.Test.Base = new YAHOO.tool.TestCase({
   name: 'XC.Base Tests',
 
-  testIsFunction: function () {
-    var Assert = YAHOO.util.Assert;
-
-    Assert.isFunction(XC.isFunction, 'XC.isFunction does not exist');
-
-    Assert.isTrue(XC.isFunction(function () {}), 'function is not a function');
-    Assert.isFalse(XC.isFunction({}), 'object should not be a function');
-  },
-
   testExtend: function () {
     var Assert = YAHOO.util.Assert;
 
