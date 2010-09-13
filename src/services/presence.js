@@ -171,7 +171,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
       }
 
       if (priority) {
-        entity.priority = parseInt(priority.textContent || priority.text);
+        entity.priority = parseInt(priority.textContent || priority.text, 10);
       }
 
       this.onPresence(entity);

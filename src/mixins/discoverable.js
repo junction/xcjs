@@ -12,7 +12,7 @@ XC.Mixin.Discoverable = {
   /**
    * @private
    */
-  init: function($super) {
+  init: function ($super) {
     // init the root node
     if (this.connection && !this._rootNode) {
       if (!this.connection._discoverableRootNode) {
@@ -22,8 +22,9 @@ XC.Mixin.Discoverable = {
       this._rootNode = this.connection._discoverableRootNode;
     }
 
-    if (XC.Base.isFunction($super))
-      $super.apply(this, Array.from(arguments).slice(1));
+    if (XC.Base.isFunction($super)) {
+      $super.apply(this, Array.from(arguments).slice(1));      
+    }
   }.around(),
 
   /**
@@ -37,7 +38,7 @@ XC.Mixin.Discoverable = {
   /**
    * @private
    */
-  _createNode: function() {
+  _createNode: function () {
     return {
       identities: [],
       features: [],

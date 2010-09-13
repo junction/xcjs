@@ -8,26 +8,26 @@
  */
 XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID */{
 
-  getBareJID: function() {
+  getBareJID: function () {
     var ret = "";
     ret += (this.getJIDParts().node) ? this.getJIDParts().node + "@" : "";
     ret += this.getJIDParts().domain;
     return ret;
   },
 
-  getJIDNode: function() {
+  getJIDNode: function () {
     return this.getJIDParts().node;
   },
 
-  getJIDDomain: function() {
+  getJIDDomain: function () {
     return this.getJIDParts().domain;
   },
 
-  getJIDResource: function() {
+  getJIDResource: function () {
     return this.getJIDParts().resource;
   },
 
-  getJIDParts: function() {
+  getJIDParts: function () {
     if (this.jid && this.jid._cachedJIDParts) {
       return this.jid._cachedJIDParts;
     }

@@ -28,14 +28,14 @@ XC.Base = {
    */
   mixin: function () {
     var len = arguments.length,
-        val, fn;
+        val, fn, empty = function () {};
     for (var i = 0; i < len; i++) {
       for (var k in arguments[i]) {
         if (arguments[i].hasOwnProperty(k)) {
           val = arguments[i][k];
 
           if (XC.Base.isFunction(val) && val._isAround) {
-            fn = (this[k] && XC.Base.isFunction(this[k])) ? this[k] : new Function();
+            fn = (this[k] && XC.Base.isFunction(this[k])) ? this[k] : empty;
             val = val.curry(fn);
           }
 

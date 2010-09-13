@@ -80,6 +80,6 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable, XC.Mixin.HandlerRegistra
       msg.thread = thread[0].text;
     }
 
-    this.fireHandler('onMessage',msg);
+    this.fireHandler('onMessage', msg);
   }
 });

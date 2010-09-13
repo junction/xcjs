@@ -9,15 +9,17 @@ XC.Mixin.HandlerRegistration = {
   /**
    * @private
    */
-  init: function($super) {
+  init: function ($super) {
     var tmp = {};
-    if (this._registeredHandlers)
+    if (this._registeredHandlers) {
       tmp = XC.Base.extend(this._registeredHandlers);
+    }
 
     this._registeredHandlers = tmp;
 
-    if (XC.Base.isFunction($super))
+    if (XC.Base.isFunction($super)) {
       $super.apply(this, Array.from(arguments).slice(1));
+    }
   }.around(),
 
   /**
@@ -32,9 +34,10 @@ XC.Mixin.HandlerRegistration = {
    *
    * @returns {Boolean} True indicates success
    */
-  registerHandler: function(event,callback,target) {
-    if (!XC.Base.isFunction(callback))
+  registerHandler: function (event, callback, target) {
+    if (!XC.Base.isFunction(callback)) {
       return false;
+    }
 
     this._registeredHandlers[event] = {
       action: callback,
@@ -47,11 +50,11 @@ XC.Mixin.HandlerRegistration = {
   /**
    * @private
    */
-  fireHandler: function(event) {
+  fireHandler: function (event) {
     if (this._registeredHandlers[event]) {
       var action = this._registeredHandlers[event].action,
-        target = this._registeredHandlers[event].target;
-      action.apply(target,Array.from(arguments).slice(1));
+          target = this._registeredHandlers[event].target;
+      action.apply(target, Array.from(arguments).slice(1));
     }
   }
 };

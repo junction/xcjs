@@ -20,7 +20,6 @@ XC.Mixin.ChatStateMessage = XC.Base.extend(XC.Discoverable, {
 
     return XC.XML.Element.extend({name: this.state,
                                   xmlns: XC.ChatState.XMLNS});
-    return msg;
   }
 
 });//.addFeature(XC.ChatState.XMLNS);

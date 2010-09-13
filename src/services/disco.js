@@ -19,13 +19,13 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
 
     if (this.connection) {
       this.connection.registerStanzaHandler({
-                                              element: 'iq',
-                                              xmlns: XC.Disco.XMLNS + '#info'
-                                            }, this._handleDiscoInfo, this);
+        element: 'iq',
+        xmlns: XC.Disco.XMLNS + '#info'
+      }, this._handleDiscoInfo, this);
       this.connection.registerStanzaHandler({
-                                              element: 'iq',
-                                              xmlns: XC.Disco.XMLNS + '#items'
-                                            }, this._handleDiscoItems, this);
+        element: 'iq',
+        xmlns: XC.Disco.XMLNS + '#items'
+      }, this._handleDiscoItems, this);
 
       this.addFeature(XC.Disco.XMLNS + '#info')
           .addFeature(XC.Disco.XMLNS + '#items');

@@ -87,11 +87,11 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
         itemsLength = items.length;
 
     for (var i = 0; i < itemsLength; i++) {
-      this.fireHandler('onRosterItem',this._entityFromItem(items[i]));
+      this.fireHandler('onRosterItem', this._entityFromItem(items[i]));
     }
   },
 
-  _entityFromItem: function(item) {
+  _entityFromItem: function (item) {
     var entity = this.connection.Entity.extend({
       jid: item.getAttribute('jid'),
       roster: {
@@ -103,7 +103,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
     });
 
     var groups = item.getElementsByTagName('group');
-    for (var j=0,len=groups.length; j<len; j++) {
+    for (var j = 0, len = groups.length; j < len; j++) {
       entity.roster.groups.push(groups[j].textContent || groups[j].text);
     }
     return entity;

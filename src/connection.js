@@ -126,12 +126,14 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * @returns {Mixed} id indicates success or false indicates failure
    */
   registerStanzaHandler: function (criteria, callback, target) {
-    if (!XC.Base.isFunction(callback)) return false;
+    if (!XC.Base.isFunction(callback)) {
+      return false;
+    }
 
     target = target || window || this;
-    return this._stanzaHandlers.insert(criteria, function() {
-                                         callback.apply(target, arguments);
-                                       });
+    return this._stanzaHandlers.insert(criteria, function () {
+      callback.apply(target, arguments);
+    });
   },
 
   /**
@@ -203,8 +205,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
           if (criteria.xmlns &&
               !(domEl.getAttribute('xmlns') === criteria.xmlns ||
-              (domEl.getFirstElementChild()
-               && domEl.getFirstElementChild().getAttribute('xmlns') === criteria.xmlns))) {
+              (domEl.getFirstElementChild() &&
+               domEl.getFirstElementChild().getAttribute('xmlns') === criteria.xmlns))) {
             continue;
           }
 
