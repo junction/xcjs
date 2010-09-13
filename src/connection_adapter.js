@@ -10,7 +10,7 @@
  * @example
  * var conn = new JSJaCConnection();
  * var adapter = XC.ConnectionAdapter.extend({
- *   jid: conn.jid,
+ *   jid: function() { return conn.jid; },
  *
  *   registerHandler: function (event, handler) {
  *     return conn.registerHandler(event, handler);
