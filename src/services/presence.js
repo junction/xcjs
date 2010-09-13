@@ -132,7 +132,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
   _handlePresence: function (packet) {
     var jid = packet.getFrom(),
         type = packet.getType(),
-        entity = XC.Entity.extend({jid: jid}),
+        entity = XC.Entity.extend({jid: jid, presence: {}}),
         connection = this.connection,
         response = function (acceptType, denyType) {
           return {
@@ -161,17 +161,17 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
           status = packet.getElementsByTagName('status')[0],
           priority = packet.getElementsByTagName('priority')[0];
 
-      entity.available = true;
+      entity.presence.available = true;
       if (show) {
-        entity.show = show.textContent || show.text;
+        entity.presence.show = show.getTextContent();
       }
 
       if (status) {
-        entity.status = status.textContent || status.text;
+        entity.presence.status = status.getTextContent();
       }
 
       if (priority) {
-        entity.priority = parseInt(priority.textContent || priority.text, 10);
+        entity.presence.priority = parseInt(priority.getTextContent(), 10);
       }
 
       this.onPresence(entity);
@@ -203,7 +203,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
       }
       break;
     case 'unavailable':
-      entity.available = false;
+      entity.presence.available = false;
       this.onPresence(entity);
       break;
     }

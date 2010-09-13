@@ -7,18 +7,33 @@
  */
 XC.Mixin.Roster = {
 
-  /**
-   * The optional name of the entity.
-   * @type {String}
-   */
-  name: null,
+  roster: {
+    /**
+     * The optional name of the entity.
+     * @type {String}
+     */
+    name: null,
 
-  /**
-   * The groups the entity is a part of.
-   * @type {Array}
-   */
-  groups: null,
+    /**
+     * The groups the entity is a part of.
+     * @type {Array}
+     */
+    groups: null,
 
+    /**
+     * What the user is requesting
+     * 'subscribe'
+     * @type {Array}
+     */
+    ask: null,
+
+    /**
+     * The subscription type of the entity
+     * 'none', 'to', 'from', or 'both'
+     * @type {Array}
+     */
+    subscription: null
+  },
 
   /**
    * Update an entity in your roster.
@@ -31,7 +46,7 @@ XC.Mixin.Roster = {
         q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
         item = XC.XML.Element.extend({name: 'item'}),
         Group = XC.XML.Element.extend({name: 'group'}),
-        idx = (entity.roster && entity.roster.groups) ? entity.roster.groups.length : 0,
+        len = (entity.roster && entity.roster.groups) ? entity.roster.groups.length : 0,
         group;
     iq.type('set');
     item.attr('jid', entity.jid);
@@ -40,9 +55,9 @@ XC.Mixin.Roster = {
       item.attr('name', entity.roster.name);
     }
 
-    while (idx--) {
+    for (var i = 0; i < len; i++) {
       group = Group.extend();
-      group.text = entity.roster && entity.roster.groups[idx];
+      group.text = entity.roster && entity.roster.groups[i];
       item.addChild(group);
     }
 

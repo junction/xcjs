@@ -7,29 +7,31 @@
  */
 XC.Mixin.Presence = {
 
-  /**
-   * What the status of the entity is.
-   * @type {XC.Presence.SHOW}
-   */
-  show: null,
+  presence: {
+    /**
+     * What the status of the entity is.
+     * @type {XC.Presence.SHOW}
+     */
+    show: null,
 
-  /**
-   * The custom status of the entity.
-   * @type {String}
-   */
-  status: null,
+    /**
+     * The custom status of the entity.
+     * @type {String}
+     */
+    status: null,
 
-  /**
-   * A number between -128 and +127
-   * @type {Number}
-   */
-  priority: null,
+    /**
+     * A number between -128 and +127
+     * @type {Number}
+     */
+    priority: null,
 
-  /**
-   * Whether or not the user is available.
-   * @type {Boolean}
-   */
-  available: null,
+    /**
+     * Whether or not the user is available.
+     * @type {Boolean}
+     */
+    available: null
+  },
 
   // In band
 
