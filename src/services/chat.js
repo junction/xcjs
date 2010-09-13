@@ -63,21 +63,22 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable, XC.Mixin.HandlerRegistra
     var msg = XC.Message.extend({
       to: XC.Entity.extend({jid: packet.getTo() }),
       from: XC.Entity.extend({jid: packet.getFrom() })
-    }), subject, body, thread;
+    }), subject, body, thread,
+      node = packet.getNode();
 
-    subject = packet.doc.getElementsByTagName('subject');
+    subject = node.getElementsByTagName('subject');
     if (subject && subject[0]) {
-      msg.subject = subject[0].text;
+      msg.subject = XC_DOMHelper.getTextContent(subject[0]);
     }
 
-    body = packet.doc.getElementsByTagName('body');
+    body = node.getElementsByTagName('body');
     if (body && body[0]) {
-      msg.body = body[0].text;
+      msg.body = XC_DOMHelper.getTextContent(body[0]);
     }
 
-    thread = packet.doc.getElementsByTagName('thread');
+    thread = node.getElementsByTagName('thread');
     if (thread && thread[0]) {
-      msg.thread = thread[0].text;
+      msg.thread = XC_DOMHelper.getTextContent(thread[0]);
     }
 
     this.fireHandler('onMessage', msg);

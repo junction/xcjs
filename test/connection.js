@@ -134,6 +134,7 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
   },
 
   testHandlerRegistrationCriteria: function() {
+
     var Assert = YAHOO.util.Assert;
 
     var handlerAFired = false,
@@ -168,7 +169,8 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
                 + '<child xmlns="xcjs:child:level"></child>'
                 + '</message>';
 
-    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    var pkt = XC.Test.Packet.extendWithXML(xml);
+    this.conn.fireEvent('message', pkt);
     Assert.isTrue(handlerAFired, 'handlerA did not fire');
     Assert.isTrue(handlerBFired, 'handlerB did not fire');
     Assert.isTrue(handlerCFired, 'handlerC did not fire');

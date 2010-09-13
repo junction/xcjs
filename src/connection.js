@@ -193,7 +193,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
           var callbackSet = this.store[id],
               criteria = callbackSet.criteria,
               cb = callbackSet.callback,
-              domEl = stanza.getNode();
+              domEl = stanza.getNode(),
+              firstChild = XC_DOMHelper.getFirstElementChild(domEl);
 
           if (!cb || !criteria) {
             continue;
@@ -205,8 +206,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
           if (criteria.xmlns &&
               !(domEl.getAttribute('xmlns') === criteria.xmlns ||
-              (domEl.getFirstElementChild() &&
-               domEl.getFirstElementChild().getAttribute('xmlns') === criteria.xmlns))) {
+              (firstChild && firstChild.getAttribute('xmlns') === criteria.xmlns))) {
             continue;
           }
 
