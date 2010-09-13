@@ -5,7 +5,6 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend().init();
     this.xc = XC.Connection.extend({connectionAdapter: this.conn});
-    this.xc.initConnection();
 
     this.marvin = XC.Entity.extend({
       jid: "marvin@heart-of-gold.com",

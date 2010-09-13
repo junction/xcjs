@@ -6,7 +6,6 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend();
     this.xc = XC.Connection.extend({connectionAdapter: this.conn});
-    this.xc.initConnection();
 
     this.romeo = this.xc.Entity.extend({
       name: 'Romeo',

@@ -5,7 +5,6 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend().init();
     this.xc = XC.Connection.extend({connectionAdapter: this.conn});
-    this.xc.initConnection();
   },
 
   tearDown: function () {
@@ -23,11 +22,10 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
         badAdapter = XC.Test.MockConnection.extend({
           jid: function () {
             return undefined;
-          }}).init(),
-        badXC = XC.Connection.extend({connectionAdapter: badAdapter});
+          }}).init();
 
     Assert.throws(XC.Error, function () {
-                    badXC.initConnection();
+                    XC.Connection.extend({connectionAdapter: badAdapter});
                   });
   },
 
@@ -195,7 +193,6 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     delete this.xc;
 
     this.xc = XC.Connection.extend({connectionAdapter: this.conn});
-    this.xc.initConnection();
 
     var id2 = this.xc.registerStanzaHandler({element: 'message'}, function() {
                                               callCount++;

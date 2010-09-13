@@ -5,7 +5,6 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend().init();
     this.xc = XC.Connection.extend({connectionAdapter: this.conn});
-    this.xc.initConnection();
 
     this.Roster = this.xc.Roster;
   },
