@@ -12,10 +12,6 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     delete this.xc;
   },
 
-  testInitConnection: function() {
-    var Assert = YAHOO.util.Assert;
-  },
-
   testNoJID: function () {
     var Assert = YAHOO.util.Assert,
         expectedError = new Error(),
