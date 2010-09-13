@@ -7,7 +7,8 @@
  *
  * @class
  */
-XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
+XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable, 
+                                  XC.Mixin.HandlerRegistration,
   /** @lends XC.Service.Disco */ {
   /**
    * Register for incoming stanzas
@@ -26,9 +27,8 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
                                               xmlns: XC.Disco.XMLNS + '#items'
                                             }, this._handleDiscoItems, this);
 
-      this
-        .addFeature(XC.Disco.XMLNS + '#info')
-        .addFeature(XC.Disco.XMLNS + '#items');
+      this.addFeature(XC.Disco.XMLNS + '#info')
+          .addFeature(XC.Disco.XMLNS + '#items');
     }
     return this;
   }.around(),

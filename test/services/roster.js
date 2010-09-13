@@ -100,7 +100,7 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
       Assert.areEqual(entities[0].groups[0], "Hitchhiker",
                       "The group is incorrect.");
     };
-    this.Roster._handleRosterPush(packet);
+    this.Roster._handleRosterItem(packet);
 
     Assert.XPathTests(this.conn._data, {
       type: {
@@ -168,7 +168,7 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
       Assert.areEqual(entities[1].groups[0], "Imbecile",
                       "The group is incorrect.");
     };
-    this.Roster._handleRosterPush(packet);
+    this.Roster._handleRosterItem(packet);
   }
 
 });

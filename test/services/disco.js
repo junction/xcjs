@@ -2,19 +2,12 @@
 XC.Test.Service.Disco = new YAHOO.tool.TestCase({
   name: 'XC Disco Service Tests',
 
-  ran: false,
   setUp: function () {
     this.conn = XC.Test.MockConnection.extend().init();
     this.xc = XC.Connection.extend({connectionAdapter: this.conn});
     this.xc.initConnection();
 
     this.Disco = this.xc.Disco;
-
-    // Do this once.
-    if (this.ran) {
-      return;
-    }
-    this.ran = true;
 
     this.Disco.addItem({
       jid: this.conn.jid(),
@@ -29,7 +22,6 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
                         node: "CD"}, 'http://jabber.org/protocol/tune');
     this.Disco.addItem({jid: 'pubsub.montague.net',
                         node: "music/R/Romeo/iPod"}, 'http://jabber.org/protocol/tune');
-
   },
 
   tearDown: function () {
