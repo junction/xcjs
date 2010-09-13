@@ -177,6 +177,32 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     Assert.isTrue(handlerFFired, 'handlerF did not fire');
   },
 
+  testHandlerBugThatMadeErickGoCrazy: function() {
+    var Assert = YAHOO.util.Assert;
+
+    var callCount = 0;
+    var id = this.xc.registerStanzaHandler({element: 'message'}, function() {
+                                             callCount++;
+                                           });
+
+    var xml = '<message from="sender@source.org" to="me@dest.com" type="get" xmlns="xcjs:top:level" id="test-1">'
+                + '<child xmlns="xcjs:child:level"></child>'
+                + '</message>';
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+
+    delete this.xc;
+
+    this.xc = XC.Connection.extend({connectionAdapter: this.conn});
+    this.xc.initConnection();
+
+    var id2 = this.xc.registerStanzaHandler({element: 'message'}, function() {
+                                              callCount++;
+                                            });
+
+    this.conn.fireEvent('message',XC.Test.Packet.extendWithXML(xml));
+    Assert.areEqual(2,callCount, 'handlers should not be added to connection prototype');
+  },
+
   testHandlerWithMultipleCriteria: function() {
     var Assert = YAHOO.util.Assert;
 

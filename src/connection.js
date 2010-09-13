@@ -49,6 +49,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
     }
     var serviceMap = {};
 
+    this._stanzaHandlers = this._stanzaHandlersTemplate.extend();
+
     for (var s in this.services) {
       if (this.services.hasOwnProperty(s)) {
         var service = this.services[s];
@@ -159,7 +161,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * @see XC.Connection#registerStanzaHandler
    * @see XC.Connection#unregisterStanzaHandler
    */
-  _stanzaHandlers: XC.Base.extend({
+  _stanzaHandlersTemplate: XC.Base.extend({
     lastID: 0,
     store: {},
 

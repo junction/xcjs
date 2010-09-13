@@ -143,7 +143,7 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
     });
 
     this.conn.fireEvent('iq', packet);
-    Assert.isEqual(2, count, 'onRosterItem should be called twice');
+    Assert.areEqual(2, count, 'onRosterItem should be called twice');
   }
 
 });
