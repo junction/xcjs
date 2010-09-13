@@ -13,6 +13,7 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
   tearDown: function () {
     delete this.conn;
     delete this.xc;
+    delete this.Roster;
   },
 
   testMixin: function () {
@@ -45,16 +46,16 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
 
         Assert.areEqual(entities[0].jid, "zaphod@heart-of-gold.com",
                         "The entity's jid is not what was expected.");
-        Assert.areEqual(entities[0].name, "Zaphod",
+        Assert.areEqual(entities[0].roster.name, "Zaphod",
                         "The entity's name is not what was expected.");
-        Assert.areEqual(entities[0].groups[0], "President",
+        Assert.areEqual(entities[0].roster.groups[0], "President",
                         "The entity's group is not what was expected.");
 
         Assert.areEqual(entities[1].jid, "ford@betelguice.net",
                         "The entity's jid is not what was expected.");
-        Assert.areEqual(entities[1].name, "Ford Prefect",
+        Assert.areEqual(entities[1].roster.name, "Ford Prefect",
                         "The entity's name is not what was expected.");
-        Assert.areEqual(entities[1].groups[0], "Hitchhiker",
+        Assert.areEqual(entities[1].roster.groups[0], "Hitchhiker",
                         "The entity's group is not what was expected.");
       },
 
@@ -69,39 +70,38 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
 
   testRosterSetPush: function () {
     var Assert = YAHOO.util.Assert,
+        fired,
         packet = XC.Test.Packet.extendWithXML(
-          '<iq type="set" id="set1"> \
-             <query xmlns="jabber:iq:roster"> \
-               <item jid="ford@betelguice.net" \
-                     name="Ford Prefect"> \
-                 <group>Hitchhiker</group> \
-               </item> \
-             </query> \
-           </iq>');
+          '<iq type="set" id="set1">'
+          + '<query xmlns="jabber:iq:roster">'
+            + '<item jid="ford@betelguice.net" name="Ford Prefect">'
+              + '<group>Hitchhiker</group>'
+            + '</item>'
+            + '</query>'
+            + '</iq>');
 
-    this.Roster.onRosterPush = function (entities) {
-      Assert.areEqual(entities.length, 1,
-                      "Unexpected number of resulting entities.");
-      Assert.isObject(entities[0],
-                      "The entity should be an Object.");
-      Assert.isString(entities[0].jid,
+    this.xc.Roster.registerHandler('onRosterItem', function (entity) {
+      fired = true;
+      Assert.isString(entity.jid,
                       "The JID should be a String.");
-      Assert.isString(entities[0].name,
+      Assert.isString(entity.roster.name,
                       "The name should be a String.");
-      Assert.isArray(entities[0].groups,
+      Assert.isArray(entity.roster.groups,
                       "Groups should be an Array.");
 
-      Assert.areEqual(entities[0].jid, 'ford@betelguice.net',
+      Assert.areEqual(entity.jid, 'ford@betelguice.net',
                       "The JID is incorrect.");
-      Assert.areEqual(entities[0].name, 'Ford Prefect',
+      Assert.areEqual(entity.roster.name, 'Ford Prefect',
                       "The name is incorrect.");
-      Assert.areEqual(entities[0].groups.length, 1,
+      Assert.areEqual(entity.roster.groups.length, 1,
                       "The number of groups is incorrect.");
-      Assert.areEqual(entities[0].groups[0], "Hitchhiker",
+      Assert.areEqual(entity.roster.groups[0], "Hitchhiker",
                       "The group is incorrect.");
-    };
-    this.Roster._handleRosterItem(packet);
+    });
 
+    this.conn.fireEvent('iq', packet);
+
+    Assert.isTrue(fired, 'callback did not fire');
     Assert.XPathTests(this.conn._data, {
       type: {
         xpath: '/iq/@type',
@@ -119,7 +119,7 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
 
   },
 
-  testRosterPush: function () {
+  testRosterGet: function () {
     var Assert = YAHOO.util.Assert,
         packet = XC.Test.Packet.extendWithXML(
           '<iq type="result" id="result1"> \
@@ -136,39 +136,14 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
              </query> \
            </iq>');
 
-    this.Roster.onRosterPush = function (entities) {
-      Assert.areEqual(entities.length, 2,
-                      "Unexpected number of resulting entities.");
-      Assert.isObject(entities[0],
-                      "The entity should be an Object.");
-      Assert.isObject(entities[1],
-                      "The entity should be an Object.");
+    var count = 0;
 
-      Assert.areEqual(entities[0].jid, 'ford@betelguice.net',
-                      "The JID is incorrect.");
-      Assert.areEqual(entities[0].name, 'Ford Prefect',
-                      "The name is incorrect.");
-      Assert.isArray(entities[0].groups,
-                      "Groups should be an Array.");
-      Assert.areEqual(entities[0].groups.length, 1,
-                      "The number of groups is incorrect.");
-      Assert.areEqual(entities[0].groups[0], "Hitchhiker",
-                      "The group is incorrect.");
+    this.xc.Roster.registerHandler('onRosterItem', function (entity) {
+      count++;
+    });
 
-      Assert.areEqual(entities[1].jid, 'zaphod@heart-of-gold.com',
-                      "The JID is incorrect.");
-      Assert.areEqual(entities[1].name, 'Zaphod',
-                      "The name is incorrect.");
-      Assert.isArray(entities[1].groups,
-                      "Groups should be an Array.");
-      Assert.areEqual(entities[1].groups.length, 2,
-                      "The number of groups is incorrect.");
-      Assert.areEqual(entities[1].groups[0], "President",
-                      "The group is incorrect.");
-      Assert.areEqual(entities[1].groups[0], "Imbecile",
-                      "The group is incorrect.");
-    };
-    this.Roster._handleRosterItem(packet);
+    this.conn.fireEvent('iq', packet);
+    Assert.isEqual(2, count, 'onRosterItem should be called twice');
   }
 
 });

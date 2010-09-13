@@ -8,9 +8,11 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
     this.xc.initConnection();
 
     this.marvin = XC.Entity.extend({
-      name: "Marvin",
       jid: "marvin@heart-of-gold.com",
-      connection: this.xc
+      connection: this.xc,
+      roster: {
+        name: "Marvin"
+      }
     });
   },
 

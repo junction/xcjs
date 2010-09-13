@@ -36,7 +36,6 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
     Assert.isObject(this.Disco, "Disco was not mixed in properly.");
     Assert.areSame(this.xc, this.Disco.connection);
     Assert.mixesIn(this.Disco, XC.Mixin.Discoverable);
-    Assert.mixesIn(this.Disco, XC.Mixin.HandlerRegistration);
   },
 
   testDiscoInfo: function () {

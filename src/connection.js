@@ -201,7 +201,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
           if (criteria.xmlns &&
               !(domEl.getAttribute('xmlns') === criteria.xmlns ||
-              (domEl.firstChild && domEl.firstChild.getAttribute('xmlns') === criteria.xmlns))) {
+              (domEl.getFirstElementChild()
+               && domEl.getFirstElementChild().getAttribute('xmlns') === criteria.xmlns))) {
             continue;
           }
 

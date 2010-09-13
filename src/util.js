@@ -104,3 +104,15 @@ Array.prototype.indexOf = Array.prototype.indexOf || function (o) {
   }
   return -1;
 };
+
+/**
+ * Node.firstChild is insufficient to return the first child node
+ * that is an element
+ */
+Node.prototype.getFirstElementChild = function() {
+  for(var i=0,l=this.childNodes.length;i<l;i++) {
+    if (this.childNodes[i].nodeType === Node.ELEMENT_NODE)
+      return this.childNodes[i];
+  }
+  return null;
+};

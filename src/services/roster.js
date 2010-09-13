@@ -6,6 +6,11 @@
  *
  * RFC 3921: XMPP IM; Section 7 & 8
  * @see http://www.ietf.org/rfc/rfc3921.txt
+ *
+ * @example
+ * var xc = XC.Connection.extend(... with connection adapter ...);
+ * xc.initConnection();
+ * xc.Roster.registerHandler('onRosterItem', function(xcEntity) {...});
  */
 XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.Service.Roster */{
   /**
@@ -19,7 +24,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
       this.connection.registerStanzaHandler({
         element: 'iq',
         xmlns: XC.Roster.XMLNS
-      }, this._handleRosterItem, this);
+      }, this._handleRosterItems, this);
     }
 
     return this;
@@ -33,7 +38,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
   requestItems: function (callbacks) {
     var iq = XC.XMPP.IQ.extend(),
         q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
-        that = this.connection;
+        that = this;
     iq.type('get');
     iq.addChild(q);
 
@@ -49,24 +54,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
             entity, item, groups, len;
 
         for (var i = 0; i < itemsLength; i++) {
-          item = items[i];
-          entity = that.Entity.extend({
-            jid: item.getAttribute('jid'),
-            subscription: item.getAttribute('subscription'),
-            ask: item.getAttribute('ask'),
-            name: item.getAttribute('name')
-          });
-          groups = item.getElementsByTagName('group');
-          len = groups ? groups.length : 0;
-
-          if (len) {
-            entity.groups = [];
-          }
-
-          for (var j = 0; j < len; j++) {
-            entity.groups.push(groups[j].textContent || groups[j].text);
-          }
-          entities.push(entity);
+          entities.push(that._entityFromItem(items[i]));
         }
 
         if (callbacks) {
@@ -77,21 +65,13 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
   },
 
   /**
-   * Endpoint for a server-side roster push.
-   *
-   * @param {XC.Entity} entity An entity.
-   */
-  onRosterItem: function (entity) {},
-
-  /**
    * Handle incoming out-of-band Roster IQs
    *
    * @private
    * @param {Element} packet The incoming XML stanza.
    */
-  _handleRosterItem: function (packet) {
+  _handleRosterItems: function (packet) {
     var type = packet.getType();
-
     packet = packet.getNode();
 
     // Acknowledge a roster push.
@@ -104,29 +84,29 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
     // Process the items passed from the roster.
     }
     var items = packet.getElementsByTagName('item'),
-        itemsLength = items.length,
-        entity, item, groups, len;
+        itemsLength = items.length;
 
     for (var i = 0; i < itemsLength; i++) {
-      item = items[i];
-      entity = XC.Entity.extend({
-        jid: item.getAttribute('jid'),
+      this.fireHandler('onRosterItem',this._entityFromItem(items[i]));
+    }
+  },
+
+  _entityFromItem: function(item) {
+    var entity = this.connection.Entity.extend({
+      jid: item.getAttribute('jid'),
+      roster: {
         subscription: item.getAttribute('subscription'),
         ask: item.getAttribute('ask'),
-        name: item.getAttribute('name')
-      });
-      groups = item.getElementsByTagName('group');
-      len = groups ? groups.length : 0;
-
-      if (len) {
-        entity.groups = [];
+        name: item.getAttribute('name'),
+        groups: []
       }
+    });
 
-      for (var j = 0; j < len; j++) {
-        entity.groups.push(groups[j].textContent || groups[j].text);
-      }
-      this.onRosterItem(entity);
+    var groups = item.getElementsByTagName('group');
+    for (var j=0,len=groups.length; j<len; j++) {
+      entity.roster.groups.push(groups[j].textContent || groups[j].text);
     }
+    return entity;
   }
 
 });

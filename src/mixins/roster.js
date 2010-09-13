@@ -1,7 +1,7 @@
 /**
  * Roster Management
  * @namespace
- * 
+ *
  * RFC 3921: XMPP IM; Section 7 & 8
  * @see http://ietf.org/rfc/rfc3921.txt
  */
@@ -19,10 +19,10 @@ XC.Mixin.Roster = {
    */
   groups: null,
 
-  
+
   /**
    * Update an entity in your roster.
-   * 
+   *
    * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
    */
   setRosterItem: function (callbacks) {
@@ -31,18 +31,18 @@ XC.Mixin.Roster = {
         q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
         item = XC.XML.Element.extend({name: 'item'}),
         Group = XC.XML.Element.extend({name: 'group'}),
-        idx = !entity.groups ? 0 : entity.groups.length,
+        idx = (entity.roster && entity.roster.groups) ? entity.roster.groups.length : 0,
         group;
     iq.type('set');
     item.attr('jid', entity.jid);
 
-    if (entity.name) {
-      item.attr('name', entity.name);
+    if (entity.roster.name) {
+      item.attr('name', entity.roster.name);
     }
 
     while (idx--) {
       group = Group.extend();
-      group.text = entity.groups[idx];
+      group.text = entity.roster && entity.roster.groups[idx];
       item.addChild(group);
     }
 
@@ -59,7 +59,7 @@ XC.Mixin.Roster = {
 
   /**
    * Remove an entity from your roster.
-   * 
+   *
    * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
    */
   removeRosterItem: function (callbacks) {
