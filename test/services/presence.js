@@ -93,9 +93,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
           '<presence from="romeo@example.com" \
                      to="' + this.conn.jid() + '" \
                      type="subscribe"/>'
-        ), that = this;
+        ), that = this, fired = false;
 
-    this.Presence.onSubscribe = function (request) {
+    this.xc.Presence.registerHandler('onSubscribe', function (request) {
+      fired = true;
       Assert.isObject(request);
       Assert.isFunction(request.accept);
       Assert.isFunction(request.deny);
@@ -137,9 +138,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
           value: undefined
         }
       });
-    };
+    });
 
-    this.Presence._handlePresence(packet);
+    this.conn.fireEvent('presence', packet);
+    Assert.isTrue(fired, "Handler did not fire.");
   },
 
   testOnSubscribed: function () {
@@ -148,9 +150,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
           '<presence from="romeo@example.com" \
                      to="' + this.conn.jid() + '" \
                      type="subscribed"/>'
-        ), that = this;
+        ), that = this, fired = false;
 
-    this.Presence.onSubscribed = function (request) {
+    this.xc.Presence.registerHandler('onSubscribed', function (request) {
+      fired = true;
       Assert.isObject(request);
       Assert.isFunction(request.accept);
       Assert.isFunction(request.deny);
@@ -192,9 +195,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
           value: undefined
         }
       });
-    };
+    });
 
-    this.Presence._handlePresence(packet);
+    this.conn.fireEvent('presence', packet);
+    Assert.isTrue(fired, "Handler did not fire.");
   },
 
   testOnUnsubscribe: function () {
@@ -203,9 +207,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
           '<presence from="romeo@example.com" \
                      to="' + this.conn.jid() + '" \
                      type="unsubscribe"/>'
-        ), that = this;
+        ), that = this, fired = false;
 
-    this.Presence.onUnsubscribe = function (request) {
+    this.xc.Presence.registerHandler('onUnsubscribe', function (request) {
+      fired = true;
       Assert.isObject(request);
       Assert.isFunction(request.accept);
       Assert.isFunction(request.deny);
@@ -247,9 +252,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
           value: undefined
         }
       });
-    };
+    });
 
-    this.Presence._handlePresence(packet);
+    this.conn.fireEvent('presence', packet);
+    Assert.isTrue(fired, "Handler did not fire.");
   },
 
   testOnUnsubscribed: function () {
@@ -258,9 +264,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
           '<presence from="romeo@example.com" \
                      to="' + this.conn.jid() + '" \
                      type="unsubscribed"/>'
-        ), that = this;
+        ), that = this, fired = false;
 
-    this.Presence.onUnsubscribed = function (request) {
+    this.xc.Presence.registerHandler('onUnsubscribed', function (request) {
+      fired = true;
       Assert.isObject(request);
       Assert.isFunction(request.accept);
       Assert.isFunction(request.deny);
@@ -302,9 +309,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
           value: undefined
         }
       });
-    };
+    });
 
-    this.Presence._handlePresence(packet);
+    this.conn.fireEvent('presence', packet);
+    Assert.isTrue(fired, "Handler did not fire.");
   },
 
   testOnPresence: function () {
@@ -317,7 +325,9 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
            </presence>'
         ), that = this;
 
-    this.Presence.onPresence = function (entity) {
+    var fired = false;
+    this.xc.Presence.registerHandler('onPresence', function (entity) {
+      fired = true;
       Assert.isString(entity.jid);
       Assert.isObject(entity.presence);
       Assert.isString(entity.presence.show);
@@ -327,9 +337,10 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       Assert.areEqual(entity.presence.show, 'chat');
       Assert.areEqual(entity.presence.priority, 1);
       Assert.areEqual(entity.presencestatus, null);
-    };
+    });
 
-    this.Presence._handlePresence(packet);
+    this.conn.fireEvent('presence', packet);
+    Assert.isTrue(fired, "Handler did not fire.");
   }
 
 });

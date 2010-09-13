@@ -104,7 +104,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
 
     var groups = item.getElementsByTagName('group');
     for (var j = 0, len = groups.length; j < len; j++) {
-      entity.roster.groups.push(groups[j].textContent || groups[j].text);
+      entity.roster.groups.push(XC_DOMHelper.getTextContent(groups[j]));
     }
     return entity;
   }

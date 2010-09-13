@@ -35,48 +35,46 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
-   * Initialize the service properties.
-   *
-   * @example
-   * var xc = XC.Connection.extend();
-   * xc.initConnection();
-   *
-   * @return {XC.Connection}
+   * @private
    */
-  initConnection: function () {
-    if (!this.getJID() || this.getJID() === '') {
-      throw new XC.Error('Missing JID');
-    }
-    var serviceMap = {};
+  init: function ($super) {
+    if (this.connectionAdapter) {
+      if (!this.getJID() || this.getJID() === '') {
+        throw new XC.Error('Missing JID');
+      }
+      var serviceMap = {};
 
-    this._stanzaHandlers = this._stanzaHandlersTemplate.extend();
+      this._stanzaHandlers = this._stanzaHandlersTemplate.extend();
 
-    for (var s in this.services) {
-      if (this.services.hasOwnProperty(s)) {
-        var service = this.services[s];
-        this[s] = service.extend({connection: this});
+      for (var s in this.services) {
+        if (this.services.hasOwnProperty(s)) {
+          var service = this.services[s];
+          this[s] = service.extend({connection: this});
+        }
+      }
+
+      for (var t in this.templates) {
+        if (this.templates.hasOwnProperty(t)) {
+          this[t] = this.templates[t].extend({connection: this});
+        }
+      }
+
+      // Register for all incoming stanza types.
+      var that = this,
+          events = ['iq', 'message', 'presence'],
+          dispatch = function (stanza) {
+            that._dispatchStanza(stanza);
+            return true;
+          };
+      for (var i = 0; i < events.length; i++) {
+        this.connectionAdapter.registerHandler(events[i], dispatch);
       }
     }
 
-    for (var t in this.templates) {
-      if (this.templates.hasOwnProperty(t)) {
-        this[t] = this.templates[t].extend({connection: this});
-      }
+    if (XC.Base.isFunction($super)) {
+      $super.apply(this, Array.from(arguments).slice(1));
     }
-
-    // Register for all incoming stanza types.
-    var that = this,
-        events = ['iq', 'message', 'stanza'],
-        dispatch = function (stanza) {
-          that._dispatchStanza(stanza);
-          return true;
-        };
-    for (var i = 0; i < events.length; i++) {
-      this.connectionAdapter.registerHandler(events[i], dispatch);
-    }
-
-    return this;
-  },
+  }.around(),
 
   /**
    * Sends an XML string to the connection adapter.

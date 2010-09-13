@@ -90,41 +90,6 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
   },
 
   /**
-   * Endpoint for requests to subscribe to your presence.
-   *
-   * @param {XC.Entity} entity      The entity requesting a presence subscription.
-   */
-  onSubscribe: function (request) {},
-
-  /**
-   * Endpoint notifying that you are subscribed to the entity's presence.
-   *
-   * @param {XC.Entity} entity      The entity whose presence you are subscribed to.
-   */
-  onSubscribed: function (request) {},
-
-  /**
-   * Endpoint for unsubscribe requests.
-   *
-   * @param {XC.Entity} entity      The entity whose presence you are unsubscribe from.
-   */
-  onUnsubscribe: function (request) {},
-
-  /**
-   * Endpoint notifying that you are unsubscribed from the entity's presence.
-   *
-   * @param {XC.Entity} entity      The entity whose presence you are unsubscribed from.
-   */
-  onUnsubscribed: function (request) {},
-
-  /**
-   * Endpoint notifying you of updated presence.
-   *
-   * @param {XC.Entity} entity  The entity whose presence changed.
-   */
-  onPresence: function (entity) {},
-
-  /**
    * Handle out-of-band presence stanzas
    *
    * @param {Element} packet The incoming XML stanza.
@@ -163,18 +128,18 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
 
       entity.presence.available = true;
       if (show) {
-        entity.presence.show = show.getTextContent();
+        entity.presence.show = XC_DOMHelper.getTextContent(show);
       }
 
       if (status) {
-        entity.presence.status = status.getTextContent();
+        entity.presence.status = XC_DOMHelper.getTextContent(status);
       }
 
       if (priority) {
-        entity.presence.priority = parseInt(priority.getTextContent(), 10);
+        entity.presence.priority = parseInt(XC_DOMHelper.getTextContent(priority), 10);
       }
 
-      this.onPresence(entity);
+      this.fireHandler('onPresence', entity);
     }
 
     switch (type) {
@@ -183,28 +148,20 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
     case 'probe': // Server-side only
       break;
     case 'subscribe':
-      if (this.onSubscribe) {
-        this.onSubscribe(response('subscribed', 'unsubscribed'));
-      }
+      this.fireHandler('onSubscribe', response('subscribed', 'unsubscribed'));
       break;
     case 'subscribed':
-      if (this.onSubscribed) {
-        this.onSubscribed(response('subscribe', 'unsubscribe'));
-      }
+      this.fireHandler('onSubscribed', response('subscribe', 'unsubscribe'));
       break;
     case 'unsubscribe':
-      if (this.onUnsubscribe) {
-        this.onUnsubscribe(response('unsubscribed', 'subscribed'));
-      }
+      this.fireHandler('onUnsubscribe', response('unsubscribed', 'subscribed'));
       break;
     case 'unsubscribed':
-      if (this.onUnsubscribed) {
-        this.onUnsubscribe(response('unsubscribe', 'subscribe'));
-      }
+      this.fireHandler('onUnsubscribed', response('unsubscribe', 'subscribe'));
       break;
     case 'unavailable':
       entity.presence.available = false;
-      this.onPresence(entity);
+      this.fireHandler('onPresence', entity);
       break;
     }
   }

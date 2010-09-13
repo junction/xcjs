@@ -37,7 +37,9 @@ XC.Test.MockConnection = XC.ConnectionAdapter.extend({
     for (var i = 1; i < arguments.length; i++) {
       args.push(arguments[i]);
     }
-    handler.apply(handler, args);
+    if (handler) {
+      handler.apply(handler, args);
+    }
   },
 
   send: function (xml, callback, args) {
