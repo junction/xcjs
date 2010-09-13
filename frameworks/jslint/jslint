@@ -107,11 +107,7 @@ $output =~ s/<br\/?>/\n/g;
 
 #$output =~ s/(Implied global: .*)/filter_globals($1)/em;
 
-if ($output == "All good.") {
-    print "All good!\n";
-} else {
-    error $output;
-}
+error $output;
 
 
 sub filter_globals {
