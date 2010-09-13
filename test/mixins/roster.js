@@ -27,7 +27,7 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
     this.conn.addResponse(XC.Test.Packet.extendWithXML(
       '<iq to="marvin@heart-of-gold.com" \
            type="result" \
-           id="test"\>'
+           id="test"/>'
     ));
 
     var fail = false, win = false, that = this;
@@ -68,7 +68,7 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
     this.conn.addResponse(XC.Test.Packet.extendWithXML(
       '<iq to="marvin@heart-of-gold.com" \
            type="result" \
-           id="test"\>'
+           id="test"/>'
     ));
 
     var fail = false, win = false, that = this;
