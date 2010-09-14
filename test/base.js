@@ -61,6 +61,19 @@ XC.Test.Base = new YAHOO.tool.TestCase({
 
     // test overloading w/o around after around
     Assert.areSame(0, quartenary.doStuff(), "quartenary doStuff should return 0");
+  },
+
+  testMixinInferior: function() {
+    var Assert = YAHOO.util.Assert;
+
+    var fn1 = function() { return 1; },
+      fn2 = function() { return 2; };
+
+    var obj = XC.Base.extend({ func: fn1 }, { func: fn2 });
+    Assert.areSame(2, obj.func(), 'umm... there are big problems since this is just a sanity check');
+
+    var obj2 = XC.Base.extend({ func: fn1 }, { func: fn2.inferior() });
+    Assert.areSame(1, obj2.func(), 'we should be running fn1');
   }
 });
 

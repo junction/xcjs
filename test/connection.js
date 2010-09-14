@@ -34,7 +34,7 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
                    'Connection JID is wrong.');
   },
 
-  testServices: function () {
+  testServicesInitialized: function () {
     var Assert = YAHOO.util.Assert;
 
     Assert.isObject(this.xc.Presence,
@@ -78,6 +78,14 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     // test unregister a handler that isn't regitered
     Assert.isFalse(this.xc.unregisterStanzaHandler(id),
                    'unregister stanza handler should return false for nonexistant handler id');
+  },
+
+  testPacketInterface: function() {
+    var Assert = YAHOO.util.Assert;
+
+    Assert.throws(XC.Error, function() {
+                    this.conn.fireEvent('foo', {});
+                  }.bind(this));
   },
 
   testHandlerFiring: function () {
@@ -173,7 +181,7 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     Assert.isTrue(handlerFFired, 'handlerF did not fire');
   },
 
-  testHandlerBugThatMadeErickGoCrazy: function() {
+  testHandlerNotRegisteredToPrototype: function() {
     var Assert = YAHOO.util.Assert;
 
     var callCount = 0;

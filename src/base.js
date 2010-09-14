@@ -17,18 +17,26 @@ XC.Base = {
    */
   mixin: function () {
     var len = arguments.length,
-        val, fn, empty = function () {};
-    for (var i = 0; i < len; i++) {
-      for (var k in arguments[i]) {
-        if (arguments[i].hasOwnProperty(k)) {
-          val = arguments[i][k];
+      empty = function () {},
+      obj, val, fn, cur;
 
-          if (XC.isFunction(val) && val._isAround) {
-            fn = (this[k] && XC.isFunction(this[k])) ? this[k] : empty;
+    for (var i = 0; i < len; i++) {
+      obj = arguments[i];
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          val = obj[prop];
+          cur = this[prop];
+
+          if (XC.isFunction(val) && val._xcInferior && cur)
+            continue;
+
+          if (XC.isFunction(val) && val._xcAround) {
+            fn = (cur && XC.isFunction(cur)) ? cur : empty;
             val = val.curry(fn);
           }
 
-          this[k] = val;
+
+          this[prop] = val;
         }
       }
     }

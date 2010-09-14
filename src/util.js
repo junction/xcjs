@@ -35,10 +35,35 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    *   // -> 'foobarn'
    */
   around: function () {
-    this._isAround = true;
+    this._xcAround = true;
     return this;
   },
 
+  /**
+   * XC is making some pretty bold, and possibly annoying
+   * implementations with curry, bind and potentially
+   * some other common functions.  Mark a function as inferior
+   * and if a slot with the same name exists on the receiver
+   * then at mixin time XC.Base will NOT mixin that function
+   *
+   * BE AWARE however this could cause some headaches if
+   * you aren't smart with it
+   *
+   * @exmple
+   * var foo = XC.Base.extend({
+   *   bar: function() { return 1; }
+   * },{
+   *   bar: function() { return 2; }.inferior()
+   * }); // foo.bar() will return 1, normally it would return 2
+   */
+  inferior: function() {
+    this._xcInferior = true;
+    return this;
+  }
+});
+
+// must mix this in separately because we want to call inferior here
+XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
   /**
    * Appends the arguments given to the function,
    * returning a new function that will call the
@@ -68,14 +93,20 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
     return function () {
       return fn.apply(this, curriedArgs.concat(Array.from(arguments)));
     };
-  }
+  }.inferior(),
+
+  bind: function(target) {
+    var _method = this;
+    return function() {
+      return _method.apply(target, arguments);
+    };
+  }.inferior()
 });
 
 /**
  * Array mixins
  */
 XC.Base.mixin.call(Array, /** @lends Array */ {
-
   /**
    * Convert an iterable object into an Array.
    *
@@ -87,7 +118,7 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
    */
   from: function (iterable) {
     return Array.prototype.slice.apply(iterable);
-  }
+  }.inferior()
 });
 
 /**
@@ -96,11 +127,13 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
  *
  * @lends Array.prototype
  */
-Array.prototype.indexOf = Array.prototype.indexOf || function (o) {
-  for (var i = 0; i < this.length; i++)  {
-    if (this[i] === o) {
-      return i;
+XC.Base.mixin.call(Array.prototype, /** @lends Array */ {
+  indexOf: function (o) {
+    for (var i = 0; i < this.length; i++)  {
+      if (this[i] === o) {
+        return i;
+      }
     }
-  }
-  return -1;
-};
+    return -1;
+  }.inferior()
+});
