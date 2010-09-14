@@ -13,7 +13,8 @@
  * xc.initConnection();
  * xc.Chat.registerHandler('onMessge', function(xcMessage) {...});
  */
-XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable, XC.Mixin.HandlerRegistration,
+XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
+                                 XC.Mixin.HandlerRegistration,
   /** @lends XC.Service.Chat */{
   /**
    * Register for incoming stanzas
@@ -61,7 +62,8 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable, XC.Mixin.HandlerRegistra
    */
   _handleMessages: function (packet) {
     var msg = XC.Message.extend({
-      packet: packet
+      packet: packet,
+      connection: this.connection
     });
 
     this.fireHandler('onMessage', msg);

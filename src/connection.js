@@ -63,7 +63,9 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       var that = this,
           events = ['iq', 'message', 'presence'],
           dispatch = function (stanza) {
-            if (that.DEBUG_PACKETS) that._validatePacket(stanza);
+            if (that.DEBUG_PACKETS) {
+              that._validatePacket(stanza);
+            }
             that._dispatchStanza(stanza);
             return true;
           };
@@ -150,24 +152,27 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   /**
    * @private
    */
-  _validatePacket: function(p) {
+  _validatePacket: function (p) {
     var pktInterface = {
-      getNode: function() {
+      getNode: function () {
         return p.getNode && p.getNode().nodeType;
       },
-      getType: function() {
-        return p.getType && p.getType().constructor === (new String()).constructor;
+      getType: function () {
+        return p.getType && XC.isString(p.getType());
       },
-      getFrom: function() {
-        return p.getFrom && p.getFrom().constructor === (new String()).constructor;
+      getFrom: function () {
+        return p.getFrom && XC.isString(p.getFrom());
       },
-      getTo: function() {
-        return p.getTo && p.getTo().constructor === (new String()).constructor;
+      getTo: function () {
+        return p.getTo && XC.isString(p.getTo());
       }
     };
-    for (var test in pktInterface) if (pktInterface.hasOwnProperty(test)) {
-      if (!pktInterface[test]())
-        throw new XC.Error('Packet failed to validate ' + test);
+    for (var test in pktInterface) {
+      if (pktInterface.hasOwnProperty(test)) {
+        if (!pktInterface[test]()) {
+          throw new XC.Error('Packet failed to validate ' + test);
+        }
+      }
     }
   },
 

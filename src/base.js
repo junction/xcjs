@@ -27,8 +27,9 @@ XC.Base = {
           val = obj[prop];
           cur = this[prop];
 
-          if (XC.isFunction(val) && val._xcInferior && cur)
+          if (XC.isFunction(val) && val._xcInferior && cur) {
             continue;
+          }
 
           if (XC.isFunction(val) && val._xcAround) {
             fn = (cur && XC.isFunction(cur)) ? cur : empty;

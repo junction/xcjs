@@ -1,4 +1,5 @@
 /**
+ * Simple Message class for XMPP Message stanzas
  * @extends XC.Stanza
  * @extends XC.Mixin.ChatStateNotification.Message
  * @class
@@ -7,15 +8,15 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends
 
   type: 'chat',
 
-  init: function($super) {
+  init: function ($super) {
     $super.apply(this, Array.from(arguments).slice(1));
 
     if (this.packet) {
-      var pkt = this.packet;
+      var node = this.packet.getNode();
       this.mixin({
-        body: XC_DOMHelper.getTextContent(pkt.getNode().getElementsByTagName('body')[0]),
-        thread: XC_DOMHelper.getTextContent(pkt.getNode().getElementsByTagName('thread')[0]),
-        subject: XC_DOMHelper.getTextContent(pkt.getNode().getElementsByTagName('subject')[0])
+        body: XC_DOMHelper.getTextContent(node.getElementsByTagName('body')[0]),
+        thread: XC_DOMHelper.getTextContent(node.getElementsByTagName('thread')[0]),
+        subject: XC_DOMHelper.getTextContent(node.getElementsByTagName('subject')[0])
       });
     }
   }.around(),
@@ -65,11 +66,13 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends
    * @returns {XC.XML.Element} A XML Fragment.
    */
   toStanzaXML: function ($super) {
-    var msg = $super.apply(this,Array.from(arguments).slice(1));
+    var msg = $super.apply(this, Array.from(arguments).slice(1));
 
-    var els = ['body','subject','thread'];
-    for (var i=0;i<els.length;i++) {
-      if (!this[els[i]]) continue;
+    var els = ['body', 'subject', 'thread'];
+    for (var i = 0; i < els.length; i++) {
+      if (!this[els[i]]) {
+        continue;
+      }
 
       msg.addChild(XC.XML.Element.extend({
         name: els[i],

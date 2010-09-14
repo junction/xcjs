@@ -42,21 +42,21 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
   /**
    * XC is making some pretty bold, and possibly annoying
    * implementations with curry, bind and potentially
-   * some other common functions.  Mark a function as inferior
+   * some other common functions. Mark a function as inferior
    * and if a slot with the same name exists on the receiver
-   * then at mixin time XC.Base will NOT mixin that function
+   * at mixin time, XC.Base will NOT mixin that function.
    *
-   * BE AWARE however this could cause some headaches if
-   * you aren't smart with it
+   * BE AWARE however, that this could cause some headaches if
+   * you aren't smart with it.
    *
    * @exmple
    * var foo = XC.Base.extend({
-   *   bar: function() { return 1; }
-   * },{
-   *   bar: function() { return 2; }.inferior()
+   *   bar: function () { return 1; }
+   * }, {
+   *   bar: function () { return 2; }.inferior()
    * }); // foo.bar() will return 1, normally it would return 2
    */
-  inferior: function() {
+  inferior: function () {
     this._xcInferior = true;
     return this;
   }
@@ -95,9 +95,9 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
     };
   }.inferior(),
 
-  bind: function(target) {
+  bind: function (target) {
     var _method = this;
-    return function() {
+    return function () {
       return _method.apply(target, arguments);
     };
   }.inferior()

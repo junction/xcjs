@@ -44,6 +44,17 @@ var XC = {
    */
   isFunction: function (o) {
     return (typeof o === "function");
+  },
+
+  /**
+   * Returns whether or not the Object passed in
+   * is a String.
+   *
+   * @param {Object} o The Object to test.
+   * @returns {Boolea} True if the Object is a String, false otherwise.
+   */
+  isString: function (o) {
+    return o instanceof String || typeof o === 'string';
   }
 };
 

@@ -7,7 +7,7 @@
  * to make it look like it does I've accepted this instead...
  *
  */
-XC_DOMHelper = {
+var XC_DOMHelper = {
   /**
    * @see
    */
@@ -36,18 +36,19 @@ XC_DOMHelper = {
     return null;
   },
 
-  getElementsByNS: function(el, nsURI) {
+  getElementsByNS: function (el, nsURI) {
     var ret = [];
     var nodeType = XC_DOMHelper.NodeTypes.ELEMENT_NODE;
     for (var i = 0, l = el.childNodes.length; i < l; i++) {
-      if (el.childNodes[i].nodeType === nodeType && el.namespaceURI == nsURI) {
-        ret.push(el);
+      if (el.childNodes[i].nodeType === nodeType &&
+          el.childNodes[i].namespaceURI === nsURI) {
+        ret.push(el.childNodes[i]);
       }
     }
     return ret;
   },
 
-  getTextContent: function(el) {
+  getTextContent: function (el) {
     return el && (el.text || el.textContent);
   }
 };

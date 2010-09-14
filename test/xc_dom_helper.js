@@ -2,12 +2,12 @@
 XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
   name: 'XC.XC_DOMHelper Tests',
 
-  setUp: function() {
+  setUp: function () {
     var demoXML = "<foo bam='baz' plip='plop'>\
                       <bar>\
-                        <value>1</value>\
+                        <value xmlns='fi'>1</value>\
                       </bar>\
-                      <bar>\
+                      <bar xmlns='fi'>\
                         <value>2</value>\
                       </bar>\
                     </foo>";
@@ -27,6 +27,24 @@ XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
 
     Assert.areEqual('foo', foo.nodeName);
     Assert.areEqual('bar', bar.nodeName);
+  },
+
+  testGetElementByNamespace: function () {
+    var Assert = YAHOO.util.Assert;
+    Assert.isFunction(XC_DOMHelper.getElementsByNS, 'getElementsByNS is not a function');
+
+    var foo = XC_DOMHelper.getFirstElementChild(this.demoDoc),
+        bar = XC_DOMHelper.getFirstElementChild(foo),
+        fiBar = XC_DOMHelper.getElementsByNS(foo, 'fi'),
+        value = XC_DOMHelper.getElementsByNS(bar, 'fi'),
+        empty = XC_DOMHelper.getElementsByNS(bar, 'foe');
+
+    Assert.areEqual(1, fiBar.length, "Unexpected number of elements.");
+    Assert.areEqual(1, value.length, "Unexpected number of elements.");
+    Assert.areEqual(0, empty.length, "Unexpected number of elements.");
+
+    Assert.areEqual('bar', fiBar[0].localName);
+    Assert.areEqual('1', XC_DOMHelper.getTextContent(value[0]), "value should be '1'");
   },
 
   testGetTextContent: function() {

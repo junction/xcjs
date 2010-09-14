@@ -35,16 +35,18 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     Assert.areEqual("Avatar", msg.thread, 'msg.thread is incorrect');
   },
 
-  testMessageWithPacket: function() {
+  testMessageWithPacket: function () {
     var Assert = YAHOO.util.Assert;
-    var xml = '<message to="' + this.conn.jid() + '" from="' + this.chong.jid + '" type="chat">'
-                + '<body>dont cry for me, Im already dead</body>'
-                + '<subject>Puke-a-hontas</subject>'
-                + '<thread>A star is Burns</thread>'
-                + '</message>';
+    var xml = '<message to="' + this.conn.jid() + '"\
+                        from="' + this.chong.jid + '" type="chat">\
+                 <body>dont cry for me, Im already dead</body>\
+                 <subject>Puke-a-hontas</subject>\
+                 <thread>A star is Burns</thread>\
+               </message>';
 
     var msg = XC.Message.extend({
-      packet: XC.Test.Packet.extendWithXML(xml)
+      packet: XC.Test.Packet.extendWithXML(xml),
+      connection: this.xc
     });
 
     Assert.areEqual('chat', msg.type, 'msg type is wrong');
@@ -55,7 +57,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     Assert.areEqual(this.chong.jid, msg.from.jid, 'msg from should be an XC.Entity');
   },
 
-  testToMessageStanza: function() {
+  testToMessageStanza: function () {
     var Assert = YAHOO.util.Assert;
 
     var msg = XC.Message.extend({
