@@ -23,11 +23,9 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
     var msg = XC.Message.extend({
       to: this.chong,
-      type: 'chat',
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
-      thread: "Avatar",
-      connection: this.xc
+      thread: "Avatar"
     });
 
     Assert.areEqual('chat', msg.type, 'msg.chat is incorrect');
@@ -37,19 +35,38 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     Assert.areEqual("Avatar", msg.thread, 'msg.thread is incorrect');
   },
 
+  testMessageWithPacket: function() {
+    var Assert = YAHOO.util.Assert;
+    var xml = '<message to="' + this.conn.jid() + '" from="' + this.chong.jid + '" type="chat">'
+                + '<body>dont cry for me, Im already dead</body>'
+                + '<subject>Puke-a-hontas</subject>'
+                + '<thread>A star is Burns</thread>'
+                + '</message>';
+
+    var msg = XC.Message.extend({
+      packet: XC.Test.Packet.extendWithXML(xml)
+    });
+
+    Assert.areEqual('chat', msg.type, 'msg type is wrong');
+    Assert.areEqual('dont cry for me, Im already dead', msg.body, 'msg body is incorrect');
+    Assert.areEqual('Puke-a-hontas', msg.subject, 'msg subject is incorrect');
+    Assert.areEqual('A star is Burns', msg.thread, 'msg thread is incorrect');
+    Assert.areEqual(this.conn.jid(), msg.to.jid, 'msg to should be an XC.Entity');
+    Assert.areEqual(this.chong.jid, msg.from.jid, 'msg from should be an XC.Entity');
+  },
+
   testToMessageStanza: function() {
     var Assert = YAHOO.util.Assert;
 
     var msg = XC.Message.extend({
       to: this.chong,
-      type: 'chat',
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
       thread: "Avatar"
     });
 
-    Assert.isFunction(msg.toMessageStanza, 'XC.Message.toMessageStanza should be a function.');
-    Assert.isObject(msg.toMessageStanza(), 'XC.Message.toMessageStanza shoudl return an Object.');
+    Assert.isFunction(msg.toStanzaXML, 'XC.Message.toStanzaXML should be a function.');
+    Assert.isObject(msg.toStanzaXML(), 'XC.Message.toStanzaXML shoudl return an Object.');
   },
 
   testXML: function () {
@@ -57,13 +74,12 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
     var msg = XC.Message.extend({
       to: this.chong,
-      type: 'chat',
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
       thread: "Avatar"
     });
 
-    Assert.isXMPPMessage(msg.toMessageStanza().convertToString(),
+    Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -83,11 +99,10 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
     msg = XC.Message.extend({
       to: this.chong,
-      type: 'chat',
       body: "No subject and no thread"
     });
 
-    Assert.isXMPPMessage(msg.toMessageStanza().convertToString(),
+    Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -107,12 +122,11 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
     msg = XC.Message.extend({
       to: this.chong,
-      type: 'chat',
       body: "message with ID",
       id: 'message-1'
     });
 
-    Assert.isXMPPMessage(msg.toMessageStanza().convertToString(),
+    Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
                         this.chong.jid,
                         'chat',
                         {
@@ -129,7 +143,6 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
     var msg = XC.Message.extend({
       from: this.chong,
-      type: 'chat',
       subject: "The Cave of the Two Lovers",
       thread: "Avatar"
     });

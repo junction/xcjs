@@ -1,17 +1,24 @@
 /**
- * @extends XC.Base
+ * @extends XC.Stanza
+ * @extends XC.Mixin.ChatStateNotification.Message
  * @class
  */
-XC.Message = XC.Base.extend(/** @lends XC.Message */{
-  /**
-   * @type {XC.Entity}
-   */
-  to: null,
+XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends XC.Message */{
 
-  /**
-   * @type {XC.Entity}
-   */
-  from: null,
+  type: 'chat',
+
+  init: function($super) {
+    $super.apply(this, Array.from(arguments).slice(1));
+
+    if (this.packet) {
+      var pkt = this.packet;
+      this.mixin({
+        body: XC_DOMHelper.getTextContent(pkt.getNode().getElementsByTagName('body')[0]),
+        thread: XC_DOMHelper.getTextContent(pkt.getNode().getElementsByTagName('thread')[0]),
+        subject: XC_DOMHelper.getTextContent(pkt.getNode().getElementsByTagName('subject')[0])
+      });
+    }
+  }.around(),
 
   /**
    * @type {String}
@@ -29,11 +36,6 @@ XC.Message = XC.Base.extend(/** @lends XC.Message */{
   thread: null,
 
   /**
-   * @type {String}
-   */
-  id: null,
-
-  /**
    * Reply to a message using this
    * message as a template, switching the
    * to and from attributes.
@@ -49,42 +51,32 @@ XC.Message = XC.Base.extend(/** @lends XC.Message */{
       id: id
     });
 
-    msg.to.connection.send(msg.toMessageStanza().convertToString());
+    msg.to.connection.send(msg.toStanzaXML().convertToString());
   },
+
+  /**
+   * @private
+   */
+  xmlStanza: XC.XMPP.Message,
 
   /**
    * Converts a message into an XML Fragment.
    *
-   * @returns {Element} A XML Fragment.
+   * @returns {XC.XML.Element} A XML Fragment.
    */
-  toMessageStanza: function () {
-    var msg = XC.XMPP.Message.extend(),
-        body = XC.XML.Element.extend({name: 'body'}),
-        subject = XC.XML.Element.extend({name: 'subject'}),
-        thread = XC.XML.Element.extend({name: 'thread'});
+  toStanzaXML: function ($super) {
+    var msg = $super.apply(this,Array.from(arguments).slice(1));
 
-    msg.to(this.to.jid);
-    if (this.id) {
-      msg.attr('id', this.id);
-    }
-    msg.attr('type', this.type);
+    var els = ['body','subject','thread'];
+    for (var i=0;i<els.length;i++) {
+      if (!this[els[i]]) continue;
 
-    if (this.body) {
-      body.text = this.body;
-      msg.addChild(body);
-    }
-
-    if (this.subject) {
-      subject.text = this.subject;
-      msg.addChild(subject);
-    }
-
-    if (this.thread) {
-      thread.text = this.thread;
-      msg.addChild(thread);
+      msg.addChild(XC.XML.Element.extend({
+        name: els[i],
+        text: this[els[i]]
+      }));
     }
 
     return msg;
-  }
-
+  }.around()
 });

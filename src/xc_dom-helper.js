@@ -36,7 +36,18 @@ XC_DOMHelper = {
     return null;
   },
 
+  getElementsByNS: function(el, nsURI) {
+    var ret = [];
+    var nodeType = XC_DOMHelper.NodeTypes.ELEMENT_NODE;
+    for (var i = 0, l = el.childNodes.length; i < l; i++) {
+      if (el.childNodes[i].nodeType === nodeType && el.namespaceURI == nsURI) {
+        ret.push(el);
+      }
+    }
+    return ret;
+  },
+
   getTextContent: function(el) {
-    return el.text || el.textContent;
+    return el && (el.text || el.textContent);
   }
 };

@@ -147,6 +147,14 @@ XC.XMPP.Stanza = XC.XML.Element.extend(/** @lends XC.XMPP.Stanza# */{
 
   from: function (val) {
     return this.attr('from', val);
+  },
+
+  type: function (val) {
+    return this.attr('type', val);
+  },
+
+  id: function (val) {
+    return this.attr('id', val);
   }
 });
 
@@ -157,11 +165,7 @@ XC.XMPP.Stanza = XC.XML.Element.extend(/** @lends XC.XMPP.Stanza# */{
  * @class
  */
 XC.XMPP.IQ = XC.XMPP.Stanza.extend(/** @lends XC.XMPP.IQ# */{
-  name: 'iq',
-
-  type: function (val) {
-    return this.attr('type', val);
-  }
+  name: 'iq'
 });
 
 /**
