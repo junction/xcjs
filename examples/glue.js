@@ -1,4 +1,186 @@
-var Glue = {};
+/**global $, jQuery*/
+var Glue = {
+  start: function () {
+    $('#filter-incoming').bind('click', function () {
+      var display = $(this).attr('checked') ? 'block': 'none';
+      $('head').append(
+        '<style type="text/css">\
+        .stanzas .incoming { display: ' + display + ' }\
+         </style>');
+    });
+
+    $('#filter-outgoing').bind('click', function () {
+      var display = $(this).attr('checked') ? 'block': 'none';
+      $('head').append(
+        '<style type="text/css">\
+        .stanzas .outgoing { display: ' + display + ' }\
+         </style>');
+    });
+
+    var consoleWidth = $('#console').width(),
+        chatRight = $('#chat').css('right');
+    $('#hide-console').bind('click', function () {
+      if (parseInt($('#chat').css('right'), 10) === 0) {
+        $('#chat').animate({right: chatRight}, 'fast');
+        $('#console').animate({right: '0px'}, 'fast');
+        $(this).html('Hide Console');
+      } else {
+        $('#chat').animate({right: '0px'}, 'fast');
+        $('#console').animate({right: '-' + chatRight}, 'fast');
+        $(this).html('Show Console');
+      }
+    });
+
+    var newLineReplacer = new RegExp('\\n', 'g');
+    $('#composer .send').bind('click', function () {
+      var text = $('#composer textarea')[0].value;
+      if (!text.replace(/\s/g, '')) {
+        return true;
+      }
+      Glue.sendChat(text.replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(newLineReplacer, '<br/>'));
+
+      $('#composer textarea')[0].value = '';
+      return true;
+    });
+
+    $('#composer textarea').keydown(function (e) {
+      var code = e.keyCode || e.which;
+      if (code === 13 && !(e.altKey || e.shiftKey)) {
+        $('#composer .send').trigger('click');
+        return false;
+      }
+      return true;
+    });
+
+    var onSelectedChanged = [];
+    $('#roster .item').bind('click', function (e) {
+      $('#roster .selected').removeClass('selected');
+      $(this).addClass('selected');
+
+      for (var i = 0, len = onSelectedChanged.length; i < len; i++) {
+        onSelectedChanged[i].apply(this, [e]);
+      }
+    });
+
+    $('#popup-info').bind('click', function (e) {
+      var sel = $('#roster .selected');
+      if (sel.length && parseInt($('#info').css('opacity'), 10) === 0) {
+        var x = sel.offset().left + sel.width() + 25 + $('#roster').offset().left,
+            y = sel.offset().top + sel.height() - $('#roster').offset().top - 25;
+        $('#info').css({top: y, left: x, zIndex: 10});
+        $('.popup:not(#info)').animate({opacity: 0}, 'fast', null, function () {
+           $(this).css('zIndex', -1);
+        });
+        $('#info').animate({opacity: 1}, 'fast');
+      } else {
+        $('#info').animate({opacity: 0}, 'fast', null, function () {
+           $(this).css('zIndex', -1);
+        });
+      }
+    });
+
+    $('#popup-actions').bind('click', function (e) {
+      var sel = $('#roster .selected');
+      if (sel.length && parseInt($('#actions').css('opacity'), 10) === 0) {
+        var x = sel.offset().left + sel.width() + 25 + $('#roster').offset().left,
+            y = sel.offset().top + sel.height() - $('#roster').offset().top - 25;
+        $('#actions').css({top: y, left: x, zIndex: 10});
+        $('.popup:not(#actions)').animate({opacity: 0}, 'fast', null, function () {
+           $(this).css('zIndex', -1);
+        });
+        $('#actions').animate({opacity: 1}, 'fast');
+      } else {
+        $('#actions').animate({opacity: 0}, 'fast', null, function () {
+           $(this).css('zIndex', -1);
+        });
+      }
+    });
+
+    // Move the popup box if it's showing
+    onSelectedChanged.push(function (e) {
+      var popups = $('.popup');
+      for (var i = 0, len = popups.length; i < len; i++) {
+        if (parseInt($(popups[i]).css('opacity'), 10) !== 0) {
+          var x = $(this).offset().left + $(this).width() + 25 + $('#roster').offset().left,
+              y = $(this).offset().top + $(this).height() - $('#roster').offset().top - 25;
+          $('.popup').animate({top: y, left: x}, 'fast');
+        }
+      }
+    });
+
+    // Update info in the box.
+    onSelectedChanged.push(function (e) {
+      
+    });
+
+    $('#actions label').bind('click', function (e) {
+      $('#actions .selected').removeClass('selected');
+      $(this).addClass('selected');
+
+//      for (var i = 0, len = onSelectedChanged.length; i < len; i++) {
+//        onSelectedChanged[i].apply(this, [e]);
+//      }
+    });
+
+    $(document).keydown(function (e) {
+      var code = e.keyCode || e.which;
+
+      switch (code) {
+      case 38:
+        $('#roster .selected').prev().trigger('click');
+        break;
+      case 40:
+        $('#roster .selected').next().trigger('click');
+        break;
+      case 191: // '/' as a hotkey for composing a new message
+        $('#composer textarea').focus();
+        return false;
+      }
+      return true;
+    });
+  },
+
+  sendChat: function (body) {
+    this.appendMessage({name: 'Me'}, body);
+  },
+
+  appendMessage: function (from, body) {
+    var bottom = $('#thread')[0].scrollHeight,
+        maxTop = bottom - $('#thread').height(),
+        top = $('#thread')[0].scrollTop;
+    $('#thread').append('<div class="message">\
+      <span class="from">' + from.name + '</span>\
+      <span class="body">' + body + '</span></div>');
+
+    if (top === maxTop) {
+      $('#thread').animate({
+        scrollTop: bottom
+      }, 'fast');
+    }
+  },
+
+  appendXML: function (xml, incoming) {
+    var bottom = $('#thread')[0].scrollHeight,
+        maxTop = bottom - $('#thread').height(),
+        top = $('#thread')[0].scrollTop;
+
+    var klass = incoming ? 'incoming' : 'outgoing';
+    $('#console .stanzas').append(
+      '<pre class="' + klass + '">' + 
+        xml.replace(/&/g, '&amp;')
+           .replace(/</g, '&lt;')
+           .replace(/>/g, '&gt;') + '</pre>');
+
+    if (top === maxTop) {
+      $('#console').animate({
+        scrollTop: bottom
+      }, 'fast');
+    }
+  }
+};
 
 Glue.XC = {
 
@@ -81,7 +263,6 @@ Glue.XC = {
   }
 };
 
-
-$('#raw-xml button').click(function () {
-  $('#raw-xml').hide();
+$(document).ready(function () {
+  Glue.start();
 });

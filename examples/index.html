@@ -3,42 +3,75 @@
   <title>XMPP Client Example</title>
   <link rel="stylesheet" type="text/css" href="styles.css"/>
   <script type="text/javascript" src="../frameworks/strophejs/strophe.js"></script>
+  <script type="text/javascript" src="../frameworks/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="../xc.js"></script>
   <script type="text/javascript" src="glue.js"></script>
 </head>
 <body>
-  <div id="roster"></div>
-  <div id="messages">
-    <div class="message">
-      <span class="from">Bob</span>
-      <span class="body">hi</span>
+  <div id="header">
+    XC Demo
+    <button id="hide-console">Hide Console</button>
+  </div>
+  <div id="body">
+  <div id="info" class="popup">
+    <table cellpadding="0" cellspacing="0">
+      <tr><td>JID</td><td>seoman@erkynland.hayholt.com</td></tr>
+      <tr><td>Name</td><td>Seoman Snowlock</td></tr>
+      <tr><td>Groups</td><td>League of the Scroll</td></tr>
+    </table>
+    <div class="arrow border"></div>
+    <div class="arrow"></div>
+  </div>
+  <div id="actions" class="popup">
+    <div class="body">
+      <label>Disco Info</label>
+      <label>Disco Items</label>
+      <label>Get Roster Items</label>
     </div>
-    <div class="message">
-      <span class="from">Bob</span>
-      <span class="body">bye</span>
+    <div class="arrow border"></div>
+    <div class="arrow"></div>
+  </div>
+  <div id="roster">
+    <div class="options">
+      <button id="action-chat">Chat</button>
+      <span style="float:right">
+        <button id="popup-info">Info</button>
+        <button id="popup-actions">Actions</button>
+      </span>
+    </div>
+    <div class="item">
+      <span class="name">Simon Snowlock</span>
+      <span class="show">away</span>
+      <div class="status">Slaying dragons</div>
+    </div>
+    <div class="item">
+      <span class="name">Rachel the Dragon</span>
+      <span class="show">away</span>
+      <div class="status">Fighting grime</div>
+    </div>
+    <div class="item">
+      <span class="name">Binabik</span>
+      <span class="show">away</span>
+      <div class="status">Drinking Kangkang</div>
     </div>
   </div>
-  <div id="composer">
-    <textarea placeholder="Type here to compose a message."></textarea>
-    <button>Send</button>
+  <div id="chat" class="disabled">
+    <div id="thread">
+    </div>
+    <div id="composer">
+      <div class="input"><textarea placeholder="Type here to compose a message."></textarea></div>
+      <div class="send"><button>Send</button></div>
+    </div>
   </div>
-  <button id="toggle-xml">Hide</button>
-  <div id="raw-xml">
-    <pre class="incoming">
-&lt;iq type="get"&gt;
-&lt/iq&gt;</pre>
-    <pre class="outgoing">
-&lt;iq type="get"&gt;
-&lt/iq&gt;</pre>    <pre class="incoming">
-&lt;iq type="get"&gt;
-&lt/iq&gt;</pre>
-    <pre class="outgoing">
-&lt;iq type="get"&gt;
-&lt/iq&gt;</pre>    <pre class="incoming">
-&lt;iq type="get"&gt;
-&lt/iq&gt;</pre>
-    <pre class="outgoing">
-&lt;iq type="get"&gt;
-&lt/iq&gt;</pre>
+  <div id="console">
+    <div class="options">
+      Filter XML:
+      <input id="filter-incoming" type="checkbox" checked />
+      <span class="incoming">Incoming</span>
+      <input id="filter-outgoing" type="checkbox" checked />
+      <span class="outgoing">Outgoing</span>
+    </div>
+    <div class="stanzas">
+    </div>
   </div>
 </body>
