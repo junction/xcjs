@@ -63,6 +63,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       var that = this,
           events = ['iq', 'message', 'presence'],
           dispatch = function (stanza) {
+            if (that.DEBUG_PACKETS) that._validatePacket(stanza);
             that._dispatchStanza(stanza);
             return true;
           };
@@ -139,6 +140,35 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    */
   unregisterStanzaHandler: function (id) {
     return this._stanzaHandlers.remove(id);
+  },
+
+  /**
+   * @private
+   */
+  DEBUG_PACKETS: false,
+
+  /**
+   * @private
+   */
+  _validatePacket: function(p) {
+    var pktInterface = {
+      getNode: function() {
+        return p.getNode && p.getNode().nodeType;
+      },
+      getType: function() {
+        return p.getType && p.getType().constructor === (new String()).constructor;
+      },
+      getFrom: function() {
+        return p.getFrom && p.getFrom().constructor === (new String()).constructor;
+      },
+      getTo: function() {
+        return p.getTo && p.getTo().constructor === (new String()).constructor;
+      }
+    };
+    for (var test in pktInterface) if (pktInterface.hasOwnProperty(test)) {
+      if (!pktInterface[test]())
+        throw new XC.Error('Packet failed to validate ' + test);
+    }
   },
 
   /**

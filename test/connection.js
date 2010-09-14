@@ -34,6 +34,11 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
                    'Connection JID is wrong.');
   },
 
+  testDebugDisabled: function() {
+    var Assert = YAHOO.util.Assert;
+    Assert.isFalse(this.xc.DEBUG_PACKETS, 'this should be disabled unless testing');
+  },
+
   testServicesInitialized: function () {
     var Assert = YAHOO.util.Assert;
 
@@ -80,12 +85,29 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
                    'unregister stanza handler should return false for nonexistant handler id');
   },
 
+  /**
+   * packet interface looks like:
+   * {
+   *   getNode: {Function} returns {Element}
+   *   getType: {Function} returns {String}
+   *   getFrom: {Function} returns {String}
+   *   getTo:  {Function} returns {String}
+   * }
+   */
   testPacketInterface: function() {
     var Assert = YAHOO.util.Assert;
 
+    this.xc.DEBUG_PACKETS = true;
     Assert.throws(XC.Error, function() {
-                    this.conn.fireEvent('foo', {});
-                  }.bind(this));
+                    this.conn.fireEvent('message', {});
+                  }.bind(this), 'packet must conform to the interface above');
+
+    Assert.isUndefined(this.conn.fireEvent('message', {
+                                             getType: function() { return 'test type needs to be a string'; },
+                                             getFrom: function() { return 'from needs to be a string'; },
+                                             getTo: function() { return 'to also needs to be a string'; },
+                                             getNode: function() { return document.createElement('message'); }
+                                           }),'this packet should have a valid interface');
   },
 
   testHandlerFiring: function () {
