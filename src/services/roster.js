@@ -9,7 +9,6 @@
  *
  * @example
  * var xc = XC.Connection.extend(... with connection adapter ...);
- * xc.initConnection();
  * xc.Roster.registerHandler('onRosterItem', function(xcEntity) {...});
  */
 XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.Service.Roster */{

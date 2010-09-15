@@ -312,11 +312,11 @@ tr:nth-child(even) {
   left: -20px;
 }
 
-.arrow.top { 
+.arrow.top {
   top: 15px;
 }
 
-.arrow.bottom { 
+.arrow.bottom {
   bottom: 15px;
 }
 

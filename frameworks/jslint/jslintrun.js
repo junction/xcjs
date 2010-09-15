@@ -37,9 +37,8 @@ SOFTWARE.
 options = {};
 
 // should pull in "options" var
-if (environment.LOAD_DOT_JSLINT) {
-  load('../.jslint');
-}
+load('../.jslint');
+
 
 var body = "";
 var line;

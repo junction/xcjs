@@ -10,8 +10,7 @@
  *
  * @example
  * var xc = XC.Connection.extend(... with connection adapter ...);
- * xc.initConnection();
- * xc.Chat.registerHandler('onMessge', function(xcMessage) {...});
+ * xc.Chat.registerHandler('onMessage', function(xcMessage) {...});
  */
 XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
                                  XC.Mixin.HandlerRegistration,

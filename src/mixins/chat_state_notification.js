@@ -1,31 +1,31 @@
 /**
- * Chat State Notifications XEP-0085
+ * Chat State Notifications Mixin for XC.Entity
+ * @namespace
+ *
+ * XEP-0085: Chat State Notifications
  * @see http://xmpp.org/extensions/xep-0085.html
- */
-XC.ChatStateNotification = {
-  XMLNS: 'http://jabber.org/protocol/chatstates',
-  STATES: {
-    ACTIVE:    'active',
-    COMPOSING: 'composing',
-    PAUSED:    'paused',
-    INACTIVE:  'inactive',
-    GONE:      'gone'
-  }
-};
-
-/**
- * Chat State Notifications XEP-0085
- * @see http://xmpp.org/extensions/xep-0085.html
- * @class
  */
 XC.Mixin.ChatStateNotification = {
 
+  /**
+   * Add the relevant feature to the Discoverable Module.
+   * @private
+   * @param {Function} $super The function that this is wrapped around.
+   */
   init: function ($super) {
     this.addFeature(XC.ChatStateNotification.XMLNS);
 
     $super.apply(this, Array.from(arguments).slice(1));
   }.around(),
 
+  /**
+   * Send a chat state notification to another entity.
+   *
+   * @param {String} state    The chat notification state: 'composing', 'paused', 'inactive', 'gone'.
+   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {String} [thread] The thread of the message.
+   * @param {String} [id]     The ID to be associated with the message.
+   */
   sendChatStateNotification: function (state, to, thread, id) {
     var msg = XC.Message.extend({
       to: to,
@@ -38,19 +38,52 @@ XC.Mixin.ChatStateNotification = {
   }
 };
 
-XC.Base.mixin.call(XC.Mixin.ChatStateNotification, {
+XC.Base.mixin.call(XC.Mixin.ChatStateNotification, /** @lends XC.ChatStateNotification */{
+  /**
+   * Send a composing message.
+   *
+   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {String} [thread] The thread of the message.
+   * @param {String} [id]     The ID to be associated with the message.
+   */
   sendChatStateComposing:
     XC.Mixin.ChatStateNotification.sendChatStateNotification.curry(
       XC.ChatStateNotification.STATES.COMPOSING
     ),
+
+  /**
+   * Send a composing message.
+   *
+   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {String} [thread] The thread of the message.
+   * @param {String} [id]     The ID to be associated with the message.
+   */
   sendChatStatePaused:
     XC.Mixin.ChatStateNotification.sendChatStateNotification.curry(
       XC.ChatStateNotification.STATES.PAUSED
     ),
+
+  /**
+   * Send a inactive message.
+   *
+   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {String} [thread] The thread of the message.
+   * @param {String} [id]     The ID to be associated with the message.
+   */
   sendChatStateInactive:
     XC.Mixin.ChatStateNotification.sendChatStateNotification.curry(
       XC.ChatStateNotification.STATES.INACTIVE
     ),
+
+  /**
+   * Send a gone message.
+   * You MUST NOT re-use the same Thread ID after recieving a <gone/> message
+   * from another entity. Generate a new Thread ID for any subsequest messages.
+   *
+   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {String} [thread] The thread of the message.
+   * @param {String} [id]     The ID to be associated with the message.
+   */
   sendChatStateGone:
     XC.Mixin.ChatStateNotification.sendChatStateNotification.curry(
       XC.ChatStateNotification.STATES.GONE
@@ -58,13 +91,25 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification, {
 });
 
 /**
- * Chat State Notifications XEP-0085
+ * Chat State Notifications Mixins XC.Message
+ * @namespace
+ * 
+ * XEP-0085: Chat State Notifications
  * @see http://xmpp.org/extensions/xep-0085.html
- * @class
  */
 XC.Mixin.ChatStateNotification.Message = {
+  /**
+   * The chat notification state of the message.
+   * @type {String} Defaults to 'active'; can be any in XC.ChatStateNotification.STATES
+   */
   chatNotificationState: XC.ChatStateNotification.STATES.ACTIVE,
 
+  /**
+   * Unpack the chat state from the message.
+   * @private
+   *
+   * @param {Function} $super The function that this is wrapped around.
+   */
   init: function ($super) {
     $super.apply(this, Array.from(arguments).slice(1));
 
@@ -81,6 +126,13 @@ XC.Mixin.ChatStateNotification.Message = {
     }
   }.around(),
 
+  /**
+   * Append the chat state child to the message when it
+   * is translated into a stanza.
+   *
+   * @param {Function} $super The function that this is wrapped around.
+   * @returns {XC.XMPP.Message} A constructed chat message.
+   */
   toStanzaXML: function ($super) {
     var msg = $super.apply(this, Array.from(arguments).slice(1));
     if (this.chatNotificationState) {
