@@ -38,7 +38,7 @@ options = {};
 
 // should pull in "options" var
 if (environment.LOAD_DOT_JSLINT) {
-  load(environment.HOME + '/.jslint');
+  load('../.jslint');
 }
 
 var body = "";
