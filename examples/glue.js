@@ -56,7 +56,7 @@ var Glue = {
     });
 
     var onSelectedChanged = [];
-    $('#roster .item').bind('click', function (e) {
+    $('#roster .item').live('click', function (e) {
       $('#roster .selected').removeClass('selected');
       $(this).addClass('selected');
 
@@ -65,12 +65,38 @@ var Glue = {
       }
     });
 
+    var calcPopupOffset = function (popup, sel) {
+      var x = sel.offset().left + sel.width() + 25 + $('#roster .items').offset().left,
+          y = sel.offset().top + sel.height() - $('#roster .items').offset().top + 10,
+          height = popup.height(),
+          yMin = 37,
+          yMax = $(window).height() - $('header').height() - $('#roster .options').height() - height - 25;
+
+      if ((y + height + 50) > $(window).height()) {
+        y = y - height + 34;
+        $('#' + popup.attr('id') + ' .arrow')
+          .removeClass('top')
+          .addClass('bottom');
+        if (y > yMax) {
+          y = yMax;
+        }
+      } else {
+        $('#' + popup.attr('id') + ' .arrow')
+          .removeClass('bottom')
+          .addClass('top');
+      }
+      if (y < yMin) {
+        y = yMin;
+      }
+
+      return { top: y, left: x };
+    };
+
     $('#popup-info').bind('click', function (e) {
       var sel = $('#roster .selected');
       if (sel.length && parseInt($('#info').css('opacity'), 10) === 0) {
-        var x = sel.offset().left + sel.width() + 25 + $('#roster').offset().left,
-            y = sel.offset().top + sel.height() - $('#roster').offset().top - 25;
-        $('#info').css({top: y, left: x, zIndex: 10});
+        var loc = calcPopupOffset($('#info'), sel);
+        $('#info').css({top: loc.top, left: loc.left, zIndex: 10});
         $('.popup:not(#info)').animate({opacity: 0}, 'fast', null, function () {
            $(this).css('zIndex', -1);
         });
@@ -85,8 +111,23 @@ var Glue = {
     $('#popup-actions').bind('click', function (e) {
       var sel = $('#roster .selected');
       if (sel.length && parseInt($('#actions').css('opacity'), 10) === 0) {
-        var x = sel.offset().left + sel.width() + 25 + $('#roster').offset().left,
-            y = sel.offset().top + sel.height() - $('#roster').offset().top - 25;
+        var loc = calcPopupOffset($('#actions'), sel);
+        $('#actions').css({top: loc.top, left: loc.left, zIndex: 10});
+        $('.popup:not(#actions)').animate({opacity: 0}, 'fast', null, function () {
+           $(this).css('zIndex', -1);
+        });
+        $('#actions').animate({opacity: 1}, 'fast');
+      } else {
+        $('#actions').animate({opacity: 0}, 'fast', null, function () {
+           $(this).css('zIndex', -1);
+        });
+      }
+    });
+
+    $('#service-actions').bind('click', function (e) {
+      if (parseInt($('#actions').css('opacity'), 10) === 0) {
+        var x = $(this).offset().left + $(this).width() + 25,
+            y = $(this).offset().top + $(this).height();
         $('#actions').css({top: y, left: x, zIndex: 10});
         $('.popup:not(#actions)').animate({opacity: 0}, 'fast', null, function () {
            $(this).css('zIndex', -1);
@@ -99,14 +140,22 @@ var Glue = {
       }
     });
 
+    $('#add-contact').bind('click', function (e) {
+      $('#roster .items').append('<div class="item">\
+         <span clas="name">Anonymous</span>\
+         <span class="show"></span>\
+         <div class="status"></div>&nbsp;</div>');
+    });
+
     // Move the popup box if it's showing
     onSelectedChanged.push(function (e) {
-      var popups = $('.popup');
+      var popups = $('.popup'), popup;
       for (var i = 0, len = popups.length; i < len; i++) {
-        if (parseInt($(popups[i]).css('opacity'), 10) !== 0) {
-          var x = $(this).offset().left + $(this).width() + 25 + $('#roster').offset().left,
-              y = $(this).offset().top + $(this).height() - $('#roster').offset().top - 25;
-          $('.popup').animate({top: y, left: x}, 'fast');
+        popup = $(popups[i]);
+        if (parseInt(popup.css('opacity'), 10) !== 0) {
+          var loc = calcPopupOffset(popup, $('#roster .selected'));
+          popup.stop();
+          popup.animate({top: loc.top, left: loc.left}, 'fast');
         }
       }
     });
@@ -120,9 +169,6 @@ var Glue = {
       $('#actions .selected').removeClass('selected');
       $(this).addClass('selected');
 
-//      for (var i = 0, len = onSelectedChanged.length; i < len; i++) {
-//        onSelectedChanged[i].apply(this, [e]);
-//      }
     });
 
     $(document).keydown(function (e) {
@@ -137,6 +183,22 @@ var Glue = {
         break;
       case 191: // '/' as a hotkey for composing a new message
         $('#composer textarea').focus();
+        return false;
+      }
+
+      if (code === 38 || code === 40) {
+        var diff = $('#roster .items').offset().top,
+            min = $('#roster .items')[0].scrollTop,
+            height = $('#roster .items').height(),
+            max = min + height,
+            top = $('#roster .selected').offset().top - diff + min,
+            bottom = $('#roster .selected').height() + top + 21;
+        if (top <= min) {
+          $('#roster .items')[0].scrollTop = top;
+        } else if (bottom >= max) {
+          $('#roster .items')[0].scrollTop = bottom - height;
+        }
+        e.stopImmediatePropagation();
         return false;
       }
       return true;

@@ -17,7 +17,7 @@ body, html, textarea {
   padding: 12px;
 }
 
-#header button {
+#header #hide-console {
   float: right;
   font-size: 13px;
   position: relative;
@@ -130,16 +130,16 @@ body, html, textarea {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border: 1px solid #999;
-  overflow: auto;
 }
 
-#roster .options {
+#roster .options .around {
   padding: 5px;
 }
 
 #roster .items {
-  float: left;
   width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 #roster .item {
@@ -176,12 +176,12 @@ body, html, textarea {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border: 1px solid #999;
-  overflow: auto;
 }
 
 #console .stanzas {
-  float: left;
+  height: 100%;
   width: 100%;
+  overflow: auto;
 }
 
 #console .stanzas pre {
@@ -204,8 +204,16 @@ body, html, textarea {
   color: rgb(203, 2, 2);
 }
 
-.options {
+#console .options .around {
   padding: 10px;
+}
+
+.options {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  height: 35px;
   color: white;
   border-bottom: 1px solid #222;
   background: rgb(58, 58, 58);
@@ -214,7 +222,6 @@ body, html, textarea {
 }
 
 .options button {
-  font-size: 12px;
   color: white;
   background: rgb(58, 58, 58);
   background:-webkit-gradient(linear,0% 0%,0% 45%,from(rgb(144, 144, 144)),to(rgb(58, 58, 58)));
@@ -238,6 +245,13 @@ body, html, textarea {
   background-color: #379FD2;
   border: 1px solid blue;
   padding: 2px;
+}
+
+.wrapper {
+  position: absolute;
+  top: 36px;
+  bottom: 0px;
+  width: 100%;
 }
 
 .popup {
@@ -276,7 +290,7 @@ body, html, textarea {
 }
 
 td {
-  padding: 4px;
+  padding: 5px;
 }
 
 tr:nth-child(even) {
@@ -295,14 +309,22 @@ tr:nth-child(even) {
   height: 0;
   width: 0;
   position: absolute;
-  top: 15px;
   left: -20px;
+}
+
+.arrow.top { 
+  top: 15px;
+}
+
+.arrow.bottom { 
+  bottom: 15px;
 }
 
 button {
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
+  font-size: 12px;
   color: #fff;
   text-shadow: #333 1px 1px 1px;
   background: #666;
@@ -310,6 +332,7 @@ button {
   background:-moz-linear-gradient(45% 45% 90deg,#666, #aaa);
   border: 1px solid #666;
   cursor: pointer;
+  height: 25px;
 }
 
 button:active {

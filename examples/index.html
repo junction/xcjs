@@ -19,40 +19,52 @@
       <tr><td>Name</td><td>Seoman Snowlock</td></tr>
       <tr><td>Groups</td><td>League of the Scroll</td></tr>
     </table>
-    <div class="arrow border"></div>
-    <div class="arrow"></div>
+    <div class="arrow border top"></div>
+    <div class="arrow top"></div>
   </div>
   <div id="actions" class="popup">
     <div class="body">
-      <label>Disco Info</label>
-      <label>Disco Items</label>
-      <label>Get Roster Items</label>
+      <label>Subscribe to Presence</label>
+      <label>Unsubscribe from Presence</label>
+      <label>Cancel Presence Subscription for Contact</label>
+      <label>Send Directed Presence to Contact</label>
+      <label>Request Service Discovery Info</label>
+      <label>Request Service Discovery Items</label>
+      <label>Set Roster Item</label>
+      <label>Remove Roster Item</label>
     </div>
-    <div class="arrow border"></div>
-    <div class="arrow"></div>
+    <div class="arrow border top"></div>
+    <div class="arrow top"></div>
   </div>
   <div id="roster">
     <div class="options">
-      <button id="action-chat">Chat</button>
-      <span style="float:right">
-        <button id="popup-info">Info</button>
-        <button id="popup-actions">Actions</button>
-      </span>
+      <div class="around">
+        <button id="action-chat">Chat</button>
+        <span style="float:right">
+          <button id="add-contact">+</button>
+          <button id="popup-info">Info</button>
+          <button id="popup-actions">Actions</button>
+        </span>
+      </div>
     </div>
-    <div class="item">
-      <span class="name">Simon Snowlock</span>
-      <span class="show">away</span>
-      <div class="status">Slaying dragons</div>
-    </div>
-    <div class="item">
-      <span class="name">Rachel the Dragon</span>
-      <span class="show">away</span>
-      <div class="status">Fighting grime</div>
-    </div>
-    <div class="item">
-      <span class="name">Binabik</span>
-      <span class="show">away</span>
-      <div class="status">Drinking Kangkang</div>
+    <div class="wrapper">
+      <div class="items">
+        <div class="item">
+          <span class="name">Simon Snowlock</span>
+          <span class="show">away</span>
+          <div class="status">Slaying dragons</div>
+        </div>
+        <div class="item">
+          <span class="name">Rachel the Dragon</span>
+          <span class="show">away</span>
+          <div class="status">Fighting grime</div>
+        </div>
+        <div class="item">
+          <span class="name">Binabik</span>
+          <span class="show">away</span>
+          <div class="status">Drinking Kangkang</div>
+        </div>
+      </div>
     </div>
   </div>
   <div id="chat" class="disabled">
@@ -65,13 +77,17 @@
   </div>
   <div id="console">
     <div class="options">
-      Filter XML:
-      <input id="filter-incoming" type="checkbox" checked />
-      <span class="incoming">Incoming</span>
-      <input id="filter-outgoing" type="checkbox" checked />
-      <span class="outgoing">Outgoing</span>
+      <div class="around">
+        Filter XML:
+        <input id="filter-incoming" type="checkbox" checked />
+        <span class="incoming">Incoming</span>
+        <input id="filter-outgoing" type="checkbox" checked />
+        <span class="outgoing">Outgoing</span>
+      </div>
     </div>
-    <div class="stanzas">
+    <div class="wrapper">
+      <div class="stanzas">
+      </div>
     </div>
   </div>
 </body>
