@@ -13,6 +13,11 @@ XC.ChatStateNotification = {
   }
 };
 
+/**
+ * Chat State Notifications XEP-0085
+ * @see http://xmpp.org/extensions/xep-0085.html
+ * @class
+ */
 XC.Mixin.ChatStateNotification = {
 
   init: function ($super) {
@@ -52,6 +57,11 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification, {
     )
 });
 
+/**
+ * Chat State Notifications XEP-0085
+ * @see http://xmpp.org/extensions/xep-0085.html
+ * @class
+ */
 XC.Mixin.ChatStateNotification.Message = {
   chatNotificationState: XC.ChatStateNotification.STATES.ACTIVE,
 
