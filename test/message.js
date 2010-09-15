@@ -12,16 +12,16 @@ XC.Test.Message = new YAHOO.tool.TestCase({
     });
   },
 
-  tearDown: function() {
+  tearDown: function () {
     delete this.conn;
     delete this.xc;
     delete this.chong;
   },
 
-  testMessageSlots: function() {
+  testMessageSlots: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = XC.Message.extend({
+    var msg = this.xc.Message.extend({
       to: this.chong,
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
@@ -44,9 +44,8 @@ XC.Test.Message = new YAHOO.tool.TestCase({
                  <thread>A star is Burns</thread>\
                </message>';
 
-    var msg = XC.Message.extend({
-      packet: XC.Test.Packet.extendWithXML(xml),
-      connection: this.xc
+    var msg = this.xc.Message.extend({
+      packet: XC.Test.Packet.extendWithXML(xml)
     });
 
     Assert.areEqual('chat', msg.type, 'msg type is wrong');
@@ -60,7 +59,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
   testToMessageStanza: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = XC.Message.extend({
+    var msg = this.xc.Message.extend({
       to: this.chong,
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
@@ -74,7 +73,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
   testXML: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = XC.Message.extend({
+    var msg = this.xc.Message.extend({
       to: this.chong,
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
@@ -83,46 +82,44 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
     Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
                         this.chong.jid,
-                        'chat',
-                        {
-                          subject: {
-                            value: msg.subject,
-                            xpath: '/message/subject/text()'
-                          },
-                          body: {
-                            value: msg.body,
-                            xpath: '/message/body/text()'
-                          },
-                          thread: {
-                            value: msg.thread,
-                            xpath: '/message/thread/text()'
-                          }
-                        });
+                        'chat', {
+      subject: {
+        value: msg.subject,
+        xpath: '/message/subject/text()'
+      },
+      body: {
+        value: msg.body,
+        xpath: '/message/body/text()'
+      },
+      thread: {
+        value: msg.thread,
+        xpath: '/message/thread/text()'
+      }
+    });
 
-    msg = XC.Message.extend({
+    msg = this.xc.Message.extend({
       to: this.chong,
       body: "No subject and no thread"
     });
 
     Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
                         this.chong.jid,
-                        'chat',
-                        {
-                          subject: {
-                            value: undefined,
-                            xpath: '/message/subject/text()'
-                          },
-                          body: {
-                            value: msg.body,
-                            xpath: '/message/body/text()'
-                          },
-                          thread: {
-                            value: undefined,
-                            xpath: '/message/thread/text()'
-                          }
-                        });
+                        'chat', {
+      subject: {
+        value: undefined,
+        xpath: '/message/subject/text()'
+      },
+      body: {
+        value: msg.body,
+        xpath: '/message/body/text()'
+      },
+      thread: {
+        value: undefined,
+        xpath: '/message/thread/text()'
+      }
+    });
 
-    msg = XC.Message.extend({
+    msg = this.xc.Message.extend({
       to: this.chong,
       body: "message with ID",
       id: 'message-1'
@@ -130,20 +127,19 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
     Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
                         this.chong.jid,
-                        'chat',
-                        {
-                          id: {
-                            value: msg.id,
-                            xpath: '/message/@id'
-                          }
-                        });
+                        'chat', {
+      id: {
+        value: msg.id,
+        xpath: '/message/@id'
+      }
+    });
 
   },
 
   testReply: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = XC.Message.extend({
+    var msg = this.xc.Message.extend({
       from: this.chong,
       subject: "The Cave of the Two Lovers",
       thread: "Avatar"

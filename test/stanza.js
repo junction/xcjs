@@ -32,6 +32,14 @@ XC.Test.Stanza = new YAHOO.tool.TestCase({
     Assert.isNull(stanza.id);
     Assert.isNull(stanza.type);
 
+    // Test illegal invocation
+    var that = this;
+    Assert.throws(XC.Error, function () {
+      XC.Stanza.extend({
+       packet: that.packet
+      });
+    }, "Illegal stanza invocation didn't happen as expected.");
+
     // Test our stanza
     stanza = XC.Stanza.extend({
       packet: this.packet,

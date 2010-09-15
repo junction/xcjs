@@ -117,16 +117,17 @@ XC.Mixin.ChatStateNotification.Message = {
     $super.apply(this, Array.from(arguments).slice(1));
 
     // Add Chat State Notifications as a discoverable service
-    if (this.connection && arguments.callee._cachedDisco) {
+    if (this.connection) {
       //TODO This is wrong. This an architectural problem,
       // and needs to be fixed as a general case for Mixins that register
-      // their own features.
+      // their own features. This can be optimized, since it does a linear
+      // lookup on to check for conflicts in addFeature, not adding it if
+      // the feature already exists.
       // <tim.evans@junctionnetworks.com>
-      var registrar = XC.Base.mixin(XC.Mixin.Discoverable, {
+      var registrar = XC.Base.extend(XC.Mixin.Discoverable, {
         connection: this.connection
       });
       registrar.addFeature(XC.ChatStateNotification.XMLNS);
-      arguments.callee._cachedDisco = true;
     }
 
     if (this.packet) {

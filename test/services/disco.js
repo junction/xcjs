@@ -241,7 +241,9 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
       errorChild: {
         xpath: '/iq/error/err:item-not-found/node()',
         value: null,
-        assert: function() { Assert.isNotNull(arguments[1],arguments[2]); }
+        assert: function () {
+          Assert.isNotNull(arguments[1],arguments[2]);
+        }
       }
     });
 
@@ -282,7 +284,9 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
       errorChild: {
         xpath: '/iq/error/err:item-not-found/node()',
         value: null,
-        assert: function() { Assert.isNotNull(arguments[1],arguments[2]); }
+        assert: function () {
+          Assert.isNotNull(arguments[1],arguments[2]);
+        }
       }
     });
   }

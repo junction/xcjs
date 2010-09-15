@@ -93,7 +93,8 @@ XC.Test.DOMParser = XC.Base.extend({
     x:   'jabber:x:data',
     ps:  'http://jabber.org/protocol/pubsub',
     discoItems: 'http://jabber.org/protocol/disco#items',
-    discoInfo: 'http://jabber.org/protocol/disco#info'
+    discoInfo: 'http://jabber.org/protocol/disco#info',
+    chatStates: 'http://jabber.org/protocol/chatstates'
   },
 
   nsResolver: function (ns) {
