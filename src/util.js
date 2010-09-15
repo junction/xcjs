@@ -110,7 +110,7 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
   /**
    * Convert an iterable object into an Array.
    *
-   * @param Object An object that is iterable
+   * @param {Object} object An object that is iterable
    * @example
    *   function commaSeparate () {
    *     return Array.from(arguments).join(', ');
@@ -128,6 +128,12 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
  * @lends Array.prototype
  */
 XC.Base.mixin.call(Array.prototype, /** @lends Array */ {
+  /**
+   * Returns the index of an object in an Array
+   *
+   * @param {Object} object The Object to look for.
+   * @returns {Number} The index of the Object or -1 if it doesn't exist.
+   */
   indexOf: function (o) {
     for (var i = 0; i < this.length; i++)  {
       if (this[i] === o) {

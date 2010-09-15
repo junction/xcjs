@@ -39,9 +39,8 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
    * @param {Element} packet        The incoming XML stanza.
    */
   _handleMessages: function (packet) {
-    var msg = XC.Message.extend({
-      packet: packet,
-      connection: this.connection
+    var msg = this.connection.Message.extend({
+      packet: packet
     });
 
     this.fireHandler('onMessage', msg);

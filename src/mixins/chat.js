@@ -15,8 +15,6 @@ XC.Mixin.Chat = XC.Base.extend(/** @lends XC.Mixin.Chat */{
    * @param {String} [subject]   The subject of the message.
    * @param {String} [thread]    The thread of the message.
    * @param {String} [id]        The id of the message.
-   *
-   * @returns {XC.Entity} The entity the message was sent to.
    */
   sendChat: function (body, subject, thread, id) {
     var msg = XC.Message.extend({
@@ -29,7 +27,6 @@ XC.Mixin.Chat = XC.Base.extend(/** @lends XC.Mixin.Chat */{
     });
 
     this.connection.send(msg.toStanzaXML().convertToString());
-    return this;
   }
 
 });

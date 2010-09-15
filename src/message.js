@@ -8,6 +8,12 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends
 
   type: 'chat',
 
+  /**
+   * Unpack a message from a packet, or just do an ordinary init.
+   *
+   * @param {Function} $super The XC.Stanza toStanzaXML function
+   * @private
+   */
   init: function ($super) {
     $super.apply(this, Array.from(arguments).slice(1));
 
@@ -56,6 +62,7 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends
   },
 
   /**
+   * The builder for XC.Stanza's base toStanzaXML
    * @private
    */
   xmlStanza: XC.XMPP.Message,
@@ -63,6 +70,7 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends
   /**
    * Converts a message into an XML Fragment.
    *
+   * @param {Function} $super The XC.Stanza toStanzaXML function
    * @returns {XC.XML.Element} A XML Fragment.
    */
   toStanzaXML: function ($super) {

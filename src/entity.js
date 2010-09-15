@@ -10,7 +10,7 @@
  */
 XC.Entity = XC.Base.extend(/** @lends XC.Entity */{
   /**
-   * The Jabber Id of the entity.
+   * The Jabber ID of the entity.
    * @type {String}
    */
   jid: null
@@ -19,4 +19,5 @@ XC.Entity = XC.Base.extend(/** @lends XC.Entity */{
    XC.Mixin.Presence,
    XC.Mixin.Roster,
    XC.Mixin.Chat,
+   XC.Mixin.ChatStateNotification.Entity,
    XC.Mixin.Disco);

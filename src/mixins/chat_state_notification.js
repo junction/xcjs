@@ -1,22 +1,20 @@
 /**
+ * Chat State Notifications Mixins
+ * @namespace
+ *
+ * XEP-0085: Chat State Notifications
+ * @see http://xmpp.org/extensions/xep-0085.html
+ */
+XC.Mixin.ChatStateNotification = {};
+
+/**
  * Chat State Notifications Mixin for XC.Entity
  * @namespace
  *
  * XEP-0085: Chat State Notifications
  * @see http://xmpp.org/extensions/xep-0085.html
  */
-XC.Mixin.ChatStateNotification = {
-
-  /**
-   * Add the relevant feature to the Discoverable Module.
-   * @private
-   * @param {Function} $super The function that this is wrapped around.
-   */
-  init: function ($super) {
-    this.addFeature(XC.ChatStateNotification.XMLNS);
-
-    $super.apply(this, Array.from(arguments).slice(1));
-  }.around(),
+XC.Mixin.ChatStateNotification.Entity = {
 
   /**
    * Send a chat state notification to another entity.
@@ -34,20 +32,21 @@ XC.Mixin.ChatStateNotification = {
       chatNotificationState: state
     });
 
-    msg.to.connection.send(msg.toStanzaXML().convertToString());
+    this.connection.send(msg.toStanzaXML().convertToString());
   }
 };
 
-XC.Base.mixin.call(XC.Mixin.ChatStateNotification, /** @lends XC.ChatStateNotification */{
+XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity, /** @lends XC.Mixin.ChatStateNotification.Entity */{
   /**
    * Send a composing message.
    *
    * @param {XC.Entity} to    The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
    * @param {String} [id]     The ID to be associated with the message.
+   * @see XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification
    */
   sendChatStateComposing:
-    XC.Mixin.ChatStateNotification.sendChatStateNotification.curry(
+    XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification.curry(
       XC.ChatStateNotification.STATES.COMPOSING
     ),
 
@@ -57,9 +56,10 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification, /** @lends XC.ChatStateNotifi
    * @param {XC.Entity} to    The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
    * @param {String} [id]     The ID to be associated with the message.
+   * @see XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification
    */
   sendChatStatePaused:
-    XC.Mixin.ChatStateNotification.sendChatStateNotification.curry(
+    XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification.curry(
       XC.ChatStateNotification.STATES.PAUSED
     ),
 
@@ -69,9 +69,10 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification, /** @lends XC.ChatStateNotifi
    * @param {XC.Entity} to    The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
    * @param {String} [id]     The ID to be associated with the message.
+   * @see XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification
    */
   sendChatStateInactive:
-    XC.Mixin.ChatStateNotification.sendChatStateNotification.curry(
+    XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification.curry(
       XC.ChatStateNotification.STATES.INACTIVE
     ),
 
@@ -83,9 +84,10 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification, /** @lends XC.ChatStateNotifi
    * @param {XC.Entity} to    The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
    * @param {String} [id]     The ID to be associated with the message.
+   * @see XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification
    */
   sendChatStateGone:
-    XC.Mixin.ChatStateNotification.sendChatStateNotification.curry(
+    XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification.curry(
       XC.ChatStateNotification.STATES.GONE
     )
 });
@@ -98,6 +100,7 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification, /** @lends XC.ChatStateNotifi
  * @see http://xmpp.org/extensions/xep-0085.html
  */
 XC.Mixin.ChatStateNotification.Message = {
+
   /**
    * The chat notification state of the message.
    * @type {String} Defaults to 'active'; can be any in XC.ChatStateNotification.STATES
@@ -113,11 +116,24 @@ XC.Mixin.ChatStateNotification.Message = {
   init: function ($super) {
     $super.apply(this, Array.from(arguments).slice(1));
 
+    // Add Chat State Notifications as a discoverable service
+    if (this.connection && arguments.callee._cachedDisco) {
+      //TODO This is wrong. This an architectural problem,
+      // and needs to be fixed as a general case for Mixins that register
+      // their own features.
+      // <tim.evans@junctionnetworks.com>
+      var registrar = XC.Base.mixin(XC.Mixin.Discoverable, {
+        connection: this.connection
+      });
+      registrar.addFeature(XC.ChatStateNotification.XMLNS);
+      arguments.callee._cachedDisco = true;
+    }
+
     if (this.packet) {
       var pkt = this.packet, stateNode;
 
       stateNode = XC_DOMHelper.getElementsByNS(pkt.getNode(),
-                    XC.Mixin.ChatStateNotification.XMLNS);
+                    XC.ChatStateNotification.XMLNS);
       stateNode = stateNode[0];
 
       if (stateNode) {

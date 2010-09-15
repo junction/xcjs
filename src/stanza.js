@@ -15,8 +15,13 @@ XC.Stanza = XC.Base.extend(/** @lends XC.Stanza */{
   init: function ($super) {
     $super.apply(this, Array.from(arguments).slice(1));
 
-    if (this.packet && this.connection) {
+    if (this.packet) {
+      if (!this.connection) {
+        throw new XC.Error("If a stanza is created with a packet, it MUST " +
+                           "have a connection associated with it.");
+      }
       var pkt = this.packet;
+
       this.mixin({
         to: this.connection.Entity.extend({jid: pkt.getTo()}),
         from: this.connection.Entity.extend({jid: pkt.getFrom()}),

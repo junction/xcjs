@@ -8,6 +8,16 @@
  */
 XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID */{
 
+  /**
+   * Returns the bare JID of the entity.
+   *
+   * @example
+   *   var mal = this.xc.Entity.extend({
+   *     jid: 'mal@serenity.com/persephone'
+   *   });
+   *   mal.getBareJID();
+   *   // -> 'mal@serenity.com'
+   */
   getBareJID: function () {
     var ret = "";
     ret += (this.getJIDParts().node) ? this.getJIDParts().node + "@" : "";
@@ -15,18 +25,62 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID */{
     return ret;
   },
 
+  /**
+   * Returns the JID node (commonly used as a username).
+   *
+   * @example
+   *   var mal = this.xc.Entity.extend({
+   *     jid: 'mal@serenity.com/persephone'
+   *   });
+   *   mal.getJIDNode();
+   *   // -> 'mal'
+   */
   getJIDNode: function () {
     return this.getJIDParts().node;
   },
 
+  /**
+   * Returns the JID's domain.
+   *
+   * @example
+   *   var mal = this.xc.Entity.extend({
+   *     jid: 'mal@serenity.com/persephone'
+   *   });
+   *   mal.getJIDDomain();
+   *   // -> 'serenity.com'
+   */
   getJIDDomain: function () {
     return this.getJIDParts().domain;
   },
 
+  /**
+   * Returns the resource of the JID.
+   *
+   * @example
+   *   var mal = this.xc.Entity.extend({
+   *     jid: 'mal@serenity.com/persephone'
+   *   });
+   *   mal.getJIDResource();
+   *   // -> 'persephone'
+   */
   getJIDResource: function () {
     return this.getJIDParts().resource;
   },
 
+  /**
+   * Returns the parts of the JID.
+   *
+   * @example
+   *   var mal = this.xc.Entity.extend({
+   *     jid: 'mal@serenity.com/persephone'
+   *   });
+   *   mal.getJIDParts();
+   *   // -> {
+   *   // node: 'mal',
+   *   // domain: 'serenity.com',
+   *   // resource: 'persephone'
+   *   // }
+   */
   getJIDParts: function () {
     if (this.jid && this.jid._cachedJIDParts) {
       return this.jid._cachedJIDParts;

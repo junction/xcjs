@@ -31,7 +31,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * @private
    */
   templates: {
-    Entity: XC.Entity
+    Entity: XC.Entity,
+    Message: XC.Message
   },
 
   /**

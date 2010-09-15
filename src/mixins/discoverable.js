@@ -76,8 +76,11 @@ XC.Mixin.Discoverable = {
    *
    * @returns {XC.Discoverable} The calling object.
    */
-  addFeature: function (xmlns, node) {
-    this._fetchNode(node).features.push(xmlns);
+  addFeature: function (xmlns, nodeName) {
+    var node = this._fetchNode(nodeName);
+    if (node.features.indexOf(xmlns) === -1) {
+      node.features.push(xmlns);
+    }
     return this;
   },
 
