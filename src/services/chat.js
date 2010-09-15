@@ -34,27 +34,6 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
   }.around(),
 
   /**
-   * Send a chat message to another entity.
-   *
-   * @param {String} jid         The jid to send the chat message to.
-   * @param {String} [body]      The body of the message.
-   * @param {String} [subject]   The subject of the message.
-   * @param {String} [thread]    The thread of the message.
-   * @param {Object} [callbacks] An Object that has 'onError'.
-   *
-   * @returns {XC.Entity} The entity the message was sent to.
-   */
-  send: function (jid, body, subject, thread, callbacks) {
-    var entity = XC.Entity.extend({
-      jid: jid,
-      connection: this.connection
-    });
-
-    entity.sendChat(body, subject, thread, callbacks);
-    return entity;
-  },
-
-  /**
    * Handles out-of-band messages (All incoming messages)
    * from another entity.
    *
