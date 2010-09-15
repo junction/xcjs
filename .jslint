@@ -1,0 +1,9 @@
+options = {
+   eqeqeq: true,
+   forin: true,
+   undef: true,
+   white: true,
+   browser: true,
+   indent: 2,
+   predef: ['Element', 'window', 'XC', 'Node', 'XC_DOMHelper']
+};
