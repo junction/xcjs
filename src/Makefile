@@ -3,7 +3,7 @@ SRC =	core.js base.js util.js xc_dom_helper.js error.js xml.js registrar.js	\
 	mixins/discoverable.js mixins/handler_registration.js mixins/chat_state_notification.js	\
   services/roster.js services/chat.js services/presence.js services/disco.js	\
 	entity.js stanza.js message.js \
-	connection_adapter.js connection.js
+	connection_adapter.js connection.js strophe_adapter.js
 
 DOCDIR = ../doc
 
