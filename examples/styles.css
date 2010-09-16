@@ -107,8 +107,6 @@ body, html, textarea {
 #thread .message .body {
   display: block;
   clear: both;
-  position: relative;
-  top: -16px;
   padding-left: 50px;
 }
 
@@ -145,6 +143,10 @@ body, html, textarea {
   border-bottom: 1px solid #666;
   padding: 10px;
   cursor: pointer;
+}
+
+#roster .item.unavailable {
+  color: #999;
 }
 
 #roster .item .status {

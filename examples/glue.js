@@ -2,6 +2,7 @@
 var Glue = {
   con: null,
   xc: null,
+  contacts: {},
 
   init: function () {
     var that = this;
@@ -12,6 +13,7 @@ var Glue = {
     this.con.rawOutput = function (data) {
       that.appendXML(data, false);
     };
+    this.contacts = {};
   },
 
   onLoad: function () {
@@ -182,15 +184,20 @@ var Glue = {
       }
     });
 
+    var contacts = this.contacts;
     // Update info in the box.
     onSelectedChanged.push(function (e) {
-      
+      var contact = contacts[$(this).attr('rel')],
+          groups = contact.roster.groups || [];
+
+      $('#info .name').html(contact.roster.name || '');
+      $('#info .jid').html(contact.getBareJID());
+      $('#info .groups').html(groups.join(', ').split(0, -2));
     });
 
     $('#actions label').bind('click', function (e) {
       $('#actions .selected').removeClass('selected');
       $(this).addClass('selected');
-
     });
 
     $(document).keydown(function (e) {
@@ -234,20 +241,75 @@ var Glue = {
   },
 
   sendChat: function (body) {
-    this.appendMessage({name: 'Me'}, body);
+    var contact = this.contacts[$('.selected').attr('rel')];
+    if (contact) {
+      contact.sendChat(body);
+      this.appendMessage({from: {roster: {name: 'Me'}}, body: body});
+    }
   },
 
   onConnected: function (entity) {
-//    this.xc.Presence.send();
+    this.xc.Presence.send();
+    this.xc.Roster.requestItems();
   },
 
-  appendMessage: function (from, body) {
+  onRosterItem: function (entity) {
+    var name = entity.roster.name || entity.getBareJID(),
+        contact;
+    if (this.contacts[entity.getBareJID()]) {
+      contact = this.contacts[entity.getBareJID()];
+      contact.roster = entity.roster;
+      $(contact._div.getElementsByClassName('name')[0]).html(name);
+    } else {
+      contact = entity;
+      var div = $('<div class="item" rel="' + entity.getBareJID() + '">\
+          <span class="name">' + name + '</span>\
+          <span class="show"></span>\
+          <div class="status"></div>&nbsp;\
+        </div>');
+      contact._div = div[0];
+      $('#roster .items').append(div[0]);
+      this.contacts[entity.getBareJID()] = contact;
+    }
+  },
+
+  onPresence: function (entity) {
+    var jid = entity.getBareJID(),
+        show = entity.presence.show || '',
+        status = entity.presence.status || '',
+        available = entity.presence.available ? '' : ' unavailable',
+        contact;
+    if (this.contacts[jid]) {
+      contact = this.contacts[entity.getBareJID()];
+      contact.presence = entity.presence;
+      $(contact._div.getElementsByClassName('show')[0]).html(show);
+      $(contact._div.getElementsByClassName('status')[0]).html(status);
+      if (contact.presence.available) {
+        $(contact._div).removeClass('unavailable');
+      } else {
+        $(contact._div).addClass('unavailable');
+      }
+    } else {
+      contact = entity;
+      var div = $('<div class="item' + available + '" rel="' + entity.getBareJID() + '">\
+          <span class="name">' + jid + '</span>\
+          <span class="show">' + show + '</span>\
+          <div class="status">' + status + '</div>&nbsp;\
+        </div>');
+      contact._div = div[0];
+      $('#roster .items').append(div);
+      this.contacts[entity.getBareJID()] = contact;
+    }
+  },
+
+  appendMessage: function (message) {
     var bottom = $('#thread')[0].scrollHeight,
         maxTop = bottom - $('#thread').height(),
         top = $('#thread')[0].scrollTop;
+
     $('#thread').append('<div class="message">\
-      <span class="from">' + from.name + '</span>\
-      <span class="body">' + body + '</span></div>');
+      <span class="from">' + (message.from.roster.name || message.from.getBareJID()) + '</span>\
+      <span class="body">' + message.body + '</span></div>');
 
     if (top === maxTop) {
       $('#thread').animate({
@@ -257,9 +319,9 @@ var Glue = {
   },
 
   appendXML: function (xml, incoming) {
-    var bottom = $('#thread')[0].scrollHeight,
-        maxTop = bottom - $('#thread').height(),
-        top = $('#thread')[0].scrollTop;
+    var bottom = $('#console .stanzas')[0].scrollHeight,
+        maxTop = bottom - $('#console .stanzas').height(),
+        top = $('#console .stanzas')[0].scrollTop;
 
     var klass = incoming ? 'incoming' : 'outgoing';
     $('#console .stanzas').append(
@@ -268,10 +330,10 @@ var Glue = {
            .replace(/</g, '&lt;')
            .replace(/>/g, '&gt;') + '</div>');
 
-    if (top - maxTop < 1) {
+    if (top - maxTop < 5) {
       $('#console .stanzas').animate({
         scrollTop: bottom
-      }, 'fast');
+      }, 0);
     }
   },
 
@@ -281,6 +343,14 @@ var Glue = {
     var jid = form.username.value,
         pass = form.password.value;
     this.con.connect(jid, pass, this.onStatusChanged.bind(this));
+    this.xc = XC.Connection.extend({
+      connectionAdapter: XC.StropheAdapter.extend({
+                           connection: this.con
+                         })
+    });
+    this.xc.Presence.registerHandler('onPresence', this.onPresence.bind(this));
+    this.xc.Roster.registerHandler('onRosterItem', this.onRosterItem.bind(this));
+    this.xc.Chat.registerHandler('onMessage', this.appendMessage.bind(this));
   },
 
   onError: function (packet) {
