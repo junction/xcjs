@@ -42,10 +42,9 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
     iq.addChild(q);
 
     this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
-        if (callbacks) {
-          callbacks.onError(packet);
-        }
+      if (packet.getType() === 'error' &&
+          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
+        callbacks.onError(packet);
       } else {
         packet = packet.getNode();
         var items = packet.getElementsByTagName('item'),
@@ -56,7 +55,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
           entities.push(that._entityFromItem(items[i]));
         }
 
-        if (callbacks) {
+        if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
           callbacks.onSuccess(entities);
         }
       }

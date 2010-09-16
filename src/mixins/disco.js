@@ -114,7 +114,8 @@ XC.Mixin.Disco = {
     }
 
     this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
+      if (packet.getType() === 'error' &&
+          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);
       } else {
         packet = packet.getNode();
@@ -141,7 +142,9 @@ XC.Mixin.Disco = {
             name: identity.getAttribute('name')
           });
         }
-        callbacks.onSuccess(entity);
+        if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
+          callbacks.onSuccess(entity);
+        }
       }
     });
   },
@@ -167,7 +170,8 @@ XC.Mixin.Disco = {
     iq.addChild(q);
 
     this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
+      if (packet.getType() === 'error' &&
+          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);
       } else {
         packet = packet.getNode();
@@ -185,8 +189,9 @@ XC.Mixin.Disco = {
             name: items[i].getAttribute('name')
           });
         }
-
-        callbacks.onSuccess(entity);
+        if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
+          callbacks.onSuccess(entity);
+        }
       }
     });
   }

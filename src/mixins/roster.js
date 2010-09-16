@@ -64,9 +64,10 @@ XC.Mixin.Roster = {
     q.addChild(item);
     iq.addChild(q);
     this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
+      if (packet.getType() === 'error' &&
+          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);
-      } else {
+      } else if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
         callbacks.onSuccess(entity);
       }
     });
@@ -91,9 +92,10 @@ XC.Mixin.Roster = {
     q.addChild(item);
     iq.addChild(q);
     this.connection.send(iq.convertToString(), function (packet) {
-      if (packet.getType() === 'error') {
+      if (packet.getType() === 'error' &&
+          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);
-      } else {
+      } else if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
         callbacks.onSuccess(entity);
       }
     });
