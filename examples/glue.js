@@ -1,6 +1,22 @@
-/**global $, jQuery*/
+/*global $, Strophe, jQuery*/
 var Glue = {
-  start: function () {
+  con: null,
+  xc: null,
+
+  init: function () {
+    var that = this;
+    this.con = new Strophe.Connection('http://localhost/http-bind/');
+    this.con.rawInput  = function (data) {
+      that.appendXML(data, true);
+    };
+    this.con.rawOutput = function (data) {
+      that.appendXML(data, false);
+    };
+  },
+
+  onLoad: function () {
+    $('#error').animate({top: '-' + $('#error').outerHeight() + 'px'}, 0);
+
     $('#filter-incoming').bind('click', function () {
       var display = $(this).attr('checked') ? 'block': 'none';
       $('head').append(
@@ -124,6 +140,12 @@ var Glue = {
       }
     });
 
+    $('#login-form').bind('submit', function (e) {
+      $('.spinner').show('slow');
+      e.preventDefault();
+      Glue.login(this);
+    });
+
     $('#service-actions').bind('click', function (e) {
       if (parseInt($('#actions').css('opacity'), 10) === 0) {
         var x = $(this).offset().left + $(this).width() + 25,
@@ -203,10 +225,20 @@ var Glue = {
       }
       return true;
     });
+
+    $('button').live('click', function (e) {
+      e.preventDefault();
+    });
+
+    $('#ack').live('click', this.hideError);
   },
 
   sendChat: function (body) {
     this.appendMessage({name: 'Me'}, body);
+  },
+
+  onConnected: function (entity) {
+//    this.xc.Presence.send();
   },
 
   appendMessage: function (from, body) {
@@ -231,100 +263,60 @@ var Glue = {
 
     var klass = incoming ? 'incoming' : 'outgoing';
     $('#console .stanzas').append(
-      '<pre class="' + klass + '">' + 
+      '<div class="xml ' + klass + '">' + 
         xml.replace(/&/g, '&amp;')
            .replace(/</g, '&lt;')
-           .replace(/>/g, '&gt;') + '</pre>');
+           .replace(/>/g, '&gt;') + '</div>');
 
-    if (top === maxTop) {
-      $('#console').animate({
+    if (top - maxTop < 1) {
+      $('#console .stanzas').animate({
         scrollTop: bottom
       }, 'fast');
+    }
+  },
+
+  login: function (form) {
+    $('#error').hide();
+
+    var jid = form.username.value,
+        pass = form.password.value;
+    this.con.connect(jid, pass, this.onStatusChanged.bind(this));
+  },
+
+  onError: function (packet) {
+    $('#error').animate({top: '0px'}, 'slow');
+    $('#header').animate({top: $('#error').outerHeight() + 'px'}, 'slow');
+    $('#body').animate({top: ($('#error').outerHeight() + $('#header').height()) + 'px'}, 'slow');
+    $('#error').html("An error occured.<a id='ack' href='javascript:;'>Ok, let me continue!</a>");
+  },
+
+  hideError: function () {
+    $('#error').animate({top: '-' + $('#error').outerHeight() + 'px'}, 'slow');
+    $('#header').animate({top: '0px'}, 'slow');
+    $('#body').animate({top: $('#header').height() + 'px'}, 'slow');
+  },
+
+  onStatusChanged: function (status) {
+    switch (status) {
+    case 5:
+      $('#login').animate({opacity: 0}, 'slow', null, function () {
+        $('#login').css('display', 'none');
+      });
+      this.onConnected();
+      this.hideError();
+      break;
+    case 6:
+      $('#login').css('display', 'block');
+      $('#login').animate({opacity: 1}, 'slow');
+      break;
+    default:
+      console.log('Status changed: ' + status);
+      break;
     }
   }
 };
 
-Glue.XC = {
-
-  setup: function () {
-    var adapter = XC.ConnectionAdapter.extend({
-      _callbacks: [],
-
-      jid: function () { return con.jid; },
-
-      registerHandler: function (event, handler) {
-        function wrapped(stanza) {
-          var packetAdapter = {
-            getFrom: function () { return stanza.getAttribute('from'); },
-            getType: function () { return stanza.getAttribute('type'); },
-            getTo:   function () { return stanza.getAttribute('to');   },
-            getNode: function () { return stanza;                      }
-          };
-
-          var newArgs = [packetAdapter];
-          for (var i = 1, len = arguments.length; i < len; i++) {
-            newArgs.push(arguments[i]);
-          }
-
-          handler.apply(this, newArgs);
-          return true;
-        }
-
-        this.unregisterHandler(event);
-        handlers[event] = con.addHandler(wrapped, null, event,
-                                         null, null, null);
-      },
-
-      unregisterHandler: function (event) {
-        if (handlers[event]) {
-          con.deleteHandler(handlers[event]);
-          delete handlers[event];
-        }
-      },
-
-      send: function (xml, cb, args) {
-        var node = document.createElement('wrapper');
-        node.innerHTML = xml;
-        node = node.firstChild;
-
-        if (cb) {
-          function wrapped(stanza) {
-            var packetAdapter = {
-              getFrom: function () { return stanza.getAttribute('from'); },
-              getType: function () { return stanza.getAttribute('type'); },
-              getTo:   function () { return stanza.getAttribute('to');   },
-              getNode: function () { return stanza;                      }
-            };
-
-            var newArgs = [packetAdapter];
-            for (var i = 0, len = args.length; i < len; i++) {
-              newArgs.push(args[i]);
-            }
-
-            cb.apply(this, newArgs);
-            return false;
-          }
-
-          var id = node.getAttribute('id');
-          if (!id) {
-            id = con.getUniqueId();
-            node.setAttribute('id', id);
-          }
-
-          this._callbacks[id] = con.addHandler(wrapped, null, null,
-                                               null, id, null);
-        }
-
-        node.setAttribute('xmlns', 'jabber:client');
-        return con.send(node);
-      }
-    });
-
-    this.con = XC.Connection.extend({connection: adapter});
-    this.con.initConnection();
-  }
-};
-
 $(document).ready(function () {
-  Glue.start();
+  Glue.init();
+  Glue.onLoad();
 });

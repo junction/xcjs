@@ -8,6 +8,19 @@
   <script type="text/javascript" src="glue.js"></script>
 </head>
 <body>
+  <div id="error">
+    Error <a href="javascript:;" id="ack">Ok</a>
+  </div>
+  <div id="login">
+    <div id="login-panel" class="dialog">
+      <form id="login-form" action="#">
+      <table cellpadding="0" cellspacing="0">
+        <tr><td>JID</td><td><input name="username" type="text"/></td></tr>
+        <tr><td>Password</td><td><input name="password" type="password"/></td></tr>
+      </table>
+      <input type="submit" value="Login"/><br/><br/>
+    </div>
+  </div>
   <div id="header">
     XC Demo
     <button id="hide-console">Hide Console</button>
