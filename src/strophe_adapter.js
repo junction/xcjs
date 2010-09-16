@@ -1,3 +1,7 @@
+/**
+ * Strophe Connection Adapter
+ * @extends XC.ConnectionAdapter
+ */
 XC.StropheAdapter = XC.ConnectionAdapter.extend({
   _callbacks: {},
   _handlers: {},

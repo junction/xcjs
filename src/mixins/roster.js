@@ -49,7 +49,7 @@ XC.Mixin.Roster = {
         len = (entity.roster && entity.roster.groups) ? entity.roster.groups.length : 0,
         group;
     iq.type('set');
-    item.attr('jid', entity.jid);
+    item.attr('jid', entity.getBareJID());
 
     if (entity.roster.name) {
       item.attr('name', entity.roster.name);
@@ -86,7 +86,7 @@ XC.Mixin.Roster = {
 
     iq.from(this.connection.getJID());
     iq.attr('type', 'set');
-    item.attr('jid', entity.jid);
+    item.attr('jid', entity.getBareJID());
     item.attr('subscription', 'remove');
 
     q.addChild(item);

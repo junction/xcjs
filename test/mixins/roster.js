@@ -7,7 +7,7 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
     this.xc = XC.Connection.extend({connectionAdapter: this.conn});
 
     this.marvin = XC.Entity.extend({
-      jid: "marvin@heart-of-gold.com",
+      jid: "marvin@heart-of-gold.com/yarn",
       connection: this.xc,
       roster: {
         name: "Marvin"

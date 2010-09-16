@@ -1,6 +1,6 @@
 <!doctype html>
 <head>
-  <title>XMPP Client Example</title>
+  <title>XMPP Client Kitchen Sink</title>
   <link rel="stylesheet" type="text/css" href="styles.css"/>
   <script type="text/javascript" src="../frameworks/strophejs/strophe.js"></script>
   <script type="text/javascript" src="../frameworks/jquery/jquery.min.js"></script>
@@ -14,77 +14,105 @@
   <div id="login">
     <div id="login-panel" class="dialog">
       <form id="login-form" action="#">
-      <table cellpadding="0" cellspacing="0">
-        <tr><td>JID</td><td><input name="username" type="text"/></td></tr>
-        <tr><td>Password</td><td><input name="password" type="password"/></td></tr>
-      </table>
-      <input type="submit" value="Login"/><br/><br/>
+        <table cellpadding="0" cellspacing="0">
+          <tr><td>JID</td><td><input name="username" type="text"/></td></tr>
+          <tr><td>Password</td><td><input name="password" type="password"/></td></tr>
+        </table>
+        <input type="submit" value="Login"/><br/><br/>
+      </form>
     </div>
   </div>
+
   <div id="header">
-    XC Demo
+    <span id="logged-in-as"></span>
+    <select id="my-show">
+      <option value="available">available</option>
+      <option value="dnd">do not disturb</option>
+      <option value="xa">extended away</option>
+    </select>
+    <input type="text" id="my-status" placeholder="Custom Status"/>
+    <span id="title">XC Kitchen Sink</span>
     <button id="hide-console">Hide Console</button>
+    <div id="my-actions" class="popup">
+      <div class="body">
+        <label rel="logout">Logout</label>
+        <div class="arrow border top"></div>
+        <div class="arrow top"></div>
+      </div>
+    </div>
   </div>
+
   <div id="body">
-  <div id="info" class="popup">
-    <table cellpadding="0" cellspacing="0">
-      <tr><td>JID</td><td class="jid">seoman@erkynland.hayholt.com</td></tr>
-      <tr><td>Name</td><td class="name">Seoman Snowlock</td></tr>
-      <tr><td>Groups</td><td class="groups">League of the Scroll</td></tr>
-    </table>
-    <div class="arrow border top"></div>
-    <div class="arrow top"></div>
-  </div>
-  <div id="actions" class="popup">
-    <div class="body">
-      <label>Subscribe to Presence</label>
-      <label>Unsubscribe from Presence</label>
-      <label>Cancel Presence Subscription for Contact</label>
-      <label>Send Directed Presence to Contact</label>
-      <label>Request Service Discovery Info</label>
-      <label>Request Service Discovery Items</label>
-      <label>Set Roster Item</label>
-      <label>Remove Roster Item</label>
+    <div id="edit-dialog" class="dialog">
+      <form id="edit-contact-form" action="#">
+        <table cellpadding="0" cellspacing="0">
+          <tr><td>JID</td><td><input name="jid" type="text"/></td></tr>
+          <tr><td>Name</td><td><input name="name" type="text"/></td></tr>
+          <tr><td>Group</td><td><input name="group" type="text"/></td></tr>
+        </table>
+        <button id='edit-cancel'>Cancel</button>
+        <input type="submit" value="Submit"/><br/><br/>
+      </form>
     </div>
-    <div class="arrow border top"></div>
-    <div class="arrow top"></div>
-  </div>
-  <div id="roster">
-    <div class="options">
-      <div class="around">
-        <button id="action-chat">Chat</button>
-        <span style="float:right">
+    <div id="info" class="popup">
+      <table cellpadding="0" cellspacing="0">
+        <tr><td>JID</td><td class="jid"></td></tr>
+        <tr><td>Name</td><td class="name"></td></tr>
+        <tr><td>Groups</td><td class="groups"></td></tr>
+      </table>
+      <div class="arrow border top"></div>
+      <div class="arrow top"></div>
+    </div>
+    <div id="actions" class="popup">
+      <div class="body">
+        <label rel="editContact">Edit</label>
+        <label rel="subscribe">Subscribe to Presence</label>
+        <label rel="unsubscribe">Unsubscribe from Presence</label>
+        <label rel="cancelSubscription">Cancel Presence Subscription for Contact</label>
+        <label rel="discoInfo">Request Service Discovery Info</label>
+        <label rel="discoItems">Request Service Discovery Items</label>
+        <label rel="removeRosterItem">Remove Roster Item</label>
+      </div>
+      <div class="arrow border top"></div>
+      <div class="arrow top"></div>
+    </div>
+    <div id="roster">
+      <div class="options">
+        <div class="around">
           <button id="add-contact">+</button>
-          <button id="popup-info">Info</button>
-          <button id="popup-actions">Actions</button>
-        </span>
+          <span style="float:right">
+            <button id="popup-info">Info</button>
+            <button id="popup-actions">Actions</button>
+          </span>
+        </div>
+      </div>
+      <div class="wrapper">
+        <div class="items">
+        </div>
       </div>
     </div>
-    <div class="wrapper">
-      <div class="items">
+    <div id="chat" class="disabled">
+      <div id="thread">
+        <div id="chat-states"></div>
+      </div>
+      <div id="composer">
+        <div class="input"><textarea disabled="disabled" placeholder="Type here to compose a message."></textarea></div>
+        <div class="send"><button disabled="disabled">Send</button></div>
       </div>
     </div>
-  </div>
-  <div id="chat" class="disabled">
-    <div id="thread">
-    </div>
-    <div id="composer">
-      <div class="input"><textarea placeholder="Type here to compose a message."></textarea></div>
-      <div class="send"><button>Send</button></div>
-    </div>
-  </div>
-  <div id="console">
-    <div class="options">
-      <div class="around">
-        Filter XML:
-        <input id="filter-incoming" type="checkbox" checked />
-        <span class="incoming">Incoming</span>
-        <input id="filter-outgoing" type="checkbox" checked />
-        <span class="outgoing">Outgoing</span>
+    <div id="console">
+      <div class="options">
+        <div class="around">
+          Filter XML:
+          <input id="filter-incoming" type="checkbox" checked />
+          <span class="incoming">Incoming</span>
+          <input id="filter-outgoing" type="checkbox" checked />
+          <span class="outgoing">Outgoing</span>
+        </div>
       </div>
-    </div>
-    <div class="wrapper">
-      <div class="stanzas">
+      <div class="wrapper">
+        <div class="stanzas">
+        </div>
       </div>
     </div>
   </div>

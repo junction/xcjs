@@ -64,6 +64,10 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
         Item = XC.XML.Element.extend({name: 'item'}),
         item, node, value, len;
 
+    if (packet.getType() !== 'get') {
+      return;
+    }
+
     iq.type('result');
     iq.to(packet.getFrom());
     iq.addChild(q);
@@ -110,6 +114,10 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
         Feature = XC.XML.Element.extend({name: 'feature'}),
         Identity = XC.XML.Element.extend({name: 'identity'}),
         identity, elem, len, node, i;
+
+    if (packet.getType() !== 'get') {
+      return;
+    }
 
     iq.type('result');
     iq.to(packet.from);

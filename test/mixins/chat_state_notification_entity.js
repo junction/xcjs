@@ -28,7 +28,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     this.arthur.sendChat();
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
         xpath: '/message/chatStates:active/node()',
         value: null,
@@ -44,7 +44,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     this.arthur.sendChatStateComposing();
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
         xpath: '/message/chatStates:composing/node()',
         value: null,
@@ -60,7 +60,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     this.arthur.sendChatStatePaused();
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
         xpath: '/message/chatStates:paused/node()',
         value: null,
@@ -76,7 +76,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     this.arthur.sendChatStateInactive();
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
         xpath: '/message/chatStates:inactive/node()',
         value: null,
@@ -92,7 +92,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     this.arthur.sendChatStateGone();
 
-    Assert.XPathTests(this.conn._data, {
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
         xpath: '/message/chatStates:gone/node()',
         value: null,
