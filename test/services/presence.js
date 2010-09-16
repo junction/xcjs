@@ -329,6 +329,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       fired = true;
       Assert.isString(entity.jid);
       Assert.isObject(entity.presence);
+      Assert.isObject(entity.connection);
       Assert.isString(entity.presence.show);
       Assert.isNumber(entity.presence.priority);
 

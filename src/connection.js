@@ -178,8 +178,9 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
-   * find a set of registered callbacks whose set of criteria match the stanza
-   * and call the callbacks with the stanza
+   * Find a set of registered callbacks whose set of criteria match the stanza
+   * and call the callbacks with the stanza.
+   *
    * @private
    */
   _dispatchStanza: function (stanza) {

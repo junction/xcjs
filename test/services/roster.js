@@ -81,6 +81,7 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
 
     this.xc.Roster.registerHandler('onRosterItem', function (entity) {
       fired = true;
+      Assert.isObject(entity.connection);
       Assert.isString(entity.jid,
                       "The JID should be a String.");
       Assert.isString(entity.roster.name,

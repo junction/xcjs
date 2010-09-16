@@ -97,7 +97,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
   _handlePresence: function (packet) {
     var jid = packet.getFrom(),
         type = packet.getType(),
-        entity = XC.Entity.extend({jid: jid, presence: {}}),
+        entity = this.connection.Entity.extend({jid: jid, presence: {}}),
         connection = this.connection,
         response = function (acceptType, denyType) {
           return {
