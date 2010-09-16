@@ -43,7 +43,7 @@ XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
     Assert.areEqual(1, value.length, "Unexpected number of elements.");
     Assert.areEqual(0, empty.length, "Unexpected number of elements.");
 
-    Assert.areEqual('bar', fiBar[0].localName);
+    Assert.areEqual('bar', fiBar[0].localName || fiBar[0].nodeName);
     Assert.areEqual('1', XC_DOMHelper.getTextContent(value[0]), "value should be '1'");
   },
 
