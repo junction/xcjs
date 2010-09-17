@@ -95,6 +95,34 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
     };
   }.inferior(),
 
+  /**
+   * Bind 'this' to be the value of target when the bound function
+   * is invoked.
+   *
+   * @param {Object} target The value that 'this' should represent.
+   * @returns {Function} This function wrapped to take the target as 'this'.
+   * @example
+   *   var Person = {
+   *     name: null,
+   *     sayHi: function () {
+   *       return "Hello, " + this.name;
+   *     }
+   *   }
+   *   var mal = Person.extend({
+   *     name: 'Mal'
+   *   });
+   *   var inara = Person.extend({
+   *     name: 'Inara'
+   *   });
+   *   mal.sayHi();
+   *   // -> 'Hello, Mal'
+   *   inara.sayHi();
+   *   // -> 'Hello, Inara'
+   *
+   *   var sayWho = mal.sayHi.bind(inara)
+   *   sayWho();
+   *   // -> 'Hello, Inara'
+   */
   bind: function (target) {
     var _method = this;
     return function () {
@@ -124,12 +152,11 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
 /**
  * Internet Explorer doesn't implement indexOf,
  * so implement it here.
- *
- * @lends Array.prototype
  */
-XC.Base.mixin.call(Array.prototype, /** @lends Array */ {
+XC.Base.mixin.call(Array.prototype, /** @lends Array.prototype */ {
   /**
-   * Returns the index of an object in an Array
+   * Returns the index of an object in an Array.
+   * This is here for JScript not having the indexOf function on the Array prototype.
    *
    * @param {Object} object The Object to look for.
    * @returns {Number} The index of the Object or -1 if it doesn't exist.

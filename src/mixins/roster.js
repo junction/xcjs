@@ -2,11 +2,15 @@
  * Roster Management
  * @namespace
  *
- * RFC 3921: XMPP IM; Section 7 & 8
- * @see http://ietf.org/rfc/rfc3921.txt
+ * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 7 & 8</a>
  */
 XC.Mixin.Roster = {
 
+  /**
+   * A slot to contain roster information.
+   * @type {Object}
+   * @namespace
+   */
   roster: {
     /**
      * The optional name of the entity.
@@ -38,7 +42,11 @@ XC.Mixin.Roster = {
   /**
    * Update an entity in your roster.
    *
-   * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
+   * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
+   *   @param {Function} [callbacks.onError] A function that will process roster errors.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.
+   *   @param {Function} [callbacks.onSuccess] A function that will be called on a successful roster set.
+   *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity that the roster set was called on.
    */
   setRosterItem: function (callbacks) {
     var entity = this,
@@ -76,7 +84,11 @@ XC.Mixin.Roster = {
   /**
    * Remove an entity from your roster.
    *
-   * @param {Object}    [callbacks] An Object with 'onError' and 'onSuccess'.
+   * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
+   *   @param {Function} [callbacks.onError] A function that will process roster errors.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.
+   *   @param {Function} [callbacks.onSuccess] A function that will be called on a successful roster remove.
+   *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity that the roster remove was called on.
    */
   removeRosterItem: function (callbacks) {
     var iq = XC.XMPP.IQ.extend(),

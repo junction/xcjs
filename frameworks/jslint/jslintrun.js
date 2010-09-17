@@ -45,6 +45,11 @@ var line;
 var blcount = 0;
 while (true) {
   line = readline();
+  // SpiderMonkey 1.8 returns 'null' when
+  // the end of the file is reached.
+  if (line === null) {
+    break;
+  }
   body = body + line + "\n";
   // HACK
   // cant figure out how to tell EOF

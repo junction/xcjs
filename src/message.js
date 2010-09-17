@@ -1,8 +1,8 @@
 /**
  * Simple Message class for XMPP Message stanzas
+ * @class
  * @extends XC.Stanza
  * @extends XC.Mixin.ChatStateNotification.Message
- * @class
  */
 XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends XC.Message */{
 

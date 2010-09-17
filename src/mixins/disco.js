@@ -94,6 +94,10 @@ XC.Mixin.Disco = {
    *
    * @param {Object}  [node]      The node to query for info on the entity.
    * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
+   *   @param {Function} [callbacks.onError] A function that will process disco#info errors.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.
+   *   @param {Function} [callbacks.onSuccess] A function that will be called on a successful disco#info.
+   *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity with slots filled about the queried disco information.
    */
   requestDiscoInfo: function (node, callbacks) {
     var iq = XC.XMPP.IQ.extend(),
@@ -154,6 +158,10 @@ XC.Mixin.Disco = {
    *
    * @param {Object}  [node]      The node to query for i on the entity.
    * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
+   *   @param {Function} [callbacks.onError] A function that will process disco#items errors.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.
+   *   @param {Function} [callbacks.onSuccess] A function that will be called on a successful disco#items.
+   *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity with slots filled about the queried disco items.
    */
   requestDiscoItems: function (node, callbacks) {
     var iq = XC.XMPP.IQ.extend(),

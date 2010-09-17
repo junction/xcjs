@@ -1,7 +1,8 @@
 /**
  * Simple error class of XC.
- * 
- * @namespace
+ *
+ * @class
+ * @param {String} message The message that the error should throw.
  */
 XC.Error = function (message) {
   this.message = message;

@@ -2,11 +2,15 @@
  * Presence Mixin.
  * @namespace
  * 
- * RFC 3921: XMPP IM; Section 5 & 6
- * @see http://www.ietf.org/rfc/rfc3921.txt
+ * @see <a href="http://www.ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 5 & 6</a>
  */
 XC.Mixin.Presence = {
 
+  /**
+   * A slot to contain presence information.
+   * @type {Object}
+   * @namespace
+   */
   presence: {
     /**
      * What the status of the entity is.

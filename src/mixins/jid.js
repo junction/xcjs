@@ -3,8 +3,7 @@
  * @class
  * @extends XC.Base
  *
- * RFC 3920: XMPP Core; Addressing
- * @see http://xmpp.org/rfcs/rfc3920.html#addressing
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#addressing">RFC 3920: XMPP Core; Addressing</a>
  */
 XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID */{
 

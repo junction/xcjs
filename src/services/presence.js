@@ -2,10 +2,9 @@
  * Presence
  * @class
  * @extends XC.Base
- * @extends XC.Mixin.HandlerRegistration,
+ * @extends XC.Mixin.HandlerRegistration
  *
- * RFC 3921: XMPP IM; Section 5 & 6
- * @see http://www.ietf.org/rfc/rfc3921.txt
+ * @see <a href="http://www.ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 5 & 6</a>
  */
 XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
   /** @lends XC.Service.Presence */ {
@@ -88,6 +87,67 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
 
     this.connection.send(p.convertToString());
   },
+
+  /**
+   * Call {@link this.registerHandler} with "onPresence" to register for inbound presence
+   * stanzas when there is no type or the user becomes "unavailable".
+   * @name XC.Service.Presence#onPresence
+   * @event
+   * @param {XC.Entity} entity An entity representing a presence probe response from your server.
+   */
+
+  /**
+   * Call {@link this.registerHandler} with "onSubscribe" to register for subscription requests.
+   * @name XC.Service.Presence#onSubscribe
+   * @event
+   * @param {Object} request A bundled function to respond easily to the request.
+   *   @param {Function} request.accept The function to call when you want to accept the subscribe, creating a subscription of type "from".
+   *   @param {Function} request.deny The function to call when you want to deny the subscribe, creating a subscription of type "none".
+   *   @param {String} to The JID from whom this request was from.
+   *   @param {String} from The JID to whom this request is to.
+   *   @param {String} type The type on the packet.
+   *   @param {XC.PacketAdapter} packet The packet that caused this event.
+   */
+
+  /**
+   * Call {@link this.registerHandler} with "onSubscribed" to register for an event when you
+   * have been subscribed to an entity.
+   * @name XC.Service.Presence#onSubscribed
+   * @event
+   * @param {Object} request A bundled function to respond easily to the request.
+   *   @param {Function} request.accept The function to call when you want to accept the subscribed, creating a subscription of type "both".
+   *   @param {Function} request.deny The function to call when you want to deny the subscribed, creating a subscription of type "none"
+   *   @param {String} to The JID from whom this request was from.
+   *   @param {String} from The JID to whom this request is to.
+   *   @param {String} type The type on the packet.
+   *   @param {XC.PacketAdapter} packet The packet that caused this event.
+   */
+
+  /**
+   * Call {@link this.registerHandler} with "onUnubscribe" to register for unsubscribe notifications.
+   * @name XC.Service.Presence#onUnsubscribe
+   * @event
+   * @param {Object} request A bundled function to respond easily to the request.
+   *   @param {Function} request.accept The function to call when you want to accept the unsubscribe, creating a subscription of type "none".
+   *   @param {Function} request.deny The function to call when you want to deny the unsubscribe, creting a subscription of type "to".
+   *   @param {String} to The JID from whom this request was from.
+   *   @param {String} from The JID to whom this request is to.
+   *   @param {String} type The type on the packet.
+   *   @param {XC.PacketAdapter} packet The packet that caused this event.
+   */
+
+  /**
+   * Call {@link this.registerHandler} with "onUnubscribed" to register for unsubscribed notifications.
+   * @name XC.Service.Presence#onUnsubscribed
+   * @event
+   * @param {Object} request A bundled function to respond easily to the request.
+   *   @param {Function} request.accept The function to call when you want to accept the unsubscribed, creating a subscription of type "none".
+   *   @param {Function} request.deny The function to call when you want to deny the unsubscribe, creting a subscription of type "from".
+   *   @param {String} to The JID from whom this request was from.
+   *   @param {String} from The JID to whom this request is to.
+   *   @param {String} type The type on the packet.
+   *   @param {XC.PacketAdapter} packet The packet that caused this event.
+   */
 
   /**
    * Handle out-of-band presence stanzas

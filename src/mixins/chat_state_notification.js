@@ -2,8 +2,7 @@
  * Chat State Notifications Mixins
  * @namespace
  *
- * XEP-0085: Chat State Notifications
- * @see http://xmpp.org/extensions/xep-0085.html
+ * @see <a href="http://xmpp.org/extensions/xep-0085.html">XEP-0085: Chat State Notifications</a>
  */
 XC.Mixin.ChatStateNotification = {};
 
@@ -11,8 +10,7 @@ XC.Mixin.ChatStateNotification = {};
  * Chat State Notifications Mixin for XC.Entity
  * @namespace
  *
- * XEP-0085: Chat State Notifications
- * @see http://xmpp.org/extensions/xep-0085.html
+ * @see <a href="http://xmpp.org/extensions/xep-0085.html">XEP-0085: Chat State Notifications</a>
  */
 XC.Mixin.ChatStateNotification.Entity = {
 
@@ -96,8 +94,7 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity, /** @lends XC.Mixin.Ch
  * Chat State Notifications Mixins XC.Message
  * @namespace
  * 
- * XEP-0085: Chat State Notifications
- * @see http://xmpp.org/extensions/xep-0085.html
+ * @see <a href="http://xmpp.org/extensions/xep-0085.html">XEP-0085: Chat State Notifications</a>
  */
 XC.Mixin.ChatStateNotification.Message = {
 

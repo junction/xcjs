@@ -15,7 +15,7 @@ var Glue = {
 
   init: function () {
     var that = this;
-    this.con = new Strophe.Connection('http://localhost/http-bind/');
+    this.con = new Strophe.Connection('/http-bind/');
     this.con.rawInput  = function (data) {
       that.appendXML(data, true);
     };

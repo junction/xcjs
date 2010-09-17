@@ -1,20 +1,34 @@
 /**
  * Strophe Connection Adapter
  * @extends XC.ConnectionAdapter
+ * @class
  */
-XC.StropheAdapter = XC.ConnectionAdapter.extend({
+XC.StropheAdapter = XC.ConnectionAdapter.extend(/** @lends XC.StropheAdapter */{
+  /** @private */
   _callbacks: {},
+  /** @private */
   _handlers: {},
 
+  /** @private */
   init: function () {
     this._callbacks = {};
     this._handlers = {};
   },
 
+  /**
+   * Returns the JID associated with the connection.
+   * @type {String}
+   */
   jid: function () {
     return this.connection.jid;
   },
 
+  /**
+   * Subscribe to stanza via top-level XMPP tag name.
+   *
+   * @param {String} event The top level XMPP tag name to register for.
+   * @param {Function} handler The function handler for the event.
+   */
   registerHandler: function (event, handler) {
     var that = this;
 
@@ -39,6 +53,11 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend({
                                                        null, null, null);
   },
 
+  /**
+   * Unsubscribe from corresponding event.
+   *
+   * @param {String} event The event to unsubscribe from.
+   */
   unregisterHandler: function (event) {
     if (this._handlers[event]) {
       this.connection.deleteHandler(this._handlers[event]);
@@ -46,6 +65,13 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend({
     }
   },
 
+  /**
+   * Create a DOM node via XML.
+   *
+   * @private
+   * @param {String} xml The xml string to convert into an object.
+   * @returns {Element} The document fragment that represents the xml string.
+   */
   createNode: function (xml) {
     var node = null, parser = null;
     if (window.ActiveXObject) {
@@ -63,6 +89,13 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend({
     return node;
   },
 
+  /**
+   * Send the xml fragment over the connection.
+   *
+   * @param {String} xml The xml to send.
+   * @param {Function} callback The function to call when done.
+   * @param {Array} args A list of arguments to provide to the callback.
+   */
   send: function (xml, callback, args) {
     var node = this.createNode(xml),
         that = this;
@@ -106,6 +139,14 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend({
     return this.connection.send(node);
   },
 
+  /**
+   * Convert a stanza into an object that implements {@link XC.PacketAdapter}.
+   *
+   * @private
+   * @param {Element} stanza The XMPP stanza to pack.
+   *
+   * @returns {XC.PacketAdapter} The stanza wrapped as a packet.
+   */
   toPacket: function (stanza) {
     var to = stanza.getAttribute('to'),
         from = stanza.getAttribute('from'),

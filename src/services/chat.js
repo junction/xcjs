@@ -1,12 +1,11 @@
 /**
+ * One-to-one Chatting
  * @class
  * @extends XC.Base
  * @extends XC.Mixin.Discoverable
  * @extends XC.Mixin.HandlerRegistration
  *
- * One-to-one Chatting
- * RFC 3921: XMPP IM; Section 4
- * @see http://ietf.org/rfc/rfc3921.txt
+ * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 4</a>
  *
  * @example
  * var xc = XC.Connection.extend(... with connection adapter ...);
@@ -31,6 +30,13 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
 
     return this;
   }.around(),
+
+  /**
+   * Call this.registerHandler with "onMessage" to register for this event.
+   * @name XC.Service.Chat#onMessage
+   * @event
+   * @param {XC.Message} message A message sent to this resource.
+   */
 
   /**
    * Handles out-of-band messages (All incoming messages)

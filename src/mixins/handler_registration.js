@@ -23,7 +23,7 @@ XC.Mixin.HandlerRegistration = {
   }.around(),
 
   /**
-   * register a callback handler for a named event.
+   * Register a callback handler for a named event.
    * it is the responsibility of the caller of this function
    * to either properly bind callbacks or provide a target
    * scope to apply to the callback.

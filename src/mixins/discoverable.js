@@ -4,7 +4,7 @@
  * features, items, and identities for Service Discovery.
  *
  * @namespace
- * @borrows initialized {@link XC.Connection} as this.connection
+ * @requires XC.Connection
  * @see XC.Service.Disco
  */
 XC.Mixin.Discoverable = {

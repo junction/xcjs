@@ -1,4 +1,4 @@
-SRC =	core.js base.js util.js xc_dom_helper.js error.js xml.js registrar.js	\
+SRC =	core.js base.js util.js xc_dom_helper.js error.js xml.js registrar.js packet_adapter.js	\
 	mixins/jid.js mixins/roster.js mixins/chat.js mixins/presence.js mixins/disco.js \
 	mixins/discoverable.js mixins/handler_registration.js mixins/chat_state_notification.js	\
   services/roster.js services/chat.js services/presence.js services/disco.js	\
@@ -28,7 +28,7 @@ xc.js:	Makefile $(SRC)
 	cat $(SRC) > ../$@
 
 $(DOCDIR)/private/index.html: Makefile $(SRC)
-	$(JAVA) -jar $(JSDOCDIR)/jsrun.jar $(JSDOCDIR)/app/run.js --allfunctions --private -t=$(TEMPLATE) -d=$(DOCDIR)/private $(SRC)
+	$(JAVA) -jar $(JSDOCDIR)/jsrun.jar $(JSDOCDIR)/app/run.js --allfunctions --private -a -t=$(TEMPLATE) -d=$(DOCDIR)/private $(SRC)
 
 $(DOCDIR)/public/index.html: Makefile $(SRC)
 	$(JAVA) -jar $(JSDOCDIR)/jsrun.jar $(JSDOCDIR)/app/run.js -t=$(TEMPLATE) -d=$(DOCDIR)/public $(SRC)
@@ -38,4 +38,5 @@ clean-doc:
 
 clean:
 	rm -f xc.js
+	rm -f xc.min.js
 	rm -f *~

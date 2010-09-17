@@ -1,15 +1,17 @@
 /**
  * IE DOM Core Level 2 is incomplete:
- * @see http://msdn.microsoft.com/en-us/library/dd282900%28VS.85%29.aspx#domproto
  *
  * These functions were originally mixed into Node.prototype, however
  * IE doesn't implement the Node prototype, rather than bending over backwards
  * to make it look like it does I've accepted this instead...
- *
+ * @see <a href="http://msdn.microsoft.com/en-us/library/dd282900%28VS.85%29.aspx#domproto">MSDN DOM prototypes</a>
+ * @namespace XC_DOMHelper
  */
 var XC_DOMHelper = {
   /**
-   * @see
+   * An integer indicating which type of node this is.
+   *
+   * @see <a href="http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-1950641247">NodeType Specification</a>
    */
   NodeTypes: {
     ELEMENT_NODE: 1,
@@ -26,6 +28,12 @@ var XC_DOMHelper = {
     NOTATION_NODE: 12
   },
 
+  /**
+   * Get the first child from a document fragment that is an Element.
+   *
+   * @param {Element|Node} el The document fragment to search.
+   * @returns The node if it exists or null.
+   */
   getFirstElementChild: function (el) {
     var nodeType = XC_DOMHelper.NodeTypes.ELEMENT_NODE;
     for (var i = 0, l = el.childNodes.length; i < l; i++) {
@@ -36,6 +44,14 @@ var XC_DOMHelper = {
     return null;
   },
 
+  /**
+   * Retrieve all immediate children that have a XML namespace (xmlns) that
+   * is matching the nsURI argument.
+   *
+   * @param {Element|Node} el The document fragment to search.
+   * @param {String} nsURI The namespace URI to search for.
+   * @returns {Element[]|Array} A list of elements or an empty array.
+   */
   getElementsByNS: function (el, nsURI) {
     var ret = [];
     var nodeType = XC_DOMHelper.NodeTypes.ELEMENT_NODE;
@@ -48,6 +64,12 @@ var XC_DOMHelper = {
     return ret;
   },
 
+  /**
+   * Get the text of an element
+   *
+   * @param {Element|Node} el The document fragment to get the text of.
+   * @returns {String} The inner text of the fragment.
+   */
   getTextContent: function (el) {
     return el && (el.text || el.textContent);
   }

@@ -3,8 +3,7 @@
  * @class
  * @extends XC.Base
  *
- * RFC 3921: XMPP IM; Section 4
- * @see http://ietf.org/rfc/rfc3921.txt
+ * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 4</a>
  */
 XC.Mixin.Chat = XC.Base.extend(/** @lends XC.Mixin.Chat */{
 
