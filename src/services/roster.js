@@ -48,8 +48,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
       } else {
         packet = packet.getNode();
         var items = packet.getElementsByTagName('item'),
-            entities = [], itemsLength = items.length,
-            entity, item, groups, len;
+            entities = [], itemsLength = items.length;
 
         for (var i = 0; i < itemsLength; i++) {
           entities.push(that._entityFromItem(items[i]));

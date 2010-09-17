@@ -177,7 +177,7 @@ XC.Mixin.Disco = {
         packet = packet.getNode();
         var items = packet.getElementsByTagName('item'),
             node = packet.getElementsByTagName('query')[0].getAttribute('node'),
-            item, len = items ? items.length : 0;
+            len = items ? items.length : 0;
 
         node = entity._createNode(node);
 
