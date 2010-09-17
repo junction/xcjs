@@ -14,10 +14,13 @@ JAVA =	java
 
 all:	src doc
 
-src:	xc.js jslint
+src:	xc.js jslint minify
 
 jslint:
 	../frameworks/jslint/jslint ../xc.js
+
+minify:
+	java -jar ../frameworks/yuicompressor/yuicompressor.jar ../xc.js -o ../xc.min.js
 
 doc:	$(DOCDIR)/private/index.html $(DOCDIR)/public/index.html
 
