@@ -1,18 +1,19 @@
 /**
  * Roster Management
+ *
  * @class
  * @extends XC.Base
  * @extends XC.Mixin.HandlerRegistration
  *
  * @see <a href="http://www.ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 7 & 8</a>
- *
- * @example
- * var xc = XC.Connection.extend(... with connection adapter ...);
- * xc.Roster.registerHandler('onRosterItem', function(xcEntity) {...});
  */
-XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.Service.Roster */{
+XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
+  /** @lends XC.Service.Roster# */{
+
   /**
    * Register for incoming stanzas
+   *
+   * @param {Function} $super The parent init function.
    * @private
    */
   init: function ($super) {
@@ -31,11 +32,16 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
   /**
    * Request your roster from the server.
    *
-   * @param {Object}   [callbacks] An Object with 'onError' and 'onSuccess'.
-   *   @param {Function} [callbacks.onError] A function taking a stanza as a parameter.
-   *     @param {XC.PacketAdapter} callbacks.onError#packet The packet passed into XC.
-   *   @param {Function} [callbacks.onSuccess] A function taking a list of entities.
-   *     @param {XC.Entity[]} callbacks.onSuccess#entities A list of entities retrieved from your roster.
+   * @param {Object} [callbacks]
+   *    An Object with 'onError' and 'onSuccess'.
+   *   @param {Function} [callbacks.onError]
+   *      A function taking a stanza as a parameter.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet]
+   *        The packet passed into XC.
+   *   @param {Function} [callbacks.onSuccess]
+   *      A function taking a list of entities.
+   *     @param {XC.Entity[]} [callbacks.onSuccess#entities]
+   *        A list of entities retrieved from your roster.
    */
   requestItems: function (callbacks) {
     var iq = XC.XMPP.IQ.extend(),
@@ -46,7 +52,8 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
 
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error' &&
-          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
+          callbacks && callbacks.onError &&
+          XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);
       } else {
         packet = packet.getNode();
@@ -57,12 +64,8 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
           entities.push(that._entityFromItem(items[i]));
         }
 
-        if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
-          /**
-           * @name callbacks#onSuccess
-           * @function
-           * @param {XC.Entity[]} entities A list of entities in your roster.
-           */
+        if (callbacks && callbacks.onSuccess &&
+            XC.isFunction(callbacks.onSuccess)) {
           callbacks.onSuccess(entities);
         }
       }
@@ -70,10 +73,12 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration, /** @lends XC.S
   },
 
   /**
-   * Call {@link this.registerHandler} with "onRosterItem" to register for this event.
+   * Call {@link this.registerHandler} with "onRosterItem" to register
+   * for incoming roster items.
    * @name XC.Service.Roster#onRosterItem
    * @event
-   * @param {XC.Entity} entity An entity representing a roster item that has its roster slot set.
+   * @param {XC.Entity} entity An entity representing
+   *                           a roster item that has its roster slot set.
    */
 
   /**

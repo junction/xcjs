@@ -4,7 +4,8 @@
  * @extends XC.Stanza
  * @extends XC.Mixin.ChatStateNotification.Message
  */
-XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends XC.Message */{
+XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
+  /** @lends XC.Message# */{
 
   type: 'chat',
 
@@ -20,9 +21,15 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends
     if (this.packet) {
       var node = this.packet.getNode();
       this.mixin({
-        body: XC_DOMHelper.getTextContent(node.getElementsByTagName('body')[0]),
-        thread: XC_DOMHelper.getTextContent(node.getElementsByTagName('thread')[0]),
-        subject: XC_DOMHelper.getTextContent(node.getElementsByTagName('subject')[0])
+        body: XC_DOMHelper.getTextContent(
+                node.getElementsByTagName('body')[0]
+              ),
+        thread: XC_DOMHelper.getTextContent(
+                  node.getElementsByTagName('thread')[0]
+                ),
+        subject: XC_DOMHelper.getTextContent(
+                   node.getElementsByTagName('subject')[0]
+                 )
       });
     }
   }.around(),
@@ -47,8 +54,8 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message, /** @lends
    * message as a template, switching the
    * to and from attributes.
    *
-   * @param {String} body  The message body.
-   * @param {String} [id]  The id to associate with the message.
+   * @param {String} body The message body.
+   * @param {String} [id] The id to associate with the message.
    * @returns {XC.Message} The sent message.
    */
   reply: function (body, id) {

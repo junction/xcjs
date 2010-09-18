@@ -8,9 +8,12 @@
  */
 XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable, 
                                   XC.Mixin.HandlerRegistration,
-  /** @lends XC.Service.Disco */ {
+  /** @lends XC.Service.Disco# */ {
+
   /**
    * Register for incoming stanzas
+   *
+   * @param {Function} $super The parent init function.
    * @private
    */
   init: function ($super) {
@@ -36,15 +39,16 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
    * Something went wrong- gracefully degrade and provide an
    * error message to the querying JID.
    *
-   * @param {Element} iq  The iq containing the elements to send.
+   * @param {Element} iq The iq containing the elements to send.
    * @private
    */
   _handleError: function (iq) {
     iq.type('error');
     var error = XC.XMPP.Error.extend(),
-        itemNotFound = XC.XML.Element.extend({name: 'item-not-found',
-                                              xmlns: 'urn:ietf:params:xml:ns:xmpp-stanzas'
-                                             });
+    itemNotFound = XC.XML.Element.extend({
+      name: 'item-not-found',
+      xmlns: 'urn:ietf:params:xml:ns:xmpp-stanzas'
+    });
     error.attr('type', 'cancel');
     error.addChild(itemNotFound);
     iq.addChild(error);

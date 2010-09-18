@@ -5,7 +5,7 @@
  *
  * @see <a href="http://xmpp.org/rfcs/rfc3920.html#addressing">RFC 3920: XMPP Core; Addressing</a>
  */
-XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID */{
+XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
 
   /**
    * Returns the bare JID of the entity.

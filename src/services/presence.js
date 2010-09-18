@@ -1,5 +1,6 @@
 /**
  * Presence
+ *
  * @class
  * @extends XC.Base
  * @extends XC.Mixin.HandlerRegistration
@@ -7,7 +8,8 @@
  * @see <a href="http://www.ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 5 & 6</a>
  */
 XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
-  /** @lends XC.Service.Presence */ {
+  /** @lends XC.Service.Presence# */ {
+
   /**
    * Register for incoming stanzas
    * @private
@@ -26,9 +28,11 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
   /**
    * Broadcast presence to all users subscribed to your presence.
    *
-   * @param {String} [show]      'away', 'chat', 'dnd', or 'xa' as defined in XC.Presence.SHOW
-   * @param {String} [status]    The custom status message to send.
-   * @param {Number} [priority]  An integer between -127 and +128 giving the priority of the presence.
+   * @param {String} [show] 'away', 'chat', 'dnd', or 'xa'
+   *                        as defined in XC.Presence.SHOW
+   * @param {String} [status] The custom status message to send.
+   * @param {Number} [priority] An integer between -127 and +128
+   *                            giving the priority of the presence.
    */
   send: function (show, status, priority) {
     var p = XC.XMPP.Presence.extend();
@@ -71,7 +75,8 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
   /**
    * Send 'unavailable' presence.
    *
-   * @param {String} [status]  A custom message, typically giving a reason why the user is unavailable.
+   * @param {String} [status] A custom message, typically giving
+   *                          a reason why the user is unavailable.
    */
   sendUnavailable: function (status) {
     var p = XC.XMPP.Presence.extend();
@@ -89,20 +94,27 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
   },
 
   /**
-   * Call {@link this.registerHandler} with "onPresence" to register for inbound presence
-   * stanzas when there is no type or the user becomes "unavailable".
+   * Call {@link this.registerHandler} with "onPresence" to register for
+   * inbound presence stanzas when there is no type or the user becomes
+   * "unavailable".
    * @name XC.Service.Presence#onPresence
    * @event
-   * @param {XC.Entity} entity An entity representing a presence probe response from your server.
+   * @param {XC.Entity} entity An entity representing a presence probe
+   *                           response from the server.
    */
 
   /**
-   * Call {@link this.registerHandler} with "onSubscribe" to register for subscription requests.
+   * Call {@link this.registerHandler} with "onSubscribe" to register for
+   * subscription requests.
    * @name XC.Service.Presence#onSubscribe
    * @event
-   * @param {Object} request A bundled function to respond easily to the request.
-   *   @param {Function} request.accept The function to call when you want to accept the subscribe, creating a subscription of type "from".
-   *   @param {Function} request.deny The function to call when you want to deny the subscribe, creating a subscription of type "none".
+   * @param {Object} request
+   *    A bundled function to respond easily to the request.
+   *   @param {Function} request.accept
+   *      The function to call when you want to accept the subscribe,
+   *      creating a subscription of type "from".
+   *   @param {Function} request.deny The function to call when you want
+   *     to deny the subscribe, creating a subscription of type "none".
    *   @param {String} to The JID from whom this request was from.
    *   @param {String} from The JID to whom this request is to.
    *   @param {String} type The type on the packet.
@@ -110,13 +122,18 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    */
 
   /**
-   * Call {@link this.registerHandler} with "onSubscribed" to register for an event when you
-   * have been subscribed to an entity.
+   * Call {@link this.registerHandler} with "onSubscribed" to register for
+   * an event when you have been subscribed to an entity.
    * @name XC.Service.Presence#onSubscribed
    * @event
-   * @param {Object} request A bundled function to respond easily to the request.
-   *   @param {Function} request.accept The function to call when you want to accept the subscribed, creating a subscription of type "both".
-   *   @param {Function} request.deny The function to call when you want to deny the subscribed, creating a subscription of type "none"
+   * @param {Object} request
+   *    A bundled function to respond easily to the request.
+   *   @param {Function} request.accept
+   *      The function to call when you want to accept the subscribed,
+   *      creating a subscription of type "both".
+   *   @param {Function} request.deny
+   *      The function to call when you want to deny the subscribed,
+   *      creating a subscription of type "none".
    *   @param {String} to The JID from whom this request was from.
    *   @param {String} from The JID to whom this request is to.
    *   @param {String} type The type on the packet.
@@ -124,12 +141,18 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    */
 
   /**
-   * Call {@link this.registerHandler} with "onUnubscribe" to register for unsubscribe notifications.
+   * Call {@link this.registerHandler} with "onUnubscribe" to register for
+   * unsubscribe notifications.
    * @name XC.Service.Presence#onUnsubscribe
    * @event
-   * @param {Object} request A bundled function to respond easily to the request.
-   *   @param {Function} request.accept The function to call when you want to accept the unsubscribe, creating a subscription of type "none".
-   *   @param {Function} request.deny The function to call when you want to deny the unsubscribe, creting a subscription of type "to".
+   * @param {Object} request
+   *    A bundled function to respond easily to the request.
+   *   @param {Function} request.accept
+   *      The function to call when you want to accept the unsubscribe,
+   *      creating a subscription of type "none".
+   *   @param {Function} request.deny
+   *      The function to call when you want to deny the unsubscribe,
+   *      creting a subscription of type "to".
    *   @param {String} to The JID from whom this request was from.
    *   @param {String} from The JID to whom this request is to.
    *   @param {String} type The type on the packet.
@@ -137,12 +160,18 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    */
 
   /**
-   * Call {@link this.registerHandler} with "onUnubscribed" to register for unsubscribed notifications.
+   * Call {@link this.registerHandler} with "onUnubscribed" to register for
+   * unsubscribed notifications.
    * @name XC.Service.Presence#onUnsubscribed
    * @event
-   * @param {Object} request A bundled function to respond easily to the request.
-   *   @param {Function} request.accept The function to call when you want to accept the unsubscribed, creating a subscription of type "none".
-   *   @param {Function} request.deny The function to call when you want to deny the unsubscribe, creting a subscription of type "from".
+   * @param {Object} request
+   *    A bundled function to respond easily to the request.
+   *   @param {Function} request.accept
+   *      The function to call when you want to accept the unsubscribed,
+   *      creating a subscription of type "none".
+   *   @param {Function} request.deny
+   *      The function to call when you want to deny the unsubscribe,
+   *      creting a subscription of type "from".
    *   @param {String} to The JID from whom this request was from.
    *   @param {String} from The JID to whom this request is to.
    *   @param {String} type The type on the packet.
@@ -152,6 +181,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
   /**
    * Handle out-of-band presence stanzas
    *
+   * @private
    * @param {Element} packet The incoming XML stanza.
    */
   _handlePresence: function (packet) {
@@ -196,7 +226,9 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
       }
 
       if (priority) {
-        entity.presence.priority = parseInt(XC_DOMHelper.getTextContent(priority), 10);
+        entity.presence.priority = parseInt(
+          XC_DOMHelper.getTextContent(priority), 10
+        );
       }
 
       this.fireHandler('onPresence', entity);
@@ -208,16 +240,20 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
     case 'probe': // Server-side only
       break;
     case 'subscribe':
-      this.fireHandler('onSubscribe', response('subscribed', 'unsubscribed'));
+      this.fireHandler('onSubscribe',
+                       response('subscribed', 'unsubscribed'));
       break;
     case 'subscribed':
-      this.fireHandler('onSubscribed', response('subscribe', 'unsubscribe'));
+      this.fireHandler('onSubscribed',
+                       response('subscribe', 'unsubscribe'));
       break;
     case 'unsubscribe':
-      this.fireHandler('onUnsubscribe', response('unsubscribed', 'subscribed'));
+      this.fireHandler('onUnsubscribe',
+                       response('unsubscribed', 'subscribed'));
       break;
     case 'unsubscribed':
-      this.fireHandler('onUnsubscribed', response('unsubscribe', 'subscribe'));
+      this.fireHandler('onUnsubscribed',
+                       response('unsubscribe', 'subscribe'));
       break;
     case 'unavailable':
       entity.presence.available = false;

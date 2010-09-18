@@ -2,9 +2,9 @@
  * Mixin to provide callback handler registration to
  * the services that mix it in.
  *
- * @namespace
+ * @class
  */
-XC.Mixin.HandlerRegistration = {
+XC.Mixin.HandlerRegistration = /** @lends XC.Mixin.HandlerRegistration# */{
 
   /**
    * @private
@@ -28,9 +28,9 @@ XC.Mixin.HandlerRegistration = {
    * to either properly bind callbacks or provide a target
    * scope to apply to the callback.
    *
-   * @param {String} event      event name
-   * @param {Function} callback function to fire as the callback
-   * @param {Object} [target]   object to which 'this' will be bound
+   * @param {String} event Event name
+   * @param {Function} callback Function to fire as the callback
+   * @param {Object} [target] Object to which 'this' will be bound
    *
    * @returns {Boolean} True indicates success
    */
@@ -48,7 +48,10 @@ XC.Mixin.HandlerRegistration = {
   },
 
   /**
+   * Fire all handlers associated with an evet.
    * @private
+   * @param {String} event The event to trigger.
+   * @param {...} args A variable length arg list provided to the handlers.
    */
   fireHandler: function (event) {
     if (this._registeredHandlers[event]) {

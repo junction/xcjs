@@ -38,8 +38,11 @@ XC.ConnectionAdapter = XC.Base.extend(/** @lends XC.ConnectionAdapter# */{
    * Send an XML string to the underlying connection.
    *
    * @param {String} xml The XML String to send.
-   * @param {Function} callback Called when a response to this packet is received with the first argument being the received packet.
-   * @param {Array} args An array of arguments to be passed to callback after the packet.
+   * @param {Function} callback Called when a response to this packet
+   *                            is received with the first argument being
+   *                            the received packet.
+   * @param {Array} args An array of arguments to be passed to callback
+   *                     after the packet.
    *
    * @see XC.Connection#send
    */
@@ -48,8 +51,10 @@ XC.ConnectionAdapter = XC.Base.extend(/** @lends XC.ConnectionAdapter# */{
   /**
    * Registers an event handler.
    *
-   * @param {String} event The type of stanza for which to listen (i.e., `message', `iq', `presence.')
-   * @param {Function} handler The stanza is passed to this function when it is received.
+   * @param {String} event The type of stanza for which to listen
+   *                       (i.e., `message', `iq', `presence.')
+   * @param {Function} handler The stanza is passed to this function
+   *                           when it is received.
    *
    * @see XC.ConnectionAdapter#unregisterHandler
    * @see XC.Connection#registerJIDHandler
@@ -59,7 +64,8 @@ XC.ConnectionAdapter = XC.Base.extend(/** @lends XC.ConnectionAdapter# */{
   /**
    * Unregisters an event handler.
    *
-   * @param {String} event The type of stanza we were listening to (i.e., `message', `iq', `presence.')
+   * @param {String} event The type of stanza we were listening to
+   *                       (i.e., `message', `iq', `presence.')
    *
    * @see XC.ConnectionAdapter#registerHandler
    * @see XC.Connection#unregisterJIDHandler

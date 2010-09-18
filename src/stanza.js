@@ -4,7 +4,7 @@
  * @extends XC.Base
  * @class
  */
-XC.Stanza = XC.Base.extend(/** @lends XC.Stanza */{
+XC.Stanza = XC.Base.extend(/** @lends XC.Stanza# */{
 
   /**
    * Unpack 'to', 'from', 'type', 'id', and 'xmlns'

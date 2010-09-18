@@ -20,21 +20,21 @@ XC.Mixin.Roster = {
 
     /**
      * The groups the entity is a part of.
-     * @type {Array}
+     * @type {String[]}
      */
     groups: null,
 
     /**
      * What the user is requesting
      * 'subscribe'
-     * @type {Array}
+     * @type {String}
      */
     ask: null,
 
     /**
      * The subscription type of the entity
      * 'none', 'to', 'from', or 'both'
-     * @type {Array}
+     * @type {String}
      */
     subscription: null
   },
@@ -42,11 +42,16 @@ XC.Mixin.Roster = {
   /**
    * Update an entity in your roster.
    *
-   * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
-   *   @param {Function} [callbacks.onError] A function that will process roster errors.
-   *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.
-   *   @param {Function} [callbacks.onSuccess] A function that will be called on a successful roster set.
-   *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity that the roster set was called on.
+   * @param {Object} [callbacks]
+   *    An Object with methods 'onError' and 'onSuccess'.
+   *   @param {Function} [callbacks.onError]
+   *      A function that will process roster errors.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet]
+   *        The packet that produced the error.
+   *   @param {Function} [callbacks.onSuccess]
+   *      A function that will be called on a successful roster set.
+   *     @param {XC.Entity} [callbacks.onSuccess#entity]
+   *        The entity that the roster set was called on.
    */
   setRosterItem: function (callbacks) {
     var entity = this,
@@ -54,7 +59,8 @@ XC.Mixin.Roster = {
         q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
         item = XC.XML.Element.extend({name: 'item'}),
         Group = XC.XML.Element.extend({name: 'group'}),
-        len = (entity.roster && entity.roster.groups) ? entity.roster.groups.length : 0,
+        len = (entity.roster && entity.roster.groups) ?
+               entity.roster.groups.length : 0,
         group;
     iq.type('set');
     item.attr('jid', entity.getBareJID());
@@ -73,9 +79,11 @@ XC.Mixin.Roster = {
     iq.addChild(q);
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error' &&
-          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
+          callbacks && callbacks.onError &&
+          XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);
-      } else if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
+      } else if (callbacks && callbacks.onSuccess &&
+                 XC.isFunction(callbacks.onSuccess)) {
         callbacks.onSuccess(entity);
       }
     });
@@ -84,11 +92,16 @@ XC.Mixin.Roster = {
   /**
    * Remove an entity from your roster.
    *
-   * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
-   *   @param {Function} [callbacks.onError] A function that will process roster errors.
-   *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.
-   *   @param {Function} [callbacks.onSuccess] A function that will be called on a successful roster remove.
-   *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity that the roster remove was called on.
+   * @param {Object} [callbacks]
+   *    An Object with methods 'onError' and 'onSuccess'.
+   *   @param {Function} [callbacks.onError]
+   *      A function that will process roster errors.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet]
+   *        The packet that produced the error.
+   *   @param {Function} [callbacks.onSuccess]
+   *      A function that will be called on a successful roster remove.
+   *     @param {XC.Entity} [callbacks.onSuccess#entity]
+   *        The entity that the roster remove was called on.
    */
   removeRosterItem: function (callbacks) {
     var iq = XC.XMPP.IQ.extend(),
@@ -105,9 +118,11 @@ XC.Mixin.Roster = {
     iq.addChild(q);
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error' &&
-          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
+          callbacks && callbacks.onError &&
+          XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);
-      } else if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
+      } else if (callbacks && callbacks.onSuccess &&
+                 XC.isFunction(callbacks.onSuccess)) {
         callbacks.onSuccess(entity);
       }
     });

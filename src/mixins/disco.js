@@ -1,11 +1,10 @@
 /**
  * Service Discovery provides the ability to discover information about entities.
- * @namespace
+ * @class
  *
- * XEP-0030: Service Discovery
- * @see http://xmpp.org/extensions/xep-0030.html
+ * @see <a href="http://xmpp.org/extensions/xep-0030.html">XEP-0030: Service Discovery</a>
  */
-XC.Mixin.Disco = {
+XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
 
   /**
    * The root node of the Disco 'tree' that contains
@@ -48,8 +47,8 @@ XC.Mixin.Disco = {
    * Returns a list of features on a given node,
    * or the features on the root node.
    * 
-   * @param [nodeName] The name of the node to query for features on.
-   * @returns {Array} A list of features on the node.
+   * @param {String} [nodeName] The name of the node to query for features on.
+   * @returns {String[]} A list of features on the node.
    */
   getDiscoFeatures: function (nodeName) {
     var node = this._rootNode && nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
@@ -63,8 +62,10 @@ XC.Mixin.Disco = {
    * Returns a list of identities on a given node,
    * or the identities on the root node.
    * 
-   * @param [nodeName] The name of the node to query for identites on.
-   * @returns {Array} A list of identites on the node.
+   * @param {String} [nodeName] The name of the node to query for identites on.
+   * @returns {Object[]} A list of identites on the node.
+   *                     Each item has a slot 'category' and 'type' and
+   *                     an optional 'name' slot.
    */
   getDiscoIdentities: function (nodeName) {
     var node = this._rootNode && nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
@@ -78,8 +79,10 @@ XC.Mixin.Disco = {
    * Returns a list of  items on a given node,
    * or the items on the root node.
    * 
-   * @param [nodeName] The name of the node to query for items on.
-   * @returns {Array} A list of items on the node.
+   * @param {String} [nodeName] The name of the node to query for items on.
+   * @returns {Object[]} A list of items on the node.
+   *                     Each item has a slot 'jid', and may have
+   *                     the optional slots 'node' or 'name' filled.
    */
   getDiscoItems: function (nodeName) {
     var node = this._rootNode && nodeName ? this._rootNode.nodes[nodeName] : this._rootNode;
@@ -92,34 +95,40 @@ XC.Mixin.Disco = {
   /**
    * Discover information about an entity.
    *
-   * @param {Object}  [node]      The node to query for info on the entity.
-   * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
-   *   @param {Function} [callbacks.onError] A function that will process disco#info errors.
-   *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.
-   *   @param {Function} [callbacks.onSuccess] A function that will be called on a successful disco#info.
-   *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity with slots filled about the queried disco information.
+   * @param {String} [nodeName] The node to query for info on the entity.
+   * @param {Object} [callbacks]
+   *    An Object with methods 'onError' and 'onSuccess'.
+   *   @param {Function} [callbacks.onError]
+   *      A function that will process disco#info errors.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet]
+   *        The packet that produced the error.
+   *   @param {Function} [callbacks.onSuccess]
+   *      A function that will be called on a successful disco#info.
+   *     @param {XC.Entity} [callbacks.onSuccess#entity]
+   *        The entity with slots filled about the queried disco information.
    */
-  requestDiscoInfo: function (node, callbacks) {
+  requestDiscoInfo: function (nodeName, callbacks) {
     var iq = XC.XMPP.IQ.extend(),
         q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
         entity = this;
 
     if (arguments.length === 1) {
-      callbacks = node;
-      node = null;
+      callbacks = nodeName;
+      nodeName = null;
     }
 
     iq.type('get');
     iq.to(entity.jid);
     iq.addChild(q);
 
-    if (node) {
-      q.attr('node', node);
+    if (nodeName) {
+      q.attr('node', nodeName);
     }
 
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error' &&
-          callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
+          callbacks && callbacks.onError &&
+          XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);
       } else {
         packet = packet.getNode();
@@ -146,7 +155,8 @@ XC.Mixin.Disco = {
             name: identity.getAttribute('name')
           });
         }
-        if (callbacks && callbacks.onSuccess && XC.isFunction(callbacks.onSuccess)) {
+        if (callbacks && callbacks.onSuccess &&
+            XC.isFunction(callbacks.onSuccess)) {
           callbacks.onSuccess(entity);
         }
       }

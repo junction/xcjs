@@ -1,7 +1,9 @@
-SRC =	core.js base.js util.js xc_dom_helper.js error.js xml.js registrar.js packet_adapter.js	\
-	mixins/jid.js mixins/roster.js mixins/chat.js mixins/presence.js mixins/disco.js \
-	mixins/discoverable.js mixins/handler_registration.js mixins/chat_state_notification.js	\
-  services/roster.js services/chat.js services/presence.js services/disco.js	\
+SRC =	core.js base.js util.js error.js	\
+	xc_dom_helper.js xml.js registrar.js packet_adapter.js	\
+	mixins/jid.js mixins/roster.js mixins/chat.js	\
+	mixins/presence.js mixins/disco.js mixins/discoverable.js	\
+	mixins/handler_registration.js mixins/chat_state_notification.js	\
+	services/roster.js services/chat.js services/presence.js services/disco.js	\
 	entity.js stanza.js message.js \
 	connection_adapter.js connection.js strophe_adapter.js
 
@@ -37,6 +39,8 @@ clean-doc:
 	rm -rf $(DOCDIR)
 
 clean:
-	rm -f xc.js
-	rm -f xc.min.js
+	rm -f ../xc.js
+	rm -f ../xc.min.js
 	rm -f *~
+	rm -f mixins/*~
+	rm -f services/*~

@@ -8,19 +8,21 @@ XC.Mixin.ChatStateNotification = {};
 
 /**
  * Chat State Notifications Mixin for XC.Entity
- * @namespace
+ * @class
  *
  * @see <a href="http://xmpp.org/extensions/xep-0085.html">XEP-0085: Chat State Notifications</a>
  */
-XC.Mixin.ChatStateNotification.Entity = {
+XC.Mixin.ChatStateNotification.Entity =
+  /** @lends XC.Mixin.ChatStateNotification.Entity# */{
 
   /**
    * Send a chat state notification to another entity.
    *
-   * @param {String} state    The chat notification state: 'composing', 'paused', 'inactive', 'gone'.
-   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {String} state The chat notification state:
+   *                       'composing', 'paused', 'inactive', 'gone'.
+   * @param {XC.Entity} to The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
-   * @param {String} [id]     The ID to be associated with the message.
+   * @param {String} [id] The ID to be associated with the message.
    */
   sendChatStateNotification: function (state, to, thread, id) {
     var msg = XC.Message.extend({
@@ -34,13 +36,16 @@ XC.Mixin.ChatStateNotification.Entity = {
   }
 };
 
-XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity, /** @lends XC.Mixin.ChatStateNotification.Entity */{
+XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity,
+  /** @lends XC.Mixin.ChatStateNotification.Entity# */{
+
   /**
    * Send a composing message.
+   * @function
    *
-   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {XC.Entity} to The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
-   * @param {String} [id]     The ID to be associated with the message.
+   * @param {String} [id] The ID to be associated with the message.
    * @see XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification
    */
   sendChatStateComposing:
@@ -50,10 +55,11 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity, /** @lends XC.Mixin.Ch
 
   /**
    * Send a composing message.
+   * @function
    *
-   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {XC.Entity} to The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
-   * @param {String} [id]     The ID to be associated with the message.
+   * @param {String} [id] The ID to be associated with the message.
    * @see XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification
    */
   sendChatStatePaused:
@@ -63,10 +69,11 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity, /** @lends XC.Mixin.Ch
 
   /**
    * Send a inactive message.
+   * @function
    *
-   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {XC.Entity} to The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
-   * @param {String} [id]     The ID to be associated with the message.
+   * @param {String} [id] The ID to be associated with the message.
    * @see XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification
    */
   sendChatStateInactive:
@@ -78,10 +85,11 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity, /** @lends XC.Mixin.Ch
    * Send a gone message.
    * You MUST NOT re-use the same Thread ID after recieving a <gone/> message
    * from another entity. Generate a new Thread ID for any subsequest messages.
+   * @function
    *
-   * @param {XC.Entity} to    The entity to send the chat state notification to.
+   * @param {XC.Entity} to The entity to send the chat state notification to.
    * @param {String} [thread] The thread of the message.
-   * @param {String} [id]     The ID to be associated with the message.
+   * @param {String} [id] The ID to be associated with the message.
    * @see XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification
    */
   sendChatStateGone:
@@ -92,15 +100,17 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity, /** @lends XC.Mixin.Ch
 
 /**
  * Chat State Notifications Mixins XC.Message
- * @namespace
+ * @class
  * 
  * @see <a href="http://xmpp.org/extensions/xep-0085.html">XEP-0085: Chat State Notifications</a>
  */
-XC.Mixin.ChatStateNotification.Message = {
+XC.Mixin.ChatStateNotification.Message =
+  /** @lends  XC.Mixin.ChatStateNotification.Message# */{
 
   /**
    * The chat notification state of the message.
-   * @type {String} Defaults to 'active'; can be any in XC.ChatStateNotification.STATES
+   * @type {String} Defaults to 'active';
+   *                can be any in XC.ChatStateNotification.STATES
    */
   chatNotificationState: XC.ChatStateNotification.STATES.ACTIVE,
 

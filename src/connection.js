@@ -1,14 +1,17 @@
 /**
- * Connection object to use for all XC connections. The +initConnection+
- * {@link XC.Connection#initConnection} method MUST be called after
- * extending this object.
+ * Connection object to use for all XC connections.
+ * For a functioning connection, you MUST extend
+ * {@link XC.Connection} with an implementation of
+ * {@link XC.ConnectionAdapter}.
  *
  * @class
  * @extends XC.Base
- * @property {XC.Service.Presence} Presence#
- * @property {XC.Service.Roster} Roster#
- * @property {XC.Service.Chat} Chat#
- * @property {XC.Service.Disco} Disco#
+ * @property {XC.Service.Presence} Presence
+ * @property {XC.Service.Roster} Roster
+ * @property {XC.Service.Chat} Chat
+ * @property {XC.Service.Disco} Disco
+ *
+ * @property {XC.Entity} Entity An Entity template to build Entities from.
  */
 XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 

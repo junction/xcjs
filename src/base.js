@@ -50,7 +50,7 @@ XC.Base = {
    * was called on the new object with remaining args.
    *
    * @example
-   * var obj = XC.Base.extend({param: value});
+   *   var obj = XC.Base.extend({param: value});
    *
    * @returns {XC.Base} The new object.
    *

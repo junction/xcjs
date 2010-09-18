@@ -1,9 +1,11 @@
 /**
  * Strophe Connection Adapter
- * @extends XC.ConnectionAdapter
  * @class
+ * @extends XC.ConnectionAdapter
  */
-XC.StropheAdapter = XC.ConnectionAdapter.extend(/** @lends XC.StropheAdapter */{
+XC.StropheAdapter = XC.ConnectionAdapter.extend(
+  /** @lends XC.StropheAdapter# */{
+
   /** @private */
   _callbacks: {},
   /** @private */
@@ -43,7 +45,8 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(/** @lends XC.StropheAdapter */{
       try {
         handler.apply(this, newArgs);
       } catch (e) {
-        XC.error('Error in XC handler: ' + handler + '; Error: ' + e + '; response stanza: ' + stanza);
+        XC.error('Error in XC handler: ' + handler +
+                 '; Error: ' + e + '; response stanza: ' + stanza);
       }
       return true;
     };
@@ -101,7 +104,8 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(/** @lends XC.StropheAdapter */{
         that = this;
 
     if (!this.connection.connected || this.connection.disconnecting) {
-      XC.log('Prevented "' + xml + '" from being sent because the BOSH connection is being disposed / is disposed.');
+      XC.log('Prevented "' + xml + '" from being sent because ' +
+             'the BOSH connection is being disposed / is disposed.');
       return;
     }
 
@@ -117,7 +121,8 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(/** @lends XC.StropheAdapter */{
         try {
           callback.apply(this, newArgs);
         } catch (e) {
-          XC.error('Error in XC handler: ' + callback + '; Error: ' + e + '; response stanza: ' + stanza);
+          XC.error('Error in XC handler: ' + callback +
+                   '; Error: ' + e + '; response stanza: ' + stanza);
         }
 
         delete that._callbacks[node.getAttribute('id')];
@@ -132,7 +137,7 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(/** @lends XC.StropheAdapter */{
       }
 
       this._callbacks[id] = this.connection.addHandler(wrapper, null, null,
-                                           null, id, null);
+                                                       null, id, null);
 
     }
     node.setAttribute('xmlns', 'jabber:client');

@@ -1,19 +1,17 @@
 /**
  * One-to-one Chatting
+ *
  * @class
  * @extends XC.Base
  * @extends XC.Mixin.Discoverable
  * @extends XC.Mixin.HandlerRegistration
  *
  * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 4</a>
- *
- * @example
- * var xc = XC.Connection.extend(... with connection adapter ...);
- * xc.Chat.registerHandler('onMessage', function(xcMessage) {...});
  */
 XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
                                  XC.Mixin.HandlerRegistration,
-  /** @lends XC.Service.Chat */{
+  /** @lends XC.Service.Chat# */{
+
   /**
    * Register for incoming stanzas
    * @private
@@ -32,7 +30,8 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
   }.around(),
 
   /**
-   * Call this.registerHandler with "onMessage" to register for this event.
+   * Call this.registerHandler with "onMessage" to register for incoming
+   * messages of type 'chat'.
    * @name XC.Service.Chat#onMessage
    * @event
    * @param {XC.Message} message A message sent to this resource.
@@ -42,7 +41,7 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
    * Handles out-of-band messages (All incoming messages)
    * from another entity.
    *
-   * @param {Element} packet        The incoming XML stanza.
+   * @param {Element} packet The incoming XML stanza.
    */
   _handleMessages: function (packet) {
     var msg = this.connection.Message.extend({

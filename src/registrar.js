@@ -14,7 +14,8 @@ XC.Roster = {
 };
 
 /**
- * Service Discovery provides the ability to discover information about entities.
+ * Service Discovery provides the ability to
+ * discover information about entities.
  * @namespace
  *
  * @see <a href="http://xmpp.org/extensions/xep-0030.html">XEP-0030: Service Discovery</a>
@@ -47,7 +48,10 @@ XC.Presence = {
     CHAT: 'chat',
     /** The entity or resource is is busy (dnd = "Do Not Disturb"). */
     DND:  'dnd',
-    /** The entity or resource is away for an extended period (xa = "eXtended Away"). */
+    /**
+     * The entity or resource is away for an extended period
+     * (xa = "eXtended Away").
+     */
     XA:   'xa'
   }
 };

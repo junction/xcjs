@@ -1,10 +1,10 @@
 /**
  * Presence Mixin.
- * @namespace
+ * @class
  * 
  * @see <a href="http://www.ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 5 & 6</a>
  */
-XC.Mixin.Presence = {
+XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
 
   /**
    * A slot to contain presence information.
@@ -43,9 +43,11 @@ XC.Mixin.Presence = {
    * Send presence to all subscribed entities / resources
    * or send direced presence to a specific entity.
    * 
-   * @param {String} [show]       'away', 'chat', 'dnd', or 'xa' as defined in XC.Presence.SHOW
-   * @param {String} [status]     The custom status message to send.
-   * @param {Number} [priority]   An integer between -127 and +128 giving the priority of the presence.
+   * @param {String} [show] 'away', 'chat', 'dnd', or 'xa'
+   *                         as defined in XC.Presence.SHOW
+   * @param {String} [status] The custom status message to send.
+   * @param {Number} [priority] An integer between -127 and +128
+   *                            giving the priority of the presence.
    */
   sendDirectedPresence: function (show, status, priority) {
     var p = XC.XMPP.Presence.extend();
