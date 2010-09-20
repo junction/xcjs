@@ -50,7 +50,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
    *                            giving the priority of the presence.
    */
   sendDirectedPresence: function (show, status, priority) {
-    var p = XC.XMPP.Presence.extend();
+    var p = XC.XML.XMPP.Presence.extend();
 
     // Send directed presence.
     p.to(this.jid);
@@ -94,7 +94,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
    * Request a subscription to an entity's presence.
    */
   sendPresenceSubscribe: function () {
-    var p = XC.XMPP.Presence.extend(),
+    var p = XC.XML.XMPP.Presence.extend(),
         entity = this;
     p.attr('type', 'subscribe');
     p.to(entity.jid);
@@ -106,7 +106,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
    * Unsubscribe from an entity's presence.
    */
   sendPresenceUnsubscribe: function () {
-    var p = XC.XMPP.Presence.extend(),
+    var p = XC.XML.XMPP.Presence.extend(),
         entity = this;
     p.attr('type', 'unsubscribe');
     p.to(entity.jid);
@@ -118,7 +118,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
    * Cancel a Presence subscription.
    */
   cancelPresenceSubscription: function () {
-    var p = XC.XMPP.Presence.extend(),
+    var p = XC.XML.XMPP.Presence.extend(),
         entity = this;
     p.attr('type', 'unsubscribed');
     p.to(entity.jid);

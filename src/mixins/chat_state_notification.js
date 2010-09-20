@@ -155,7 +155,7 @@ XC.Mixin.ChatStateNotification.Message =
    * is translated into a stanza.
    *
    * @param {Function} $super The function that this is wrapped around.
-   * @returns {XC.XMPP.Message} A constructed chat message.
+   * @returns {XC.XML.XMPP.Message} A constructed chat message.
    */
   toStanzaXML: function ($super) {
     var msg = $super.apply(this, Array.from(arguments).slice(1));

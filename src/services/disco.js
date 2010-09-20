@@ -44,7 +44,7 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
    */
   _handleError: function (iq) {
     iq.type('error');
-    var error = XC.XMPP.Error.extend(),
+    var error = XC.XML.XMPP.Error.extend(),
     itemNotFound = XC.XML.Element.extend({
       name: 'item-not-found',
       xmlns: 'urn:ietf:params:xml:ns:xmpp-stanzas'
@@ -62,8 +62,8 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
    * @private
    */
   _handleDiscoItems: function (packet) {
-    var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
+    var iq = XC.XML.XMPP.IQ.extend(),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
         Item = XC.XML.Element.extend({name: 'item'}),
         item, node, value, len;
 
@@ -112,8 +112,8 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
    * @private
    */
   _handleDiscoInfo: function (packet) {
-    var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
+    var iq = XC.XML.XMPP.IQ.extend(),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
         Feature = XC.XML.Element.extend({name: 'feature'}),
         Identity = XC.XML.Element.extend({name: 'identity'}),
         identity, elem, len, node, i;

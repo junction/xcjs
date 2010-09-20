@@ -40,14 +40,14 @@ XC.Test.XML = new YAHOO.tool.TestCase({
 
     Assert.isObject(XC.XML, 'XC.XML not found');
     Assert.isObject(XC.XML.Element, 'XC.XML.Element not found');
-    Assert.isObject(XC.XMPP, 'XC.XMPP not found');
-    Assert.isObject(XC.XMPP.Stanza, 'XC.XMPP.Stanza not found');
-    Assert.isObject(XC.XMPP.IQ, 'XC.XMPP.IQ not found');
-    Assert.isObject(XC.XMPP.Presence, 'XC.XMPP.Presence not found');
-    Assert.isObject(XC.XMPP.Query, 'XC.XMPP.Query not found');
-    Assert.isObject(XC.XMPP.Message, 'XC.XMPP.Message not found');
-    Assert.isObject(XC.XMPP.Command, 'XC.XMPP.Command not found');
-    Assert.isObject(XC.XMPP.XDataForm, 'XC.XMPP.XDataForm not found');
+    Assert.isObject(XC.XML.XMPP, 'XC.XML.XMPP not found');
+    Assert.isObject(XC.XML.XMPP.Stanza, 'XC.XML.XMPP.Stanza not found');
+    Assert.isObject(XC.XML.XMPP.IQ, 'XC.XML.XMPP.IQ not found');
+    Assert.isObject(XC.XML.XMPP.Presence, 'XC.XML.XMPP.Presence not found');
+    Assert.isObject(XC.XML.XMPP.Query, 'XC.XML.XMPP.Query not found');
+    Assert.isObject(XC.XML.XMPP.Message, 'XC.XML.XMPP.Message not found');
+    Assert.isObject(XC.XML.XMPP.Command, 'XC.XML.XMPP.Command not found');
+    Assert.isObject(XC.XML.XMPP.XDataForm, 'XC.XML.XMPP.XDataForm not found');
   },
 
   testXMLAPI: function () {
@@ -112,7 +112,7 @@ XC.Test.XML = new YAHOO.tool.TestCase({
 
   testIQStructure: function () {
     var Assert = YAHOO.util.Assert;
-    var iq = XC.XMPP.IQ.extend(),
+    var iq = XC.XML.XMPP.IQ.extend(),
         body = XC.XML.Element.extend({name: 'garbage', text: 'text'});
 
     iq.to('testTo@sender.com');
@@ -148,21 +148,21 @@ XC.Test.XML = new YAHOO.tool.TestCase({
 
   testQueryStructure: function () {
     var Assert = YAHOO.util.Assert,
-        q = XC.XMPP.Query.extend();
+        q = XC.XML.XMPP.Query.extend();
     
     Assert.areEqual('query', q.name, 'query element name is incorrect');
   },
 
   testPresenceStructur: function () {
     var Assert = YAHOO.util.Assert,
-        p = XC.XMPP.Presence.extend();
+        p = XC.XML.XMPP.Presence.extend();
 
     Assert.areEqual('presence', p.name, 'presence element name is incorrect');
   },
 
   testPubSubStructure: function () {
     var Assert = YAHOO.util.Assert;
-    var p = XC.XMPP.PubSub.extend();
+    var p = XC.XML.XMPP.PubSub.extend();
 
     Assert.areEqual("pubsub", p.name, 'pubsub element name is incorrect');
     Assert.areEqual("http://jabber.org/protocol/pubsub", p.xmlns, 'pubsub namespace is incorrect');
@@ -170,14 +170,14 @@ XC.Test.XML = new YAHOO.tool.TestCase({
 
   testCommandAPI: function () {
     var Assert = YAHOO.util.Assert;
-    Assert.isFunction(XC.XMPP.Command.node);
-    Assert.isFunction(XC.XMPP.Command.action);
+    Assert.isFunction(XC.XML.XMPP.Command.node);
+    Assert.isFunction(XC.XML.XMPP.Command.action);
   },
 
   testCommandStructure: function () {
     var Assert = YAHOO.util.Assert;
-    var iq = XC.XMPP.IQ.extend(),
-      cmd = XC.XMPP.Command.extend();
+    var iq = XC.XML.XMPP.IQ.extend(),
+      cmd = XC.XML.XMPP.Command.extend();
 
     iq.addChild(cmd);
     cmd.node("foo");
@@ -208,15 +208,15 @@ XC.Test.XML = new YAHOO.tool.TestCase({
 
   testXDataFormAPI: function () {
     var Assert = YAHOO.util.Assert;
-    Assert.isFunction(XC.XMPP.XDataForm.type, 'type is not a function');
-    Assert.isFunction(XC.XMPP.XDataForm.addField, 'addField is not a function');
+    Assert.isFunction(XC.XML.XMPP.XDataForm.type, 'type is not a function');
+    Assert.isFunction(XC.XML.XMPP.XDataForm.addField, 'addField is not a function');
   },
 
   testXDataFormStructure: function () {
     var Assert = YAHOO.util.Assert;
-    var iq = XC.XMPP.IQ.extend(),
-      cmd = XC.XMPP.Command.extend(),
-      x = XC.XMPP.XDataForm.extend();
+    var iq = XC.XML.XMPP.IQ.extend(),
+      cmd = XC.XML.XMPP.Command.extend(),
+      x = XC.XML.XMPP.XDataForm.extend();
 
     iq.addChild(cmd);
     cmd.node("foo");

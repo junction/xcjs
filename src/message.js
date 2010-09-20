@@ -72,7 +72,7 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
    * The builder for XC.Stanza's base toStanzaXML
    * @private
    */
-  xmlStanza: XC.XMPP.Message,
+  xmlStanza: XC.XML.XMPP.Message,
 
   /**
    * Converts a message into an XML Fragment.

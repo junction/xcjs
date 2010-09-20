@@ -35,7 +35,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    *                            giving the priority of the presence.
    */
   send: function (show, status, priority) {
-    var p = XC.XMPP.Presence.extend();
+    var p = XC.XML.XMPP.Presence.extend();
 
     if (status) {
       var statusEl = XC.XML.Element.extend({
@@ -79,7 +79,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    *                          a reason why the user is unavailable.
    */
   sendUnavailable: function (status) {
-    var p = XC.XMPP.Presence.extend();
+    var p = XC.XML.XMPP.Presence.extend();
     p.attr('type', 'unavailable');
 
     if (status) {
@@ -192,13 +192,13 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
         response = function (acceptType, denyType) {
           return {
             accept: function () {
-              var p = XC.XMPP.Presence.extend();
+              var p = XC.XML.XMPP.Presence.extend();
               p.attr('type', acceptType);
               p.to(jid);
               connection.send(p.convertToString());
             },
             deny: function () {
-              var p = XC.XMPP.Presence.extend();
+              var p = XC.XML.XMPP.Presence.extend();
               p.attr('type', denyType);
               p.to(jid);
               connection.send(p.convertToString());

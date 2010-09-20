@@ -132,7 +132,7 @@ XC.XML.Element = XC.Base.extend(/** @lends XC.XML.Element# */{
  * Namespace for XMPP XML elements.
  * @namespace
  */
-XC.XMPP = {};
+XC.XML.XMPP = {};
 
 /**
  * Generic XMPP stanza.
@@ -140,7 +140,7 @@ XC.XMPP = {};
  * @extends XC.XML.Element
  * @class
  */
-XC.XMPP.Stanza = XC.XML.Element.extend(/** @lends XC.XMPP.Stanza# */{
+XC.XML.XMPP.Stanza = XC.XML.Element.extend(/** @lends XC.XML.XMPP.Stanza# */{
   to: function (val) {
     return this.attr('to', val);
   },
@@ -161,10 +161,10 @@ XC.XMPP.Stanza = XC.XML.Element.extend(/** @lends XC.XMPP.Stanza# */{
 /**
  * XMPP IQ stanza.
  *
- * @extends XC.XMPP.Stanza
+ * @extends XC.XML.XMPP.Stanza
  * @class
  */
-XC.XMPP.IQ = XC.XMPP.Stanza.extend(/** @lends XC.XMPP.IQ# */{
+XC.XML.XMPP.IQ = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.IQ# */{
   name: 'iq'
 });
 
@@ -174,7 +174,7 @@ XC.XMPP.IQ = XC.XMPP.Stanza.extend(/** @lends XC.XMPP.IQ# */{
  * @extends XC.XML.Element
  * @class
  */
-XC.XMPP.PubSub = XC.XML.Element.extend(/** @lends XC.XMPP.PubSub# */{
+XC.XML.XMPP.PubSub = XC.XML.Element.extend(/** @lends XC.XML.XMPP.PubSub# */{
   name: 'pubsub',
   xmlns: 'http://jabber.org/protocol/pubsub'
 });
@@ -182,40 +182,40 @@ XC.XMPP.PubSub = XC.XML.Element.extend(/** @lends XC.XMPP.PubSub# */{
 /**
  * XMPP Message stanza.
  *
- * @extends XC.XMPP.Stanza
+ * @extends XC.XML.XMPP.Stanza
  * @class
  */
-XC.XMPP.Message = XC.XMPP.Stanza.extend(/** @lends XC.XMPP.Message# */{
+XC.XML.XMPP.Message = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.Message# */{
   name: 'message'
 });
 
 /**
  * XMPP Presence stanza.
  *
- * @extends XC.XMPP.Stanza
+ * @extends XC.XML.XMPP.Stanza
  * @class
  */
-XC.XMPP.Presence = XC.XMPP.Stanza.extend(/** @lends XC.XMPP.Presence# */{
+XC.XML.XMPP.Presence = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.Presence# */{
   name: 'presence'
 });
 
 /**
  * XMPP Query stanza.
  *
- * @extends XC.XMPP.Stanza
+ * @extends XC.XML.XMPP.Stanza
  * @class
  */
-XC.XMPP.Query = XC.XML.Element.extend(/** @lends XMPP.Query# */{
+XC.XML.XMPP.Query = XC.XML.Element.extend(/** @lends XMPP.Query# */{
   name: 'query'
 });
 
 /**
  * XMPP Error stanza.
  *
- * @extends XC.XMPP.Stanza
+ * @extends XC.XML.XMPP.Stanza
  * @class
  */
-XC.XMPP.Error = XC.XML.Element.extend(/** @lends XMPP.Error# */{
+XC.XML.XMPP.Error = XC.XML.Element.extend(/** @lends XMPP.Error# */{
   name: 'error'
 });
 
@@ -225,7 +225,7 @@ XC.XMPP.Error = XC.XML.Element.extend(/** @lends XMPP.Error# */{
  * @extends XC.XML.Element
  * @class
  */
-XC.XMPP.Command = XC.XML.Element.extend(/** @lends XC.XMPP.Command# */{
+XC.XML.XMPP.Command = XC.XML.Element.extend(/** @lends XC.XML.XMPP.Command# */{
   name: 'command',
   xmlns: 'http://jabber.org/protocol/commands',
 
@@ -244,7 +244,7 @@ XC.XMPP.Command = XC.XML.Element.extend(/** @lends XC.XMPP.Command# */{
  * @extends XC.XML.Element
  * @class
  */
-XC.XMPP.XDataForm = XC.XML.Element.extend(/** @lends XC.XMPP.XDataForm# */{
+XC.XML.XMPP.XDataForm = XC.XML.Element.extend(/** @lends XC.XML.XMPP.XDataForm# */{
   name: 'x',
   xmlns: 'jabber:x:data',
 
@@ -260,7 +260,7 @@ XC.XMPP.XDataForm = XC.XML.Element.extend(/** @lends XC.XMPP.XDataForm# */{
    * @param {String} name The name of the field, as identified in the 'var' attribute.
    * @param {String} value The text to insert into the 'value' element.
    * @param {String} type XDataField type see XEP: 0004.
-   * @returns {XC.XMPP.XDataForm} The receiver.
+   * @returns {XC.XML.XMPP.XDataForm} The receiver.
    */
   addField: function (name, value, type) {
     var f, v;

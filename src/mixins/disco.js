@@ -108,8 +108,8 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
    *        The entity with slots filled about the queried disco information.
    */
   requestDiscoInfo: function (nodeName, callbacks) {
-    var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
+    var iq = XC.XML.XMPP.IQ.extend(),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
         entity = this;
 
     if (arguments.length === 1) {
@@ -174,8 +174,8 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
    *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity with slots filled about the queried disco items.
    */
   requestDiscoItems: function (node, callbacks) {
-    var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
+    var iq = XC.XML.XMPP.IQ.extend(),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
         entity = this;
 
     if (arguments.length === 1) {

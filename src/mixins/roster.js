@@ -55,8 +55,8 @@ XC.Mixin.Roster = {
    */
   setRosterItem: function (callbacks) {
     var entity = this,
-        iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
+        iq = XC.XML.XMPP.IQ.extend(),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
         item = XC.XML.Element.extend({name: 'item'}),
         Group = XC.XML.Element.extend({name: 'group'}),
         len = (entity.roster && entity.roster.groups) ?
@@ -104,8 +104,8 @@ XC.Mixin.Roster = {
    *        The entity that the roster remove was called on.
    */
   removeRosterItem: function (callbacks) {
-    var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
+    var iq = XC.XML.XMPP.IQ.extend(),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
         item = XC.XML.Element.extend({name: 'item'}),
         entity = this;
 

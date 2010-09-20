@@ -44,8 +44,8 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
    *        A list of entities retrieved from your roster.
    */
   requestItems: function (callbacks) {
-    var iq = XC.XMPP.IQ.extend(),
-        q = XC.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
+    var iq = XC.XML.XMPP.IQ.extend(),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
         that = this;
     iq.type('get');
     iq.addChild(q);
@@ -93,7 +93,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
 
     // Acknowledge a roster push.
     if (type === 'set') {
-      var iq = XC.XMPP.IQ.extend();
+      var iq = XC.XML.XMPP.IQ.extend();
       iq.type('result');
       iq.attr('id', packet.getAttribute('id'));
       this.connection.send(iq.convertToString());

@@ -61,7 +61,7 @@ XC.Stanza = XC.Base.extend(/** @lends XC.Stanza# */{
    * Used in templates that extend Stanza.
    * @private
    * @example
-   *   xmlStanza: XC.XMPP.Message
+   *   xmlStanza: XC.XML.XMPP.Message
    */
   xmlStanza: null,
 
