@@ -155,7 +155,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * @private
    */
   _validatePacket: function (p) {
-    var pktInterface = {
+    var pktInterface = /** @ignore */{
       getNode: function () {
         return p.getNode && p.getNode().nodeType;
       },
