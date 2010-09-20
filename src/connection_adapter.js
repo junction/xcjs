@@ -57,7 +57,7 @@ XC.ConnectionAdapter = XC.Base.extend(/** @lends XC.ConnectionAdapter# */{
    *                           when it is received.
    *
    * @see XC.ConnectionAdapter#unregisterHandler
-   * @see XC.Connection#registerJIDHandler
+   * @see XC.Connection#registerStanzaHandler
    */
   registerHandler: function (event, handler) {},
 
@@ -68,7 +68,7 @@ XC.ConnectionAdapter = XC.Base.extend(/** @lends XC.ConnectionAdapter# */{
    *                       (i.e., `message', `iq', `presence.')
    *
    * @see XC.ConnectionAdapter#registerHandler
-   * @see XC.Connection#unregisterJIDHandler
+   * @see XC.Connection#unregisterStanzaHandler
    */
   unregisterHandler: function (event) {}
 });

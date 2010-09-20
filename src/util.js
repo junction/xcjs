@@ -49,12 +49,14 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    * BE AWARE however, that this could cause some headaches if
    * you aren't smart with it.
    *
-   * @exmple
-   * var foo = XC.Base.extend({
-   *   bar: function () { return 1; }
-   * }, {
-   *   bar: function () { return 2; }.inferior()
-   * }); // foo.bar() will return 1, normally it would return 2
+   * @example
+   *   var foo = XC.Base.extend({
+   *     bar: function () { return 1; }
+   *   }, {
+   *     bar: function () { return 2; }.inferior()
+   *   });
+   *   foor.bar()
+   *   // -> 1
    */
   inferior: function () {
     this._xcInferior = true;

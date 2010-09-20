@@ -16,10 +16,8 @@
 XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
   /**
-   * Map of instance names to instance objects. Used during
-   * initConnection().
-   *
-   * @see XC.Connection#initConnection
+   * Map of template names to template objects. Used during
+   * init to bootstrap services to a connection.
    * @private
    */
   services: {
@@ -30,7 +28,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
-   * Templates are extended with the connection (this) during initConnection()
+   * Templates are extended with the connection (this) during init().
    * @private
    */
   templates: {
@@ -195,14 +193,18 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * Stanza Handlers are registered by the Services to register a callback
    * for a specific stanza based on various criteria
    *
+   * @namespace
    * @private
    * @see XC.Connection#registerStanzaHandler
    * @see XC.Connection#unregisterStanzaHandler
    */
-  _stanzaHandlersTemplate: XC.Base.extend({
+  _stanzaHandlersTemplate: XC.Base.extend(
+    /** @lends XC.Connection#_stanzaHandlersTemplate */{
+
     lastID: 0,
     store: {},
 
+    /** @private */
     insert: function (criteria, cb) {
       var id = this.lastID++;
       this.store[id] = {
@@ -213,6 +215,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       return id;
     },
 
+    /** @private */
     remove: function (id) {
       if (this.store[id]) {
         delete this.store[id];
@@ -221,6 +224,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       return false;
     },
 
+    /** @private */
     findCallbacks: function (stanza) {
       var resultSet = [];
 

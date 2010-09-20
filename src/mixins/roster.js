@@ -4,7 +4,7 @@
  *
  * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 7 & 8</a>
  */
-XC.Mixin.Roster = {
+XC.Mixin.Roster = /** @lends XC.Mixin.Roster# */{
 
   /**
    * A slot to contain roster information.
