@@ -1,4 +1,4 @@
-SRC =	core.js base.js util.js error.js	\
+SRC =	license.js core.js base.js util.js error.js	\
 	xc_dom_helper.js xml.js registrar.js packet_adapter.js	\
 	mixins/jid.js mixins/roster.js mixins/chat.js	\
 	mixins/presence.js mixins/disco.js mixins/discoverable.js	\
