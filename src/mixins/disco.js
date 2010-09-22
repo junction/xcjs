@@ -109,7 +109,7 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
    */
   requestDiscoInfo: function (nodeName, callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),
-        q = XC.XML.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Registrar.Disco.XMLNS + '#info'}),
         entity = this;
 
     if (arguments.length === 1) {
@@ -175,7 +175,7 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
    */
   requestDiscoItems: function (node, callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),
-        q = XC.XML.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Registrar.Disco.XMLNS + '#items'}),
         entity = this;
 
     if (arguments.length === 1) {

@@ -1,10 +1,18 @@
 /**
- * Roster Management
  * @namespace
+ * The XMPP Registry.
+ * The @see <a href="http://xmpp.org/registrar/">XMPP Registrar</a>
+ * maintains registries of protocol namespaces and various parameters.
+ */
+XC.Registrar = {};
+
+/**
+ * @namespace
+ * Roster Management constants.
  *
  * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 7 & 8</a>
  */
-XC.Roster = {
+XC.Registrar.Roster = {
   /**
    * The XML namespace for Roster IQs
    * @type {String}
@@ -14,13 +22,12 @@ XC.Roster = {
 };
 
 /**
- * Service Discovery provides the ability to
- * discover information about entities.
  * @namespace
+ * Service Discovery namespace information.
  *
  * @see <a href="http://xmpp.org/extensions/xep-0030.html">XEP-0030: Service Discovery</a>
  */
-XC.Disco = {
+XC.Registrar.Disco = {
   /**
    * The XML namespace for Disco queries.
    * @type {String}
@@ -30,12 +37,12 @@ XC.Disco = {
 };
 
 /**
- * Presence
  * @namespace
+ * Presence constants.
  *
  * @see <a href="http://www.ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 5 & 6</a>
  */
-XC.Presence = {
+XC.Registrar.Presence = {
   /**
    * Acceptable values for the values inside
    * a <show/> element
@@ -57,12 +64,12 @@ XC.Presence = {
 };
 
 /**
- * Chat State Notifications
  * @namespace
+ * Chat State Notifications namespace information and valid states.
  *
  * @see <a href="http://xmpp.org/extensions/xep-0085.html">XEP-0085: Chat State Notifications</a>
  */
-XC.ChatStateNotification = {
+XC.Registrar.ChatStateNotification = {
   /**
    * The XML namespace for Chat State Notifications.
    * @type {String}

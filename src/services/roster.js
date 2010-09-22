@@ -22,7 +22,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
     if (this.connection) {
       this.connection.registerStanzaHandler({
         element: 'iq',
-        xmlns: XC.Roster.XMLNS
+        xmlns: XC.Registrar.Roster.XMLNS
       }, this._handleRosterItems, this);
     }
 
@@ -45,7 +45,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
    */
   requestItems: function (callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),
-        q = XC.XML.XMPP.Query.extend({xmlns: XC.Roster.XMLNS}),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Registrar.Roster.XMLNS}),
         that = this;
     iq.type('get');
     iq.addChild(q);

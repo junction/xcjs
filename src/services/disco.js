@@ -22,15 +22,15 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
     if (this.connection) {
       this.connection.registerStanzaHandler({
         element: 'iq',
-        xmlns: XC.Disco.XMLNS + '#info'
+        xmlns: XC.Registrar.Disco.XMLNS + '#info'
       }, this._handleDiscoInfo, this);
       this.connection.registerStanzaHandler({
         element: 'iq',
-        xmlns: XC.Disco.XMLNS + '#items'
+        xmlns: XC.Registrar.Disco.XMLNS + '#items'
       }, this._handleDiscoItems, this);
 
-      this.addFeature(XC.Disco.XMLNS + '#info')
-          .addFeature(XC.Disco.XMLNS + '#items');
+      this.addFeature(XC.Registrar.Disco.XMLNS + '#info')
+          .addFeature(XC.Registrar.Disco.XMLNS + '#items');
     }
     return this;
   }.around(),
@@ -63,7 +63,7 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
    */
   _handleDiscoItems: function (packet) {
     var iq = XC.XML.XMPP.IQ.extend(),
-        q = XC.XML.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#items'}),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Registrar.Disco.XMLNS + '#items'}),
         Item = XC.XML.Element.extend({name: 'item'}),
         item, node, value, len;
 
@@ -113,7 +113,7 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
    */
   _handleDiscoInfo: function (packet) {
     var iq = XC.XML.XMPP.IQ.extend(),
-        q = XC.XML.XMPP.Query.extend({xmlns: XC.Disco.XMLNS + '#info'}),
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Registrar.Disco.XMLNS + '#info'}),
         Feature = XC.XML.Element.extend({name: 'feature'}),
         Identity = XC.XML.Element.extend({name: 'identity'}),
         identity, elem, len, node, i;

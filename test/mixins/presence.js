@@ -34,7 +34,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
   testDirectedPresence: function() {
     var Assert = YAHOO.util.Assert;
 
-    this.arthur.sendDirectedPresence(XC.Presence.SHOW.AWAY, 'Running away from a room full of monkeys that wrote Macbeth', 3);
+    this.arthur.sendDirectedPresence(XC.Registrar.Presence.SHOW.AWAY, 'Running away from a room full of monkeys that wrote Macbeth', 3);
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {

@@ -29,7 +29,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    * Broadcast presence to all users subscribed to your presence.
    *
    * @param {String} [show] 'away', 'chat', 'dnd', or 'xa'
-   *                        as defined in XC.Presence.SHOW
+   *                        as defined in XC.Registrar.Presence.SHOW
    * @param {String} [status] The custom status message to send.
    * @param {Number} [priority] An integer between -127 and +128
    *                            giving the priority of the presence.
@@ -45,13 +45,13 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
       p.addChild(statusEl);
     }
 
-    if (show !== XC.Presence.SHOW.AVAILABLE) {
+    if (show !== XC.Registrar.Presence.SHOW.AVAILABLE) {
       var showEl = XC.XML.Element.extend({
         name: 'show'
       });
 
       // Show must be one of the pre-defined constants
-      if (XC.Presence.SHOW[show.toUpperCase()]) {
+      if (XC.Registrar.Presence.SHOW[show.toUpperCase()]) {
         showEl.text = show;
         p.addChild(showEl);
       }

@@ -50,7 +50,7 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity,
    */
   sendChatStateComposing:
     XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification.curry(
-      XC.ChatStateNotification.STATES.COMPOSING
+      XC.Registrar.ChatStateNotification.STATES.COMPOSING
     ),
 
   /**
@@ -64,7 +64,7 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity,
    */
   sendChatStatePaused:
     XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification.curry(
-      XC.ChatStateNotification.STATES.PAUSED
+      XC.Registrar.ChatStateNotification.STATES.PAUSED
     ),
 
   /**
@@ -78,7 +78,7 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity,
    */
   sendChatStateInactive:
     XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification.curry(
-      XC.ChatStateNotification.STATES.INACTIVE
+      XC.Registrar.ChatStateNotification.STATES.INACTIVE
     ),
 
   /**
@@ -94,7 +94,7 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity,
    */
   sendChatStateGone:
     XC.Mixin.ChatStateNotification.Entity.sendChatStateNotification.curry(
-      XC.ChatStateNotification.STATES.GONE
+      XC.Registrar.ChatStateNotification.STATES.GONE
     )
 });
 
@@ -110,9 +110,9 @@ XC.Mixin.ChatStateNotification.Message =
   /**
    * The chat notification state of the message.
    * @type {String} Defaults to 'active';
-   *                can be any in XC.ChatStateNotification.STATES
+   *                can be any in XC.Registrar.ChatStateNotification.STATES
    */
-  chatNotificationState: XC.ChatStateNotification.STATES.ACTIVE,
+  chatNotificationState: XC.Registrar.ChatStateNotification.STATES.ACTIVE,
 
   /**
    * Unpack the chat state from the message.
@@ -134,14 +134,14 @@ XC.Mixin.ChatStateNotification.Message =
       var registrar = XC.Base.extend(XC.Mixin.Discoverable, {
         connection: this.connection
       });
-      registrar.addFeature(XC.ChatStateNotification.XMLNS);
+      registrar.addFeature(XC.Registrar.ChatStateNotification.XMLNS);
     }
 
     if (this.packet) {
       var pkt = this.packet, stateNode;
 
       stateNode = XC_DOMHelper.getElementsByNS(pkt.getNode(),
-                    XC.ChatStateNotification.XMLNS);
+                    XC.Registrar.ChatStateNotification.XMLNS);
       stateNode = stateNode[0];
 
       if (stateNode) {

@@ -22,7 +22,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
   testSend: function () {
     var Assert = YAHOO.util.Assert;
 
-    this.Presence.send(XC.Presence.SHOW.AWAY, 'Out to lunch', 5);
+    this.Presence.send(XC.Registrar.Presence.SHOW.AWAY, 'Out to lunch', 5);
 
     // <presence>
     //   <show>away</show>
