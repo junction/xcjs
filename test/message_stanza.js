@@ -1,5 +1,5 @@
 /*globals YAHOO */
-XC.Test.Message = new YAHOO.tool.TestCase({
+XC.Test.MessageStanza = new YAHOO.tool.TestCase({
   name: 'XC Message Tests',
 
   setUp: function () {
@@ -21,7 +21,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
   testMessageSlots: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = this.xc.Message.extend({
+    var msg = this.xc.MessageStanza.extend({
       to: this.chong,
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
@@ -44,7 +44,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
                  <thread>A star is Burns</thread>\
                </message>';
 
-    var msg = this.xc.Message.extend({
+    var msg = this.xc.MessageStanza.extend({
       packet: XC.Test.Packet.extendWithXML(xml)
     });
 
@@ -59,21 +59,21 @@ XC.Test.Message = new YAHOO.tool.TestCase({
   testToMessageStanza: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = this.xc.Message.extend({
+    var msg = this.xc.MessageStanza.extend({
       to: this.chong,
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
       thread: "Avatar"
     });
 
-    Assert.isFunction(msg.toStanzaXML, 'XC.Message.toStanzaXML should be a function.');
-    Assert.isObject(msg.toStanzaXML(), 'XC.Message.toStanzaXML shoudl return an Object.');
+    Assert.isFunction(msg.toStanzaXML, 'XC.MessageStanza.toStanzaXML should be a function.');
+    Assert.isObject(msg.toStanzaXML(), 'XC.MessageStanza.toStanzaXML shoudl return an Object.');
   },
 
   testXML: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = this.xc.Message.extend({
+    var msg = this.xc.MessageStanza.extend({
       to: this.chong,
       subject: "The Cave of the Two Lovers",
       body: "Don't let the cave-in get you down... Sokka",
@@ -97,7 +97,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       }
     });
 
-    msg = this.xc.Message.extend({
+    msg = this.xc.MessageStanza.extend({
       to: this.chong,
       body: "No subject and no thread"
     });
@@ -119,7 +119,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
       }
     });
 
-    msg = this.xc.Message.extend({
+    msg = this.xc.MessageStanza.extend({
       to: this.chong,
       body: "message with ID",
       id: 'message-1'
@@ -139,7 +139,7 @@ XC.Test.Message = new YAHOO.tool.TestCase({
   testReply: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = this.xc.Message.extend({
+    var msg = this.xc.MessageStanza.extend({
       from: this.chong,
       subject: "The Cave of the Two Lovers",
       thread: "Avatar"
@@ -165,4 +165,4 @@ XC.Test.Message = new YAHOO.tool.TestCase({
 
 });
 
-YAHOO.tool.TestRunner.add(XC.Test.Message);
+YAHOO.tool.TestRunner.add(XC.Test.MessageStanza);

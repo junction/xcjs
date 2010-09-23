@@ -8,31 +8,31 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
 
   /**
    * A slot to contain presence information.
-   * @type {Object}
+   * @type Object
    * @namespace
    */
   presence: {
     /**
      * What the status of the entity is.
-     * @type {XC.Registrar.Presence.SHOW}
+     * @type XC.Registrar.Presence.SHOW
      */
     show: null,
 
     /**
      * The custom status of the entity.
-     * @type {String}
+     * @type String
      */
     status: null,
 
     /**
      * A number between -128 and +127
-     * @type {Number}
+     * @type Number
      */
     priority: null,
 
     /**
      * Whether or not the user is available.
-     * @type {Boolean}
+     * @type Boolean
      */
     available: null
   },
@@ -50,54 +50,23 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
    *                            giving the priority of the presence.
    */
   sendDirectedPresence: function (show, status, priority) {
-    var p = XC.XML.XMPP.Presence.extend();
+    var p = XC.PresenceStanza.extend({
+      show: show,
+      status: status,
+      priority: priority,
+      to: this
+    });
 
-    // Send directed presence.
-    p.to(this.jid);
-
-    if (status) {
-      var statusEl = XC.XML.Element.extend({
-        name: 'status'
-      });
-      statusEl.text = status.toString();
-      p.addChild(statusEl);
-    }
-
-    if (show !== XC.Registrar.Presence.SHOW.AVAILABLE) {
-      var showEl = XC.XML.Element.extend({
-        name: 'show'
-      });
-
-      // Show must be one of the pre-defined constants
-      if (XC.Registrar.Presence.SHOW[show.toUpperCase()]) {
-        showEl.text = show;
-        p.addChild(showEl);
-      }
-    }
-
-    if (priority) {
-      var priorityEl = XC.XML.Element.extend({
-        name: 'priority'
-      }), iPriority = parseInt(priority, 10);
-
-      // The priority MUST be an integer between -128 and +127
-      if (iPriority > -128 && iPriority < 127) {
-        priorityEl.text = priority;
-        p.addChild(priorityEl);
-      }
-    }
-
-    this.connection.send(p.convertToString());
+    this.connection.send(p.toStanzaXML().convertToString());
   },
 
   /**
    * Request a subscription to an entity's presence.
    */
   sendPresenceSubscribe: function () {
-    var p = XC.XML.XMPP.Presence.extend(),
-        entity = this;
+    var p = XC.XML.XMPP.Presence.extend();
     p.attr('type', 'subscribe');
-    p.to(entity.jid);
+    p.to(this.jid);
 
     this.connection.send(p.convertToString());
   },
@@ -106,10 +75,9 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
    * Unsubscribe from an entity's presence.
    */
   sendPresenceUnsubscribe: function () {
-    var p = XC.XML.XMPP.Presence.extend(),
-        entity = this;
+    var p = XC.XML.XMPP.Presence.extend();
     p.attr('type', 'unsubscribe');
-    p.to(entity.jid);
+    p.to(this.jid);
 
     this.connection.send(p.convertToString());
   },
@@ -118,10 +86,9 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
    * Cancel a Presence subscription.
    */
   cancelPresenceSubscription: function () {
-    var p = XC.XML.XMPP.Presence.extend(),
-        entity = this;
+    var p = XC.XML.XMPP.Presence.extend();
     p.attr('type', 'unsubscribed');
-    p.to(entity.jid);
+    p.to(this.jid);
 
     this.connection.send(p.convertToString());
   }

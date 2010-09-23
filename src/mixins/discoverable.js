@@ -30,7 +30,7 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
   /**
    * The root of the Disco tree.
    *
-   * @type {XC.DiscoItem}
+   * @type XC.DiscoItem
    * @private
    */
   _rootNode: null,

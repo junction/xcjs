@@ -44,7 +44,7 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
    * @param {Element} packet The incoming XML stanza.
    */
   _handleMessages: function (packet) {
-    var msg = this.connection.Message.extend({
+    var msg = this.connection.MessageStanza.extend({
       packet: packet
     });
 

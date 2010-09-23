@@ -8,33 +8,33 @@ XC.Mixin.Roster = /** @lends XC.Mixin.Roster# */{
 
   /**
    * A slot to contain roster information.
-   * @type {Object}
+   * @type Object
    * @namespace
    */
   roster: {
     /**
      * The optional name of the entity.
-     * @type {String}
+     * @type String
      */
     name: null,
 
     /**
      * The groups the entity is a part of.
-     * @type {String[]}
+     * @type String[]
      */
     groups: null,
 
     /**
      * What the user is requesting
      * 'subscribe'
-     * @type {String}
+     * @type String
      */
     ask: null,
 
     /**
      * The subscription type of the entity
      * 'none', 'to', 'from', or 'both'
-     * @type {String}
+     * @type String
      */
     subscription: null
   },

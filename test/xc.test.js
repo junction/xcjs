@@ -187,7 +187,7 @@ XC.Test.Packet = XC.Base.extend({
   }
 });
 
-XC.Test.Message = XC.Test.Packet.extend({
+XC.Test.MessageStanza = XC.Test.Packet.extend({
   pType: 'message'
 });
 

@@ -15,7 +15,7 @@ XC.Registrar = {};
 XC.Registrar.Roster = {
   /**
    * The XML namespace for Roster IQs
-   * @type {String}
+   * @type String
    * @constant
    */
   XMLNS: 'jabber:iq:roster'
@@ -30,7 +30,7 @@ XC.Registrar.Roster = {
 XC.Registrar.Disco = {
   /**
    * The XML namespace for Disco queries.
-   * @type {String}
+   * @type String
    * @constant
    */
   XMLNS: 'http://jabber.org/protocol/disco'
@@ -72,7 +72,7 @@ XC.Registrar.Presence = {
 XC.Registrar.ChatStateNotification = {
   /**
    * The XML namespace for Chat State Notifications.
-   * @type {String}
+   * @type String
    * @constant
    */
   XMLNS: 'http://jabber.org/protocol/chatstates',

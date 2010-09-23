@@ -4,8 +4,8 @@
  * @extends XC.Stanza
  * @extends XC.Mixin.ChatStateNotification.Message
  */
-XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
-  /** @lends XC.Message# */{
+XC.MessageStanza = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
+  /** @lends XC.MessageStanza# */{
 
   type: 'chat',
 
@@ -35,17 +35,17 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
   }.around(),
 
   /**
-   * @type {String}
+   * @type String
    */
   subject: null,
 
   /**
-   * @type {String}
+   * @type String
    */
   body: null,
 
   /**
-   * @type {String}
+   * @type String
    */
   thread: null,
 
@@ -56,7 +56,7 @@ XC.Message = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
    *
    * @param {String} body The message body.
    * @param {String} [id] The id to associate with the message.
-   * @returns {XC.Message} The sent message.
+   * @returns {XC.MessageStanza} The sent message.
    */
   reply: function (body, id) {
     var msg = this.extend({

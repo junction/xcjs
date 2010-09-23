@@ -14,7 +14,7 @@ XC.Test.Mixin.ChatStateNotificationMessage = new YAHOO.tool.TestCase({
 
   testMixin: function () {
     var Assert = YAHOO.util.Assert;
-    Assert.mixesIn(XC.Message, XC.Mixin.ChatStateNotification.Message);
+    Assert.mixesIn(XC.MessageStanza, XC.Mixin.ChatStateNotification.Message);
   },
 
   testFeatureRegistration: function () {
@@ -24,13 +24,13 @@ XC.Test.Mixin.ChatStateNotificationMessage = new YAHOO.tool.TestCase({
 
   testSlots: function () {
     var Assert = YAHOO.util.Assert;
-    Assert.isString(XC.Message.chatNotificationState);
+    Assert.isString(XC.MessageStanza.chatNotificationState);
   },
 
   testDefault: function () {
     var Assert = YAHOO.util.Assert;
 
-    var msg = this.xc.Message.extend();
+    var msg = this.xc.MessageStanza.extend();
     Assert.areEqual('active', msg.chatNotificationState);
 
     Assert.XPathTests(msg.toStanzaXML().convertToString(), {
@@ -53,7 +53,7 @@ XC.Test.Mixin.ChatStateNotificationMessage = new YAHOO.tool.TestCase({
          <composing xmlns="http://jabber.org/protocol/chatstates"/>\
        </message>');
 
-    var msg = this.xc.Message.extend({
+    var msg = this.xc.MessageStanza.extend({
       packet: packet
     });
     Assert.areEqual('composing', msg.chatNotificationState);
@@ -63,7 +63,7 @@ XC.Test.Mixin.ChatStateNotificationMessage = new YAHOO.tool.TestCase({
     var Assert = YAHOO.util.Assert;
 
     var states = ['active', 'composing', 'paused', 'inactive', 'gone'],
-        msg = this.xc.Message.extend();
+        msg = this.xc.MessageStanza.extend();
 
     for (var i = 0, len = states.length; i < len; i++) {
       msg.chatStateNotificationState = states[i];

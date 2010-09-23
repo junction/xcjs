@@ -25,7 +25,7 @@ XC.Mixin.ChatStateNotification.Entity =
    * @param {String} [id] The ID to be associated with the message.
    */
   sendChatStateNotification: function (state, to, thread, id) {
-    var msg = XC.Message.extend({
+    var msg = XC.MessageStanza.extend({
       to: to,
       thread: thread,
       id: id,
@@ -99,7 +99,7 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity,
 });
 
 /**
- * Chat State Notifications Mixins XC.Message
+ * Chat State Notifications Mixins XC.MessageStanza
  * @class
  * 
  * @see <a href="http://xmpp.org/extensions/xep-0085.html">XEP-0085: Chat State Notifications</a>
@@ -109,8 +109,9 @@ XC.Mixin.ChatStateNotification.Message =
 
   /**
    * The chat notification state of the message.
-   * @type {String} Defaults to 'active';
-   *                can be any in XC.Registrar.ChatStateNotification.STATES
+   * Defaults to 'active';
+   * can be any in XC.Registrar.ChatStateNotification.STATES.
+   * @type String              
    */
   chatNotificationState: XC.Registrar.ChatStateNotification.STATES.ACTIVE,
 

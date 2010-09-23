@@ -18,8 +18,7 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
   },
 
   /**
-   * Returns the JID associated with the connection.
-   * @type {String}
+   * @returns {String} The JID associated with the connection.
    */
   jid: function () {
     return this.connection.jid;

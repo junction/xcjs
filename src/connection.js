@@ -33,7 +33,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    */
   templates: {
     Entity: XC.Entity,
-    Message: XC.Message
+    MessageStanza: XC.MessageStanza,
+    PresenceStanza: XC.PresenceStanza
   },
 
   /**

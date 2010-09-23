@@ -35,41 +35,13 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    *                            giving the priority of the presence.
    */
   send: function (show, status, priority) {
-    var p = XC.XML.XMPP.Presence.extend();
+    var p = XC.PresenceStanza.extend({
+      show: show,
+      status: status,
+      priority: priority
+    });
 
-    if (status) {
-      var statusEl = XC.XML.Element.extend({
-        name: 'status'
-      });
-      statusEl.text = status.toString();
-      p.addChild(statusEl);
-    }
-
-    if (show !== XC.Registrar.Presence.SHOW.AVAILABLE) {
-      var showEl = XC.XML.Element.extend({
-        name: 'show'
-      });
-
-      // Show must be one of the pre-defined constants
-      if (XC.Registrar.Presence.SHOW[show.toUpperCase()]) {
-        showEl.text = show;
-        p.addChild(showEl);
-      }
-    }
-
-    if (priority) {
-      var priorityEl = XC.XML.Element.extend({
-        name: 'priority'
-      }), iPriority = parseInt(priority, 10);
-
-      // The priority MUST be an integer between -128 and +127
-      if (iPriority > -128 && iPriority < 127) {
-        priorityEl.text = priority;
-        p.addChild(priorityEl);
-      }
-    }
-
-    this.connection.send(p.convertToString());
+    this.connection.send(p.toStanzaXML().convertToString());
   },
 
   /**
@@ -79,18 +51,12 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    *                          a reason why the user is unavailable.
    */
   sendUnavailable: function (status) {
-    var p = XC.XML.XMPP.Presence.extend();
-    p.attr('type', 'unavailable');
+    var p = XC.PresenceStanza.extend({
+      type: 'unavailable',
+      status: status
+    });
 
-    if (status) {
-      var statusEl = XC.XML.Element.extend({
-        name: 'status'
-      });
-      statusEl.text = status;
-      p.addChild(statusEl);
-    }
-
-    this.connection.send(p.convertToString());
+    this.connection.send(p.toStanzaXML().convertToString());
   },
 
   /**
@@ -108,17 +74,8 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    * subscription requests.
    * @name XC.Service.Presence#onSubscribe
    * @event
-   * @param {Object} request
+   * @param {XC.PresenceStanza} request
    *    A bundled function to respond easily to the request.
-   *   @param {Function} request.accept
-   *      The function to call when you want to accept the subscribe,
-   *      creating a subscription of type "from".
-   *   @param {Function} request.deny The function to call when you want
-   *     to deny the subscribe, creating a subscription of type "none".
-   *   @param {String} to The JID from whom this request was from.
-   *   @param {String} from The JID to whom this request is to.
-   *   @param {String} type The type on the packet.
-   *   @param {XC.PacketAdapter} packet The packet that caused this event.
    */
 
   /**
@@ -126,18 +83,8 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    * an event when you have been subscribed to an entity.
    * @name XC.Service.Presence#onSubscribed
    * @event
-   * @param {Object} request
+   * @param {XC.PresenceStanza} request
    *    A bundled function to respond easily to the request.
-   *   @param {Function} request.accept
-   *      The function to call when you want to accept the subscribed,
-   *      creating a subscription of type "both".
-   *   @param {Function} request.deny
-   *      The function to call when you want to deny the subscribed,
-   *      creating a subscription of type "none".
-   *   @param {String} to The JID from whom this request was from.
-   *   @param {String} from The JID to whom this request is to.
-   *   @param {String} type The type on the packet.
-   *   @param {XC.PacketAdapter} packet The packet that caused this event.
    */
 
   /**
@@ -145,18 +92,8 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    * unsubscribe notifications.
    * @name XC.Service.Presence#onUnsubscribe
    * @event
-   * @param {Object} request
+   * @param {XC.PresenceStanza} request
    *    A bundled function to respond easily to the request.
-   *   @param {Function} request.accept
-   *      The function to call when you want to accept the unsubscribe,
-   *      creating a subscription of type "none".
-   *   @param {Function} request.deny
-   *      The function to call when you want to deny the unsubscribe,
-   *      creting a subscription of type "to".
-   *   @param {String} to The JID from whom this request was from.
-   *   @param {String} from The JID to whom this request is to.
-   *   @param {String} type The type on the packet.
-   *   @param {XC.PacketAdapter} packet The packet that caused this event.
    */
 
   /**
@@ -164,18 +101,8 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
    * unsubscribed notifications.
    * @name XC.Service.Presence#onUnsubscribed
    * @event
-   * @param {Object} request
+   * @param {XC.PresenceStanza} request
    *    A bundled function to respond easily to the request.
-   *   @param {Function} request.accept
-   *      The function to call when you want to accept the unsubscribed,
-   *      creating a subscription of type "none".
-   *   @param {Function} request.deny
-   *      The function to call when you want to deny the unsubscribe,
-   *      creting a subscription of type "from".
-   *   @param {String} to The JID from whom this request was from.
-   *   @param {String} from The JID to whom this request is to.
-   *   @param {String} type The type on the packet.
-   *   @param {XC.PacketAdapter} packet The packet that caused this event.
    */
 
   /**
@@ -189,48 +116,13 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
         type = packet.getType(),
         entity = this.connection.Entity.extend({jid: jid, presence: {}}),
         connection = this.connection,
-        response = function (acceptType, denyType) {
-          return {
-            accept: function () {
-              var p = XC.XML.XMPP.Presence.extend();
-              p.attr('type', acceptType);
-              p.to(jid);
-              connection.send(p.convertToString());
-            },
-            deny: function () {
-              var p = XC.XML.XMPP.Presence.extend();
-              p.attr('type', denyType);
-              p.to(jid);
-              connection.send(p.convertToString());
-            },
-            to: packet.getTo(),
-            from: jid,
-            type: type,
-            stanza: packet
-          };
-        };
+        presence = connection.PresenceStanza.extend({packet: packet});
 
     if (!type) {
-      packet = packet.getNode();
-      var show = packet.getElementsByTagName('show')[0],
-          status = packet.getElementsByTagName('status')[0],
-          priority = packet.getElementsByTagName('priority')[0];
-
       entity.presence.available = true;
-      if (show) {
-        entity.presence.show = XC_DOMHelper.getTextContent(show);
-      }
-
-      if (status) {
-        entity.presence.status = XC_DOMHelper.getTextContent(status);
-      }
-
-      if (priority) {
-        entity.presence.priority = parseInt(
-          XC_DOMHelper.getTextContent(priority), 10
-        );
-      }
-
+      entity.presence.show = presence.show;
+      entity.presence.status = presence.status;
+      entity.presence.priority = presence.priority;
       this.fireHandler('onPresence', entity);
     }
 
@@ -240,23 +132,14 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
     case 'probe': // Server-side only
       break;
     case 'subscribe':
-      this.fireHandler('onSubscribe',
-                       response('subscribed', 'unsubscribed'));
-      break;
     case 'subscribed':
-      this.fireHandler('onSubscribed',
-                       response('subscribe', 'unsubscribe'));
-      break;
     case 'unsubscribe':
-      this.fireHandler('onUnsubscribe',
-                       response('unsubscribed', 'subscribed'));
-      break;
     case 'unsubscribed':
-      this.fireHandler('onUnsubscribed',
-                       response('unsubscribe', 'subscribe'));
+      this.fireHandler('on' + type[0].toUpperCase() + type.slice(1), presence);
       break;
     case 'unavailable':
       entity.presence.available = false;
+      entity.presence.status = presence.status;
       this.fireHandler('onPresence', entity);
       break;
     }

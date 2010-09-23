@@ -34,25 +34,25 @@ XC.Stanza = XC.Base.extend(/** @lends XC.Stanza# */{
 
   /**
    * The Entity the stanza was sent to.
-   * @type {XC.Entity}
+   * @type XC.Entity
    */
   to: null,
 
   /**
    * The Entity the stanza was sent from.
-   * @type {XC.Entity}
+   * @type XC.Entity
    */
   from: null,
 
   /**
    * The ID attached to the stanza.
-   * @type {String}
+   * @type String
    */
   id: null,
 
   /**
    * The type attribute associated with the stanza.
-   * @type {String}
+   * @type String
    */
   type: null,
 

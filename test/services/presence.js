@@ -99,10 +99,13 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       Assert.isObject(request);
       Assert.isFunction(request.accept);
       Assert.isFunction(request.deny);
-      Assert.areEqual(request.to, that.conn.jid());
-      Assert.areEqual(request.from, 'romeo@example.com');
+
+      Assert.isObject(request.to);
+      Assert.isObject(request.from);
+      Assert.areEqual(request.to.jid, that.conn.jid());
+      Assert.areEqual(request.from.jid, 'romeo@example.com');
       Assert.areEqual(request.type, 'subscribe');
-      Assert.areEqual(request.stanza, packet);
+      Assert.areEqual(request.packet, packet);
 
       // Test 'accept'
       request.accept();
@@ -156,10 +159,13 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       Assert.isObject(request);
       Assert.isFunction(request.accept);
       Assert.isFunction(request.deny);
-      Assert.areEqual(request.to, that.conn.jid());
-      Assert.areEqual(request.from, 'romeo@example.com');
+
+      Assert.isObject(request.to);
+      Assert.isObject(request.from);
+      Assert.areEqual(request.to.jid, that.conn.jid());
+      Assert.areEqual(request.from.jid, 'romeo@example.com');
       Assert.areEqual(request.type, 'subscribed');
-      Assert.areEqual(request.stanza, packet);
+      Assert.areEqual(request.packet, packet);
 
       // Test 'accept'
       request.accept();
@@ -213,10 +219,13 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       Assert.isObject(request);
       Assert.isFunction(request.accept);
       Assert.isFunction(request.deny);
-      Assert.areEqual(request.to, that.conn.jid());
-      Assert.areEqual(request.from, 'romeo@example.com');
+
+      Assert.isObject(request.to);
+      Assert.isObject(request.from);
+      Assert.areEqual(request.to.jid, that.conn.jid());
+      Assert.areEqual(request.from.jid, 'romeo@example.com');
       Assert.areEqual(request.type, 'unsubscribe');
-      Assert.areEqual(request.stanza, packet);
+      Assert.areEqual(request.packet, packet);
 
       // Test 'accept'
       request.accept();
@@ -270,10 +279,13 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       Assert.isObject(request);
       Assert.isFunction(request.accept);
       Assert.isFunction(request.deny);
-      Assert.areEqual(request.to, that.conn.jid());
-      Assert.areEqual(request.from, 'romeo@example.com');
+
+      Assert.isObject(request.to);
+      Assert.isObject(request.from);
+      Assert.areEqual(request.to.jid, that.conn.jid());
+      Assert.areEqual(request.from.jid, 'romeo@example.com');
       Assert.areEqual(request.type, 'unsubscribed');
-      Assert.areEqual(request.stanza, packet);
+      Assert.areEqual(request.packet, packet);
 
       // Test 'accept'
       request.accept();

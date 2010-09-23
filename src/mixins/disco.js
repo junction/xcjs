@@ -11,7 +11,7 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
    * all of the information queried.
    * 
    * @private
-   * @type {Object}
+   * @type Object
    */
   _rootNode: null,
 

@@ -15,7 +15,7 @@
 XC.Entity = XC.Base.extend(/** @lends XC.Entity# */{
   /**
    * The Jabber ID of the entity.
-   * @type {String}
+   * @type String
    */
   jid: null
 
