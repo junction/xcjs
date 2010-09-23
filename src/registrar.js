@@ -49,6 +49,8 @@ XC.Registrar.Presence = {
    * @namespace
    */
   SHOW: {
+    /** The entity is available to chat. */
+    AVAILABLE: 'available',
     /** The entity or resource is temporarily away. */
     AWAY: 'away',
     /** The entity or resource is actively interested in chatting. */
