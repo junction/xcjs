@@ -1,8 +1,8 @@
 SRC =	license.js core.js base.js util.js error.js	\
 	xc_dom_helper.js xml.js registrar.js packet_adapter.js	\
+	mixins/discoverable.js mixins/handler_registration.js mixins/rosterx.js	\
 	mixins/jid.js mixins/roster.js mixins/chat.js	\
-	mixins/presence.js mixins/disco.js mixins/discoverable.js	\
-	mixins/handler_registration.js mixins/chat_state_notification.js	\
+	mixins/presence.js mixins/disco.js mixins/chat_state_notification.js	\
 	services/roster.js services/chat.js services/presence.js services/disco.js	\
 	entity.js stanza.js message_stanza.js presence_stanza.js \
 	connection_adapter.js connection.js strophe_adapter.js

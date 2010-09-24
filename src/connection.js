@@ -12,6 +12,8 @@
  * @property {XC.Service.Disco} Disco
  *
  * @property {XC.Entity} Entity An Entity template to build Entities from.
+ * @property {XC.MessageStanza} MessageStanza A MessageStanza template to build MessageStanzas from.
+ * @property {XC.PresenceStanza} PresenceStanza A PresenceStanza template to build PresenceStanzas from.
  */
 XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
@@ -235,7 +237,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
               criteria = callbackSet.criteria,
               cb = callbackSet.callback,
               domEl = stanza.getNode(),
-              firstChild = XC_DOMHelper.getFirstElementChild(domEl);
+              namespaces = XC_DOMHelper.getElementsByNS(domEl, criteria.xmlns);
 
           if (!cb || !criteria) {
             continue;
@@ -247,7 +249,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
           if (criteria.xmlns &&
               !(domEl.getAttribute('xmlns') === criteria.xmlns ||
-              (firstChild && firstChild.getAttribute('xmlns') === criteria.xmlns))) {
+                namespaces.length)) {
             continue;
           }
 

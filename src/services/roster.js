@@ -4,10 +4,12 @@
  * @class
  * @extends XC.Base
  * @extends XC.Mixin.HandlerRegistration
+ * @extends XC.Mixin.RosterX.Service
  *
  * @see <a href="http://www.ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 7 & 8</a>
  */
-XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
+XC.Service.Roster = XC.Base.extend(XC.Mixin.RosterX.Service,
+                                   XC.Mixin.HandlerRegistration,
   /** @lends XC.Service.Roster# */{
 
   /**
@@ -17,7 +19,9 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
    * @private
    */
   init: function ($super) {
-    $super.apply(this, Array.from(arguments).slice(1));
+    if (XC.isFunction($super)) {
+      $super.apply(this, Array.from(arguments).slice(1));
+    }
 
     if (this.connection) {
       this.connection.registerStanzaHandler({
@@ -73,12 +77,11 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
   },
 
   /**
-   * Call {@link this.registerHandler} with "onRosterItem" to register
+   * Call {@link this.registerHandler} with "onRosterItems" to register
    * for incoming roster items.
-   * @name XC.Service.Roster#onRosterItem
+   * @name XC.Service.Roster#onRosterItems
    * @event
-   * @param {XC.Entity} entity An entity representing
-   *                           a roster item that has its roster slot set.
+   * @param {XC.Entity[]} entities A list of entities pushed by the server.
    */
 
   /**
@@ -101,11 +104,12 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.HandlerRegistration,
     // Process the items passed from the roster.
     }
     var items = packet.getElementsByTagName('item'),
-        itemsLength = items.length;
+        itemsLength = items.length, entities = [];
 
     for (var i = 0; i < itemsLength; i++) {
-      this.fireHandler('onRosterItem', this._entityFromItem(items[i]));
+      entities.push(this._entityFromItem(items[i]));
     }
+    this.fireHandler('onRosterItems', entities);
   },
 
   /**

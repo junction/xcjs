@@ -59,12 +59,16 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
         xpath: '/iq/@type',
         value: 'result'
       },
-      info: {
+      rosterx: {
         xpath: '/iq/discoInfo:query/discoInfo:feature[1]/@var',
+        value: 'http://jabber.org/protocol/rosterx'
+      },
+      info: {
+        xpath: '/iq/discoInfo:query/discoInfo:feature[2]/@var',
         value: 'http://jabber.org/protocol/disco#info'
       },
       items: {
-        xpath: '/iq/discoInfo:query/discoInfo:feature[2]/@var',
+        xpath: '/iq/discoInfo:query/discoInfo:feature[3]/@var',
         value: 'http://jabber.org/protocol/disco#items'
       }
     });

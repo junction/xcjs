@@ -17,7 +17,8 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
 
   testMixin: function () {
     var Assert = YAHOO.util.Assert;
-    Assert.mixesIn(this.Roster, XC.Mixin.HandlerRegistration);
+    Assert.mixesIn(this.Roster, XC.Mixin.HandlerRegistration,
+                                XC.Mixin.RosterX.Service);
   },
 
   testRequest: function () {
@@ -71,16 +72,18 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
     var Assert = YAHOO.util.Assert,
         fired,
         packet = XC.Test.Packet.extendWithXML(
-          '<iq type="set" id="set1">'
-          + '<query xmlns="jabber:iq:roster">'
-            + '<item jid="ford@betelguice.net" name="Ford Prefect">'
-              + '<group>Hitchhiker</group>'
-            + '</item>'
-            + '</query>'
-            + '</iq>');
+          '<iq type="set" id="set1">' +
+            '<query xmlns="jabber:iq:roster">' +
+              '<item jid="ford@betelguice.net" name="Ford Prefect">' +
+                '<group>Hitchhiker</group>' +
+              '</item>' +
+            '</query>' +
+          '</iq>');
 
-    this.xc.Roster.registerHandler('onRosterItem', function (entity) {
+    this.xc.Roster.registerHandler('onRosterItems', function (entities) {
       fired = true;
+      Assert.isArray(entities);
+      var entity = entities[0];
       Assert.isObject(entity.connection);
       Assert.isString(entity.jid,
                       "The JID should be a String.");
@@ -138,12 +141,13 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
 
     var count = 0;
 
-    this.xc.Roster.registerHandler('onRosterItem', function (entity) {
+    this.xc.Roster.registerHandler('onRosterItems', function (entities) {
       count++;
+      Assert.areEqual(2, entities.length, 'onRosterItems should return 2 roster items');
     });
 
     this.conn.fireEvent('iq', packet);
-    Assert.areEqual(2, count, 'onRosterItem should be called twice');
+    Assert.areEqual(1, count, 'onRosterItems should be called once');
   }
 
 });

@@ -96,3 +96,22 @@ XC.Registrar.ChatStateNotification = {
     GONE:      'gone'
   }
 };
+
+/**
+ * @namespace
+ */
+XC.Registrar.RosterX = {
+
+  /**
+   * The Roster Item Exchange namespace
+   * @type String
+   * @constant
+   */
+  XMLNS: 'http://jabber.org/protocol/rosterx',
+
+  ACTION: {
+    ADD:    'add',
+    MODIFY: 'modify',
+    DELETE: 'delete'
+  }
+};

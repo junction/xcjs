@@ -346,6 +346,12 @@ var Glue = {
     $('#logged-in-as').html(this.bareJID);
   },
 
+  onRosterItems: function (entities) {
+    for (var i = 0, len = entities.length; i < len; i++) {
+      this.onRosterItem(entities[i]);
+    }
+  },
+
   onRosterItem: function (entity) {
     var name = entity.roster.name || entity.getBareJID(),
         contact;
@@ -495,7 +501,7 @@ var Glue = {
                          })
     });
     this.xc.Presence.registerHandler('onPresence', this.onPresence.bind(this));
-    this.xc.Roster.registerHandler('onRosterItem', this.onRosterItem.bind(this));
+    this.xc.Roster.registerHandler('onRosterItems', this.onRosterItems.bind(this));
     this.xc.Chat.registerHandler('onMessage', this.appendMessage.bind(this));
 
     var that = this;
