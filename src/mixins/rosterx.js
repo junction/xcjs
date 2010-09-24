@@ -1,5 +1,5 @@
 /**
-n * @namespace
+ * @namespace
  */
 XC.Mixin.RosterX = {};
 
@@ -36,11 +36,11 @@ XC.Mixin.RosterX.Service = XC.Base.extend(XC.Mixin.Discoverable,
   }.around(),
 
   /**
-   * @name onRosterExchangeItems
+   * @name XC.Mixin.RosterX.Service#onRosterExchangeItems
    * @event
    * @param {XC.RosterX.Entity[]} entities A list of entities sent by a roster exchange.
    * @param {String} [reason] The accompanying body if
-   *   the roster item exchange's parent element was a &gt;message&lt;
+   *   the roster item exchange's parent element was a &lt;message/&gt;
    */
 
   /**
@@ -132,11 +132,9 @@ XC.Mixin.RosterX.Entity = /** @lends XC.Mixin.RosterX.Entity# */{
         name: this.rosterx.name,
         groups: this.rosterx.groups
       };
-      console.log(">> ", this);
       this.setRosterItem();
       break;
     case 'delete':
-      console.log(this);
       this.removeRosterItem();
       break;
     }
@@ -149,12 +147,13 @@ XC.Mixin.RosterX.Entity = /** @lends XC.Mixin.RosterX.Entity# */{
  */
 
 /**
- * @class
  * @name XC.RosterX.Entity
+ * @class
+ *
+ * This type of {@link XC.Entity} is only created when coming from
+ * the {@link XC.Mixin.RosterX.Service#onRosterExchangeItems} callback.
+ *
  * @extends XC.Entity
  * @extends XC.Mixin.RosterX.Entity
- *
- * This type of @see {XC.Entity} is only created when coming from
- * the @see {XC.Service.Roster#onRosterExchangeItems} callback.
  * @see <a href="http://xmpp.org/extensions/xep-0144.html">Roster Item Exchange</a>
  */

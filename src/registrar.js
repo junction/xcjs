@@ -115,3 +115,15 @@ XC.Registrar.RosterX = {
     DELETE: 'delete'
   }
 };
+
+/**
+ * @namespace
+ */
+XC.Registrar.VCard = {
+  /**
+   * The vCard namespace
+   * @type String
+   * @constant
+   */
+  XMLNS: 'vcard-temp'
+};

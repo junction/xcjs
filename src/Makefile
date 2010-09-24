@@ -4,6 +4,7 @@ SRC =	license.js core.js base.js util.js error.js	\
 	mixins/jid.js mixins/roster.js mixins/chat.js	\
 	mixins/presence.js mixins/disco.js mixins/chat_state_notification.js	\
 	services/roster.js services/chat.js services/presence.js services/disco.js	\
+	mixins/v_card.js services/v_card.js	\
 	entity.js stanza.js message_stanza.js presence_stanza.js \
 	connection_adapter.js connection.js strophe_adapter.js
 

@@ -11,6 +11,7 @@
  * @extends XC.Mixin.Disco
  * @extends XC.Mixin.JID
  * @extends XC.Mixin.ChatStateNotification.Entity
+ * @extends XC.Mixin.VCard.Entity
  */
 XC.Entity = XC.Base.extend(/** @lends XC.Entity# */{
   /**
@@ -24,4 +25,5 @@ XC.Entity = XC.Base.extend(/** @lends XC.Entity# */{
    XC.Mixin.Roster,
    XC.Mixin.Chat,
    XC.Mixin.ChatStateNotification.Entity,
-   XC.Mixin.Disco);
+   XC.Mixin.Disco,
+   XC.Mixin.VCard.Entity);

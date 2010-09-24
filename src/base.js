@@ -17,6 +17,7 @@ XC.Base = {
    */
   mixin: function () {
     var len = arguments.length,
+      /** @ignore */
       empty = function () {},
       obj, val, fn, cur;
 

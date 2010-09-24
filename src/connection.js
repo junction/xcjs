@@ -10,6 +10,7 @@
  * @property {XC.Service.Roster} Roster
  * @property {XC.Service.Chat} Chat
  * @property {XC.Service.Disco} Disco
+ * @property {XC.Service.VCard} VCard
  *
  * @property {XC.Entity} Entity An Entity template to build Entities from.
  * @property {XC.MessageStanza} MessageStanza A MessageStanza template to build MessageStanzas from.
@@ -26,7 +27,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
     Presence: XC.Service.Presence,
     Roster:   XC.Service.Roster,
     Chat:     XC.Service.Chat,
-    Disco:    XC.Service.Disco
+    Disco:    XC.Service.Disco,
+    VCard:    XC.Service.VCard
   },
 
   /**
@@ -65,6 +67,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
       // Register for all incoming stanza types.
       var that = this,
           events = ['iq', 'message', 'presence'],
+          /** @ignore */
           dispatch = function (stanza) {
             if (that.DEBUG_PACKETS) {
               that._validatePacket(stanza);

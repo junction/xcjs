@@ -5,7 +5,7 @@
  * IE doesn't implement the Node prototype, rather than bending over backwards
  * to make it look like it does I've accepted this instead...
  * @see <a href="http://msdn.microsoft.com/en-us/library/dd282900%28VS.85%29.aspx#domproto">MSDN DOM prototypes</a>
- * @namespace XC_DOMHelper
+ * @namespace
  */
 var XC_DOMHelper = {
   /**
