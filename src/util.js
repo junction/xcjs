@@ -109,21 +109,19 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    *     sayHi: function () {
    *       return "Hello, " + this.name;
    *     }
-   *   }
+   *   };
    *   var mal = Person.extend({
    *     name: 'Mal'
    *   });
-   *   var inara = Person.extend({
-   *     name: 'Inara'
+   *   var mrFancyPants = {
+   *     name: 'Mr. FancyPants'
    *   });
    *   mal.sayHi();
    *   // -> 'Hello, Mal'
-   *   inara.sayHi();
-   *   // -> 'Hello, Inara'
    *
-   *   var sayWho = mal.sayHi.bind(inara)
+   *   var sayWho = mal.sayHi.bind(mrFancyPants)
    *   sayWho();
-   *   // -> 'Hello, Inara'
+   *   // -> 'Hello, Mr. FancyPants'
    */
   bind: function (target) {
     var _method = this;

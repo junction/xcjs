@@ -10,6 +10,7 @@ XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
                       <bar xmlns='fi'>\
                         <value>2</value>\
                       </bar>\
+                      <bill xmlns='fi'/>\
                     </foo>";
     this.demoDoc = XC.Test.DOMParser.parse(demoXML).doc;
   },
@@ -35,15 +36,16 @@ XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
 
     var foo = XC_DOMHelper.getFirstElementChild(this.demoDoc),
         bar = XC_DOMHelper.getFirstElementChild(foo),
-        fiBar = XC_DOMHelper.getElementsByNS(foo, 'fi'),
+        barBill = XC_DOMHelper.getElementsByNS(foo, 'fi'),
         value = XC_DOMHelper.getElementsByNS(bar, 'fi'),
         empty = XC_DOMHelper.getElementsByNS(bar, 'foe');
 
-    Assert.areEqual(1, fiBar.length, "Unexpected number of elements.");
+    Assert.areEqual(2, barBill.length, "Unexpected number of elements.");
     Assert.areEqual(1, value.length, "Unexpected number of elements.");
     Assert.areEqual(0, empty.length, "Unexpected number of elements.");
 
-    Assert.areEqual('bar', fiBar[0].localName || fiBar[0].nodeName);
+    Assert.areEqual('bar', barBill[0].localName || barBill[0].nodeName);
+    Assert.areEqual('bill', barBill[1].localName || barBill[1].nodeName);
     Assert.areEqual('1', XC_DOMHelper.getTextContent(value[0]), "value should be '1'");
   },
 

@@ -31,7 +31,22 @@ XC.Test.Core = new YAHOO.tool.TestCase({
     var Assert = YAHOO.util.Assert;
     Assert.isFunction(XC.isFunction, 'XC.isFunction does not exist');
     Assert.isTrue(XC.isFunction(function () {}), 'function is not a function');
+    Assert.isTrue(XC.isFunction(XC.isFunction), 'function should be a function');
+    Assert.isFalse(XC.isFunction(XC.Base.extend(Function.prototype)), 'object extending from Function.prototype should not be a function- should be an object.');
     Assert.isFalse(XC.isFunction({}), 'object should not be a function');
+    Assert.isFalse(XC.isFunction(null), 'null should not be a function');
+    Assert.isFalse(XC.isFunction(undefined), 'undefined should not be a function');
+  },
+
+  testIsString: function () {
+    var Assert = YAHOO.util.Assert;
+    Assert.isFunction(XC.isString, 'XC.isString does not exist.');
+    Assert.isTrue(XC.isString(new String()), 'String constructor isn\'t a string.');
+    Assert.isFalse(XC.isString(XC.Base.extend(String.prototype)), 'object extending from String.prototype should not be a string- should be an object');
+    Assert.isTrue(XC.isString(''), 'Empty string is not a string');
+    Assert.isTrue(XC.isString('something'), '"something" is not a string');
+    Assert.isFalse(XC.isString(null), 'null should not be a string');
+    Assert.isFalse(XC.isString(undefined), 'undefined should not be a string');
   }
 
 });
