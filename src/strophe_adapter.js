@@ -11,10 +11,14 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
   /** @private */
   _handlers: {},
 
+  _callbackQueue: [],
+  MAX_QUEUE_SIZE: 100,
+
   /** @private */
   init: function () {
     this._callbacks = {};
     this._handlers = {};
+    this._callbackQueue = [];
   },
 
   /**
@@ -61,9 +65,21 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
    * @param {String} event The event to unsubscribe from.
    */
   unregisterHandler: function (event) {
+    var queue = this._callbackQueue, i, len = queue.length, rest;
+
     if (this._handlers[event]) {
       this.connection.deleteHandler(this._handlers[event]);
       delete this._handlers[event];
+
+      // Remove from the callback queue
+      for (i = 0; i < len; i++) {
+        if (queue[i] === event) {
+          rest = queue.slice(i + 1, queue.length);
+          queue.length = i;
+          queue.push(rest);
+          break;
+        }
+      }
     }
   },
 
@@ -105,15 +121,17 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
     if (!this.connection.connected || this.connection.disconnecting) {
       XC.log('Prevented "' + xml + '" from being sent because ' +
              'the BOSH connection is being disposed / is disposed.');
-      return;
+      return false;
     }
 
     if (callback) {
       var wrapper = function (stanza) {
         var packetAdapter = that.toPacket(stanza),
-            newArgs = [packetAdapter];
+            newArgs = [packetAdapter],
+            queue = that._callbackQueue, rest,
+            event = node.getAttribute('id'), i, len;
         args = args || [];
-        for (var i = 0, len = args.length; i < len; i++) {
+        for (i = 0, len = args.length; i < len; i++) {
           newArgs.push(args[i]);
         }
 
@@ -124,7 +142,17 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
                    '; Error: ' + e + '; response stanza: ' + stanza);
         }
 
-        delete that._callbacks[node.getAttribute('id')];
+        // Remove from the callback queue
+        for (i = 0, len = queue.length; i < len; i++) {
+          if (queue[i].toString() === event) {
+            rest = queue.slice(i + 1, queue.length);
+            queue.length = i;
+            queue.push.apply(queue, rest);
+            break;
+          }
+        }
+
+        delete that._callbacks[event];
 
         return false;
       };
@@ -137,7 +165,12 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
 
       this._callbacks[id] = this.connection.addHandler(wrapper, null, null,
                                                        null, id, null);
-
+      this._callbackQueue.unshift(id);
+      if (this._callbackQueue.length > this.MAX_QUEUE_SIZE) {
+        XC.warn("You have too many callbacks waiting for a response, so I'm getting rid of the oldest one.\n" +
+                "If this isn't desired, override the MAX_QUEUE_SIZE of XC.StropheAdapter.");
+        delete this._callbacks[this._callbackQueue.pop()];
+      }
     }
     node.setAttribute('xmlns', 'jabber:client');
     return this.connection.send(node);
