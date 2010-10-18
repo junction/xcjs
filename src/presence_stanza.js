@@ -5,19 +5,19 @@
 XC.PresenceStanza = XC.Stanza.extend(/** @lends XC.PresenceStanza# */{
 
   /**
-   * The <show> XML fragment of the packet.
+   * The &lt;show&gt; XML fragment of the packet.
    * @type XC.Registrar.Presence.SHOW
    */
   show: null,
 
   /**
-   * The <status> XML fragment of the packet.
+   * The &lt;status&gt; XML fragment of the packet.
    * @type String
    */
   status: null,
 
   /**
-   * The <priority> XML fragment of the packet,
+   * The &lt;priority&gt; XML fragment of the packet,
    * between -128 and +127.
    * @type Number
    */

@@ -1,11 +1,11 @@
 XC: XMMP Client Library
 =======================
 
-The XC Library is an [RFC 3920](http://xmpp.org/rfcs/rfc3920.html) and [RFC 3921](http://xmpp.org/rfcs/rfc3921.html) compliant XMPP Client library for JavaScript. In addition to the XMPP Core and XMPP IM specs, we also implement [Service Discovery](http://xmpp.org/extensions/xep-0030.html) and [Chat State Notifications](http://xmpp.org/extensions/xep-0085.html).
+The XC Library is an [RFC 3920](http://xmpp.org/rfcs/rfc3920.html) and [RFC 3921](http://xmpp.org/rfcs/rfc3921.html) compliant XMPP Client library for JavaScript. In addition to the XMPP Core and XMPP IM specs, we also implement [Service Discovery](http://xmpp.org/extensions/xep-0030.html), [Chat State Notifications](http://xmpp.org/extensions/xep-0085.html), [vCards](http://xmpp.org/extensions/xep-0054.html), and [Roster Item Exchange](http://xmpp.org/extensions/xep-0144.html).
 
 Getting Started
 ---------------
-The only requirement is having [V8](http://code.google.com/p/v8/) or [SpiderMonkey](http://www.mozilla.org/js/spidermonkey/) installed for JSLint cheking in the build process. They are not required to make the project, although are recommended if you are contributing to the project.
+The only requirement is having [V8](http://code.google.com/p/v8/) or [SpiderMonkey](http://www.mozilla.org/js/spidermonkey/) installed for JSLint cheking in the build process. They are not required to make the project, although they're recommended if you are contributing to the project.
 
     make src
     make doc
@@ -52,6 +52,13 @@ Tests
 -----
 This library has been extensively tested. If you find any bugs, and would like to contribute, write a test making the condition fail, then fixing the code. We're happy to have any contributors to the project.
 
+XC has been tested (and has all tests passing) on the following platforms:
+
+* FireFox 3.6, 4.0b
+* Chrome 6
+* Safari 5
+* IE 8
+* Opera 10
 
 Examples
 --------

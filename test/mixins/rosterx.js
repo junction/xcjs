@@ -38,7 +38,7 @@ XC.Test.RosterX = new YAHOO.tool.TestCase({
 
     var ran = false;
     this.xc.Roster.registerHandler('onRosterExchangeItems',
-      function (entities, body) {
+      function (entities, from, body) {
         ran = true;
         Assert.areSame("", body);
         Assert.isArray(entities);
@@ -54,6 +54,8 @@ XC.Test.RosterX = new YAHOO.tool.TestCase({
         Assert.areSame('guildenstern@denmark.lit', entities[1].jid);
         Assert.areSame('Guildenstern', entities[1].rosterx.name);
         Assert.areSame('Visitors', entities[1].rosterx.groups[0]);
+
+        Assert.areSame('horatio@denmark.lit', from);
       }
     );
     this.conn.fireEvent('iq', packet);
@@ -82,7 +84,7 @@ XC.Test.RosterX = new YAHOO.tool.TestCase({
 
     var ran = false;
     this.xc.Roster.registerHandler('onRosterExchangeItems',
-      function (entities, body) {
+      function (entities, from, body) {
         ran = true;
         Assert.areSame("Some visitors, m'lord!", body);
       }
@@ -118,7 +120,7 @@ XC.Test.RosterX = new YAHOO.tool.TestCase({
 
     var ran = false, that = this;
     this.xc.Roster.registerHandler('onRosterExchangeItems',
-      function (entities, body) {
+      function (entities, from, body) {
         ran = true;
         var entity, expected = [
           {

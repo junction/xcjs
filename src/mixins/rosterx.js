@@ -39,6 +39,7 @@ XC.Mixin.RosterX.Service = XC.Base.extend(XC.Mixin.Discoverable,
    * @name XC.Mixin.RosterX.Service#onRosterExchangeItems
    * @event
    * @param {XC.RosterX.Entity[]} entities A list of entities sent by a roster exchange.
+   * @param {String} from The JID that the roster item exchange request was sent from.
    * @param {String} [reason] The accompanying body if
    *   the roster item exchange's parent element was a &lt;message/&gt;
    */
@@ -56,12 +57,13 @@ XC.Mixin.RosterX.Service = XC.Base.extend(XC.Mixin.Discoverable,
                  node.getElementsByTagName('body')[0]
                ) || '',
         items = node.getElementsByTagName('item'),
+        from = node.getAttribute('from'),
         i = 0, len = items.length;
 
     for (i; i < len; i++) {
       entities.push(this._rosterxEntityFromItem(items[i]));
     }
-    this.fireHandler('onRosterExchangeItems', entities, body);
+    this.fireHandler('onRosterExchangeItems', entities, from, body);
   },
 
   /**
