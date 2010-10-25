@@ -48,6 +48,9 @@ XC.PresenceStanza = XC.Stanza.extend(/** @lends XC.PresenceStanza# */{
     }
   }.around(),
 
+  /**
+   * Accept a subscription request.
+   */
   accept: function () {
     var p = XC.PresenceStanza.extend();
 
@@ -72,6 +75,9 @@ XC.PresenceStanza = XC.Stanza.extend(/** @lends XC.PresenceStanza# */{
     p.to.connection.send(p.toStanzaXML().convertToString());
   },
 
+  /**
+   * Deny a subscription request.
+   */
   deny: function () {
     var p = XC.PresenceStanza.extend();
 

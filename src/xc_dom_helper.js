@@ -72,5 +72,35 @@ var XC_DOMHelper = {
    */
   getTextContent: function (el) {
     return el && (el.text || el.textContent);
+  },
+
+  /**
+   * Set the text of an element
+   *
+   * @param {Element|Node} el The document fragment to get the text of.
+   * @param {String} text The inner text of the fragment.
+   */
+  setTextContent: function (el, text) {
+    if (el) {
+      if (el.text) {
+        el.text = text;
+      } else {
+        el.textContent = text;
+      }
+    }
+  },
+
+  /**
+   * Serialize the Document / Element into a string.
+   *
+   * @param {Element|Node} node The document to serialize into a string.
+   * @returns {String} The document fragment as a string.
+   */
+  serializeToString: function (node) {
+    if ("XMLSerializer" in window) {
+      return (new XMLSerializer()).serializeToString(node);
+    } else {
+      return node.xml;
+    }
   }
 };

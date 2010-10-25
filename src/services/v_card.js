@@ -60,10 +60,14 @@ XC.Service.VCard = XC.Base.extend(XC.Mixin.Discoverable,
    *   @param {Function} callbacks.onSuccess Called on a successful vCard get.
    */
   set: function (vCard, callbacks) {
-    var iq = XC.XML.XMPP.IQ.extend();
-
+    var iq = XC.XML.XMPP.IQ.extend(),
+        self = this,
+        rawVCard = XC.Base.extend({ convertToString: function () {
+                                      return XC_DOMHelper.serializeToString(vCard);
+                                    }
+                                  });
     iq.type('set');
-    iq.addChild(vCard);
+    iq.addChild(rawVCard);
 
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error' &&

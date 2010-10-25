@@ -8,8 +8,7 @@
 XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
 
   /**
-   * Returns the bare JID of the entity.
-   *
+   * @returns {String} The bare JID of the entity.
    * @example
    *   var mal = this.xc.Entity.extend({
    *     jid: 'mal@serenity.com/persephone'
@@ -25,8 +24,7 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
   },
 
   /**
-   * Returns the JID node (commonly used as a username).
-   *
+   * @returns {String} The JID node (commonly used as a username).
    * @example
    *   var mal = this.xc.Entity.extend({
    *     jid: 'mal@serenity.com/persephone'
@@ -39,8 +37,7 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
   },
 
   /**
-   * Returns the JID's domain.
-   *
+   * @returns {String} The JID's domain.
    * @example
    *   var mal = this.xc.Entity.extend({
    *     jid: 'mal@serenity.com/persephone'
@@ -53,8 +50,7 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
   },
 
   /**
-   * Returns the resource of the JID.
-   *
+   * @returns {String} The resource of the JID.
    * @example
    *   var mal = this.xc.Entity.extend({
    *     jid: 'mal@serenity.com/persephone'
@@ -67,8 +63,7 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
   },
 
   /**
-   * Returns the parts of the JID.
-   *
+   * @returns {String} The parts of the JID.
    * @example
    *   var mal = this.xc.Entity.extend({
    *     jid: 'mal@serenity.com/persephone'

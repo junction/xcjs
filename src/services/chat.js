@@ -34,7 +34,7 @@ XC.Service.Chat = XC.Base.extend(XC.Mixin.Discoverable,
    * messages of type 'chat'.
    * @name XC.Service.Chat#onMessage
    * @event
-   * @param {XC.Message} message A message sent to this resource.
+   * @param {XC.MessageStanza} message A message sent to this resource.
    */
 
   /**

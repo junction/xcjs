@@ -72,6 +72,7 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    * original function with the given arguments appended
    * with the arguments supplied at runtime.
    *
+   * @returns {Function} This function with pre-filled arguments.
    * @example
    *   function aggregate () {
    *     var sum = 0, idx = arguments.length;
@@ -139,6 +140,7 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
    * Convert an iterable object into an Array.
    *
    * @param {Object} object An object that is iterable
+   * @returns {Array} The object converted into an Array.
    * @example
    *   function commaSeparate () {
    *     return Array.from(arguments).join(', ');

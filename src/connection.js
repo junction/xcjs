@@ -42,6 +42,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
+   * Initializes the Connection with services and templates
+   * hooked up with a connection and then stuck as top level objects.
    * @private
    */
   init: function ($super) {
@@ -114,13 +116,13 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
   /**
    * Register a handler for a stanza based on the following criteria:
-   *
-   * element - stanza element; 'iq', 'message', or 'presence'
-   * xmlns   - namespace of the stanza element OR first child
-   * from    - from JID
-   * type    - stanza type
-   * id      - stanza id
-   *
+   * <ul>
+   *   <li>element - The stanza element; 'iq', 'message', or 'presence'.</li>
+   *   <li>xmlns   - The namespace of the stanza element OR first child.</li>
+   *   <li>from    - The from JID.</li>
+   *   <li>type    - The stanza type.</li>
+   *   <li>id      - The stanza id.</li>
+   * </ul>
    * This function is only to be called internally by the XC.Services.
    * Client libraries should register their callbacks with each service,
    * or directly with their bosh connection for services not provided
@@ -144,6 +146,9 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
+   * Unregister the stanza handler, given the return id.
+   *
+   * @param {Mixed} id The id returned from registerStanzaHandler.
    * @private
    */
   unregisterStanzaHandler: function (id) {
@@ -152,11 +157,17 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
   /**
    * @private
+   * Set to true to debug packets, ensuring that they implement
+   * the interface as described in {@link XC.PacketAdapter}.
    */
   DEBUG_PACKETS: false,
 
   /**
    * @private
+   * Validates incoming packets to ensure that they implement
+   * the packet interface as described in {@link XC.PacketAdapter}.
+   *
+   * @param {XC.PacketAdapter} packet Something that's supposed to implement the {@link XC.PacketAdapter} interface.
    */
   _validatePacket: function (p) {
     var pktInterface = /** @ignore */{
@@ -173,6 +184,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
         return p.getTo && XC.isString(p.getTo());
       }
     };
+
     for (var test in pktInterface) {
       if (pktInterface.hasOwnProperty(test)) {
         if (!pktInterface[test]()) {
@@ -183,10 +195,9 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
+   * @private
    * Find a set of registered callbacks whose set of criteria match the stanza
    * and call the callbacks with the stanza.
-   *
-   * @private
    */
   _dispatchStanza: function (stanza) {
     var callbacks = this._stanzaHandlers.findCallbacks(stanza);
@@ -196,11 +207,11 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
+   * @namespace
+   * @private
    * Stanza Handlers are registered by the Services to register a callback
    * for a specific stanza based on various criteria
    *
-   * @namespace
-   * @private
    * @see XC.Connection#registerStanzaHandler
    * @see XC.Connection#unregisterStanzaHandler
    */
