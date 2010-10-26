@@ -135,7 +135,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
     case 'subscribed':
     case 'unsubscribe':
     case 'unsubscribed':
-      this.fireHandler('on' + type[0].toUpperCase() + type.slice(1), presence);
+      this.fireHandler('on' + type.charAt(0).toUpperCase() + type.slice(1), presence);
       break;
     case 'unavailable':
       entity.presence.available = false;

@@ -82,10 +82,10 @@ var XC_DOMHelper = {
    */
   setTextContent: function (el, text) {
     if (el) {
-      if (el.text) {
-        el.text = text;
-      } else {
+      if ("textContent" in el) {
         el.textContent = text;
+      } else {
+        el.text = text;
       }
     }
   },
@@ -101,6 +101,22 @@ var XC_DOMHelper = {
       return (new XMLSerializer()).serializeToString(node);
     } else {
       return node.xml;
+    }
+  },
+
+  /**
+   * Internet Explorer doesn't implement createElementNS.
+   *
+   * @param {String} ns The namespace of the elment to create.
+   * @param {String} tagName The name of the tag to create.
+   * @returns {Element} The namespaced element.
+   */
+  createElementNS: function (ns, tagName) {
+    if ("createElementNS" in document) {
+      return document.createElementNS(ns, tagName);
+    } else {
+      var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+      return xmlDoc.createNode(1, tagName, ns);
     }
   }
 };
