@@ -3,15 +3,16 @@ XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
   name: 'XC.XC_DOMHelper Tests',
 
   setUp: function () {
-    var demoXML = "<foo bam='baz' plip='plop'>\
-                      <bar>\
-                        <value xmlns='fi'>1</value>\
-                      </bar>\
-                      <bar xmlns='fi'>\
-                        <value>2</value>\
-                      </bar>\
-                      <bill xmlns='fi'/>\
-                    </foo>";
+    var demoXML = "\
+      <foo bam='baz' plip='plop'>\
+        <bar>\
+          <value xmlns='fi'>1</value>\
+        </bar>\
+        <bar xmlns='fi'>\
+          <value>2</value>\
+        </bar>\
+        <bill xmlns='fi'/>\
+      </foo>";
     this.demoDoc = XC.Test.DOMParser.parse(demoXML).doc;
   },
 
@@ -54,13 +55,67 @@ XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
     Assert.isFunction(XC_DOMHelper.getTextContent, 'getTextContent is not a function');
 
     var foo = XC_DOMHelper.getFirstElementChild(this.demoDoc),
-      bar = XC_DOMHelper.getFirstElementChild(foo),
-      val = XC_DOMHelper.getFirstElementChild(bar);
+        bar = XC_DOMHelper.getFirstElementChild(foo),
+        val = XC_DOMHelper.getFirstElementChild(bar);
 
     Assert.areEqual("1",XC_DOMHelper.getTextContent(val),'val should be 1');
     Assert.isString(XC_DOMHelper.getTextContent(bar), 'bar text should be a string');
     Assert.areEqual("1",XC_DOMHelper.getTextContent(bar).replace(/(\s)*/g,''), 'bar (replaced) should be 1');
     Assert.areEqual("12",XC_DOMHelper.getTextContent(foo).replace(/(\s)*/g,''), 'foo (replaced) should be 12');
+  },
+
+  testSetTextContent: function() {
+    var Assert = YAHOO.util.Assert;
+    Assert.isFunction(XC_DOMHelper.setTextContent, 'setTextContent is not a function');
+
+    var foo = XC_DOMHelper.getFirstElementChild(this.demoDoc);
+        bar = XC_DOMHelper.getFirstElementChild(foo);
+
+    XC_DOMHelper.setTextContent(bar, "new text");
+    Assert.areEqual("new text", XC_DOMHelper.getTextContent(bar));
+
+    XC_DOMHelper.setTextContent(bar, "blah!");
+    Assert.areEqual("blah!", XC_DOMHelper.getTextContent(bar));
+  },
+
+  testSerializeToString: function() {
+    var Assert = YAHOO.util.Assert;
+    Assert.isFunction(XC_DOMHelper.serializeToString, 'serializeToString is not a function');
+
+    Assert.XPathTests(XC_DOMHelper.serializeToString(this.demoDoc), {
+      bam: {
+        xpath: '/foo/@bam',
+        value: 'baz'
+      },
+      plip: {
+        xpath: '/foo/@plip',
+        value: 'plop'
+      },
+      bar: {
+        xpath: '/foo/bar/fi:value/text()',
+        value: '1'
+      },
+      bar_fi: {
+        xpath: '/foo/fi:bar/fi:value/text()',
+        value: '2'
+      }
+    });
+  },
+
+  testCreateElementNS: function () {
+    var Assert = YAHOO.util.Assert;
+    Assert.isFunction(XC_DOMHelper.createElementNS, 'createElementNS is not a function');
+
+    var dummy = XC_DOMHelper.createElementNS('fi', 'dummy');
+    Assert.areEqual('fi', dummy.namespaceURI);
+    Assert.areEqual('dummy', dummy.localName || dummy.nodeName);
+
+    var foo = XC_DOMHelper.getFirstElementChild(this.demoDoc),
+        bill = XC_DOMHelper.getElementsByNS(foo, 'fi')[1];
+
+    bill.appendChild(dummy);
+
+    Assert.areEqual(dummy, XC_DOMHelper.getFirstElementChild(bill));
   }
 
 });
