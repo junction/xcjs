@@ -65,7 +65,7 @@ var XC_DOMHelper = {
   },
 
   /**
-   * Get the text of an element
+   * Get the text of an XML element.
    *
    * @param {Element|Node} el The document fragment to get the text of.
    * @returns {String} The inner text of the fragment.
@@ -75,7 +75,7 @@ var XC_DOMHelper = {
   },
 
   /**
-   * Set the text of an element
+   * Set the text of an XML element.
    *
    * @param {Element|Node} el The document fragment to get the text of.
    * @param {String} text The inner text of the fragment.

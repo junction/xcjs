@@ -275,11 +275,11 @@ var Glue = {
     // Update info in the box.
     onSelectedChanged.push(function (e) {
       var contact = contacts[$(this).attr('rel')],
-          groups = contact.roster.groups || [];
+          groups = contact.roster && contact.roster.groups;
 
       $('#info .name').html(contact.roster.name || '');
       $('#info .jid').html(contact.getBareJID());
-      $('#info .groups').html(groups.join(', ').split(0, -2));
+      $('#info .groups').html(groups.join(', '));
     });
 
     $('#actions label').bind('click', function (e) {
