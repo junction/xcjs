@@ -28,14 +28,16 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
       '<iq to="marvin@heart-of-gold.com" \
            type="result" \
            id="test"> \
-         <item jid="zaphod@heart-of-gold.com" \
-               name="Zaphod"> \
-           <group>President</group> \
-         </item> \
-         <item jid="ford@betelguice.net" \
-               name="Ford Prefect"> \
-           <group>Hitchhiker</group> \
-         </item> \
+         <query xmlns="jabber:iq:roster">\
+           <item jid="zaphod@heart-of-gold.com" \
+                 name="Zaphod"> \
+             <group>President</group> \
+           </item> \
+           <item jid="ford@betelguice.net" \
+                 name="Ford Prefect"> \
+             <group>Hitchhiker</group> \
+           </item> \
+        </query>\
       </iq>'
     ));
 
