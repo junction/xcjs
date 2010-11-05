@@ -172,7 +172,6 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
         delete this._callbacks[this._callbackQueue.pop()];
       }
     }
-    node.setAttribute('xmlns', 'jabber:client');
     return this.connection.send(node);
   },
 
