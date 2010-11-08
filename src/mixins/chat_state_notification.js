@@ -101,7 +101,7 @@ XC.Base.mixin.call(XC.Mixin.ChatStateNotification.Entity,
 /**
  * Chat State Notifications Mixins XC.MessageStanza
  * @class
- * 
+ *
  * @see <a href="http://xmpp.org/extensions/xep-0085.html">XEP-0085: Chat State Notifications</a>
  */
 XC.Mixin.ChatStateNotification.Message =
@@ -111,7 +111,7 @@ XC.Mixin.ChatStateNotification.Message =
    * The chat notification state of the message.
    * Defaults to 'active';
    * can be any in XC.Registrar.ChatStateNotification.STATES.
-   * @type String              
+   * @type String
    */
   chatNotificationState: XC.Registrar.ChatStateNotification.STATES.ACTIVE,
 
@@ -163,7 +163,7 @@ XC.Mixin.ChatStateNotification.Message =
     if (this.chatNotificationState) {
       msg.addChild(XC.XML.Element.extend({
         name: this.chatNotificationState,
-        xmlns: XC.Mixin.ChatStateNotification.XMLNS
+        xmlns: XC.Registrar.ChatStateNotification.XMLNS
       }));
     }
 

@@ -35,10 +35,10 @@ XC.Test.Mixin.ChatStateNotificationMessage = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(msg.toStanzaXML().convertToString(), {
       active: {
-        xpath: '/message/active/node()',
+        xpath: '/message/chatStates:active',
         value: null,
-        assert: function () {
-          Assert.isNotNull(arguments[1], arguments[2]);
+        assert: function(val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });
@@ -63,17 +63,19 @@ XC.Test.Mixin.ChatStateNotificationMessage = new YAHOO.tool.TestCase({
     var Assert = YAHOO.util.Assert;
 
     var states = ['active', 'composing', 'paused', 'inactive', 'gone'],
-        msg = this.xc.MessageStanza.extend();
+        msg;
 
     for (var i = 0, len = states.length; i < len; i++) {
-      msg.chatStateNotificationState = states[i];
+      msg = this.xc.MessageStanza.extend({
+        chatNotificationState: states[i]
+      });
 
       Assert.XPathTests(msg.toStanzaXML().convertToString(), {
-        active: {
-          xpath: '/message/chatStates:' + states[i] + '/node()',
+        state: {
+          xpath: '/message/chatStates:' + states[i],
           value: null,
-          assert: function () {
-            Assert.isNotNull(arguments[1], arguments[2]);
+          assert: function (val, nodeVal, message, node) {
+            Assert.isObject(node, arguments[2]);
           }
         }
       });

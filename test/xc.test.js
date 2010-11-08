@@ -134,19 +134,7 @@ XC.Test.DOMParser = XC.Base.extend({
       getPathValue: function (path) {
         var rc = this.getPath(path);
         if (rc) {
-          if (window.ActiveXObject) {
-            // Internet Explorer
-            return rc.nodeValue;
-          } else {
-            // FF or Safari
-            if (rc.data) {
-              return rc.data;
-            } else if (rc.value) {
-              return rc.value;
-            } else {
-              return rc;
-            }
-          }
+          return rc.nodeValue;
         } else {
           return undefined;
         }
@@ -230,10 +218,13 @@ YAHOO.util.Assert.XPathTests = function (xml, additionalFields) {
           message = key + ' is incorrect.';
         }
 
+        var node = doc.getPath(xpath),
+          nodeVal = doc.getPathValue(xpath);
+
         if (field.assert) {
-          field.assert(val, doc.getPathValue(xpath), message);
+          field.assert(val, nodeVal, message, node);
         } else {
-          this.areSame(val, doc.getPathValue(xpath), message);
+          this.areSame(val, nodeVal, message, node);
         }
       }
     }
