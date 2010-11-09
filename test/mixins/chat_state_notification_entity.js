@@ -30,10 +30,10 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:active/node()',
+        xpath: '/message/chatStates:active',
         value: null,
-        assert: function (nil, node) {
-          Assert.isNotNull(node);
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });
@@ -46,10 +46,10 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:composing/node()',
+        xpath: '/message/chatStates:composing',
         value: null,
-        assert: function (nil, node) {
-          Assert.isNotNull(node);
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });
@@ -62,10 +62,10 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:paused/node()',
+        xpath: '/message/chatStates:paused',
         value: null,
-        assert: function (nil, node) {
-          Assert.isNotNull(node);
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });
@@ -78,10 +78,10 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:inactive/node()',
+        xpath: '/message/chatStates:inactive',
         value: null,
-        assert: function (nil, node) {
-          Assert.isNotNull(node);
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });
@@ -94,10 +94,10 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:gone/node()',
+        xpath: '/message/chatStates:gone',
         value: null,
-        assert: function (nil, node) {
-          Assert.isNotNull(node);
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });

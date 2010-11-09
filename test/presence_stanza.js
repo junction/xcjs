@@ -79,9 +79,9 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     Assert.XPathTests(pres.toStanzaXML().convertToString(), {
       nothing: {
         value: null,
-        xpath: '/presence/node()',
-        assert: function (nil, node, msg) {
-          Assert.isNotNull(node, msg);
+        xpath: '/presence',
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });

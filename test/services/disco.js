@@ -243,10 +243,10 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
         value: 'cancel'
       },
       errorChild: {
-        xpath: '/iq/error/err:item-not-found/node()',
+        xpath: '/iq/error/err:item-not-found',
         value: null,
-        assert: function () {
-          Assert.isNotNull(arguments[1],arguments[2]);
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });
@@ -286,10 +286,10 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
         value: 'cancel'
       },
       errorChild: {
-        xpath: '/iq/error/err:item-not-found/node()',
+        xpath: '/iq/error/err:item-not-found',
         value: null,
-        assert: function () {
-          Assert.isNotNull(arguments[1],arguments[2]);
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });

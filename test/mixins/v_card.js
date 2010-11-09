@@ -112,10 +112,10 @@ XC.Test.Mixin.VCard = new YAHOO.tool.TestCase({
         value: 'stpeter@jabber.org'
       },
       vCard: {
-        xpath: '/iq/vcard:vCard/node()',
+        xpath: '/iq/vcard:vCard',
         value: null,
-        assert: function (nil, node) {
-          Assert.isNotNull(node);
+        assert: function (val, nodeVal, message, node) {
+          Assert.isObject(node, arguments[2]);
         }
       }
     });
@@ -132,7 +132,7 @@ XC.Test.Mixin.VCard = new YAHOO.tool.TestCase({
                <service-unavailable xmlns='urn:ietf:params:xml:ns:xmpp-stanzas'/>\
              </error>\
           </iq>");
-    
+
     this.conn.addResponse(packet);
 
     var win = false, fail = false;
