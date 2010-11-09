@@ -68,3 +68,28 @@ For the examples to work properly they must be served from same domain as the bo
     ProxyPassReverse /http-bind http://location/to/your/bosh/http-bind
 
 to your .conf file, and restarting Apache. If you go to http://localhost/http-bind, you should see something like "You really don't look like a BOSH client to me... what do you want?". Now, start up the example on your localhost, and check it out!
+
+TODO
+----
+
+version 2 thought... instead of parsing out values into json, intead return objects that include the DOM node of the XMPP stanza and a list of XPaths for known elements that can be parsed out, this will allow the client library to lazily retrieve.
+
+For example:
+
+receive XML: 
+ <message type='chat'>
+   <body>Hi There</body>
+   <foo xmlns="urn:foobar"><bar>value</bar></foo>
+ </message>
+
+creates object =>
+
+msg = {
+  doc: <a dom document>
+  xpaths: {
+    type: '/message/@type',
+    body: '/message/body',
+    foobar:foo: '/message/foo',
+    foobar:bar: '/message/foo/bar'
+  }
+}
