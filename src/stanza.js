@@ -66,6 +66,13 @@ XC.Stanza = XC.Base.extend(/** @lends XC.Stanza# */{
   xmlStanza: null,
 
   /**
+   * Sends the XML fragment.
+   */
+  send: function () {
+    this.connection.send(this.toStanzaXML().convertToString());
+  },
+
+  /**
    * Converts a stanza into an XML Fragment.
    *
    * @returns {XC.XML.Element} A XML Fragment.

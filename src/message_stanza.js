@@ -3,6 +3,7 @@
  * @class
  * @extends XC.Stanza
  * @extends XC.Mixin.ChatStateNotification.Message
+ * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 4</a>
  */
 XC.MessageStanza = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
   /** @lends XC.MessageStanza# */{
@@ -65,7 +66,7 @@ XC.MessageStanza = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
       id: id
     });
 
-    msg.to.connection.send(msg.toStanzaXML().convertToString());
+    this.connection.send(msg.toStanzaXML().convertToString());
   },
 
   /**

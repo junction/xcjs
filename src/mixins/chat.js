@@ -16,16 +16,14 @@ XC.Mixin.Chat = XC.Base.extend(/** @lends XC.Mixin.Chat# */{
    * @param {String} [id]        The id of the message.
    */
   sendChat: function (body, subject, thread, id) {
-    var msg = XC.MessageStanza.extend({
+    this.connection.MessageStanza.extend({
       type: 'chat',
       body: body,
       subject: subject,
       thread: thread,
       to: this,
       id: id
-    });
-
-    this.connection.send(msg.toStanzaXML().convertToString());
+    }).send();
   }
 
 });
