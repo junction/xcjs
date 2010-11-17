@@ -1,6 +1,6 @@
 /**
- * One-to-one Chatting
  * @class
+ * One-to-one Chatting
  * @extends XC.Base
  *
  * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 4</a>

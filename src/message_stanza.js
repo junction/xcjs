@@ -6,7 +6,7 @@
  * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 4</a>
  */
 XC.MessageStanza = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
-  /** @lends XC.MessageStanza# */{
+  XC.Mixin.DelayedDelivery, /** @lends XC.MessageStanza# */{
 
   type: 'chat',
 

@@ -127,3 +127,15 @@ XC.Registrar.VCard = {
    */
   XMLNS: 'vcard-temp'
 };
+
+/**
+ * @namespace
+ */
+XC.Registrar.DelayedDelivery = {
+  /**
+   * The delayed delivery namespace
+   * @type String
+   * @constant
+   */
+  XMLNS: 'urn:xmpp:delay'
+};

@@ -2,7 +2,7 @@
  * @namespace
  * @extends XC.Stanza
  */
-XC.PresenceStanza = XC.Stanza.extend(/** @lends XC.PresenceStanza# */{
+XC.PresenceStanza = XC.Stanza.extend(XC.Mixin.DelayedDelivery, /** @lends XC.PresenceStanza# */{
 
   /**
    * The &lt;show&gt; XML fragment of the packet.
