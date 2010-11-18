@@ -115,7 +115,7 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
     if (idx !== -1) {
       var rest = features.slice(idx + 1);
       features.length = idx;
-      features.concat(rest);
+      features.push.apply(features, rest);
       return true;
     }
     return false;
@@ -152,7 +152,7 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
     if (idx !== -1) {
       var rest = items.slice(idx + 1);
       items.length = idx;
-      items.concat(rest);
+      items.push.apply(items, rest);
       return true;
     }
     return false;
@@ -189,7 +189,7 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
     if (idx !== -1) {
       var rest = identities.slice(idx + 1);
       identities.length = idx;
-      identities.concat(rest);
+      identities.push.apply(identities, rest);
       return true;
     }
     return false;

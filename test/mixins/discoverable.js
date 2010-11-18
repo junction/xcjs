@@ -30,13 +30,14 @@ XC.Test.Mixin.Discoverable = new YAHOO.tool.TestCase({
     var Assert = YAHOO.util.Assert;
 
     this.DiscoverableService.addFeature('magic');
+    this.DiscoverableService.addFeature('unicorns', 'subnode');
+
     Assert.areNotEqual(-1, this.DiscoverableService.getFeatures().indexOf('magic'),
                        "The feature 'magic' does not exist.");
     this.DiscoverableService.removeFeature('magic');
     Assert.areEqual(-1, this.DiscoverableService.getFeatures().indexOf('magic'),
                     "The feature 'magic' was not removed.");
 
-    this.DiscoverableService.addFeature('unicorns', 'subnode');
     Assert.areNotEqual(-1, this.DiscoverableService.getFeatures('subnode').indexOf('unicorns'),
                        "The feature 'magic' does not exist on node 'subnode'.");
     this.DiscoverableService.removeFeature('unicorns', 'subnode');
