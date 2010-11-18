@@ -187,6 +187,10 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
     iq.to(entity.jid);
     iq.addChild(q);
 
+    if (node) {
+      q.attr('node', node);
+    }
+
     this.connection.send(iq.convertToString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {

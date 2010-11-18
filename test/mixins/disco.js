@@ -209,6 +209,21 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
       }
     });
 
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
+      to: {
+        xpath: '/iq/@to',
+        value: this.romeo.jid
+      },
+      type: {
+        xpath: '/iq/@type',
+        value: 'get'
+      },
+      node: {
+        xpath: '/iq/discoInfo:query/@node',
+        value: 'http://jabber.org/protocol/tune'
+      }
+    });
+
     Assert.isTrue(win, "Was not successful in doing a disco#info.");
     Assert.isFalse(fail, "Disco#info threw an error.");
   },
@@ -369,6 +384,21 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
       }
     });
 
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
+      to: {
+        xpath: '/iq/@to',
+        value: this.romeo.jid
+      },
+      type: {
+        xpath: '/iq/@type',
+        value: 'get'
+      },
+      node: {
+        xpath: '/iq/discoItems:query/@node',
+        value: 'http://jabber.org/protocol/tune'
+      }
+    });
+
     Assert.isTrue(win, "Was not successful in doing a disco#items.");
     Assert.isFalse(fail, "Disco#items threw an error.");
   },
@@ -416,6 +446,7 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
         fail = true;
       }
     });
+
 
     Assert.isTrue(win, "Was not successful in doing a disco#items.");
     Assert.isFalse(fail, "Disco#items threw an error.");
