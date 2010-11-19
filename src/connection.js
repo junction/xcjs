@@ -48,9 +48,6 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    */
   init: function ($super) {
     if (this.connectionAdapter) {
-      if (!this.getJID() || this.getJID() === '') {
-        throw new XC.Error('Missing JID');
-      }
       this._stanzaHandlers = this._stanzaHandlersTemplate.extend();
 
       for (var s in this.services) {

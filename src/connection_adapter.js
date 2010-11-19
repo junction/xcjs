@@ -31,44 +31,52 @@
  * @extends XC.Base
  */
 XC.ConnectionAdapter = XC.Base.extend(/** @lends XC.ConnectionAdapter# */{
-  /** The JID of this connection. */
-  jid: function () {},
+
+  /**
+   * The JID of this connection.
+   * @returns {String} The JID provided by your BOSH library.
+   */
+  jid: function () {
+    throw new XC.Error("You MUST override XC.ConnectionAdapter#jid " +
+                       "so it returns the JID of the BOSH connection.");
+  },
 
   /**
    * Send an XML string to the underlying connection.
    *
    * @param {String} xml The XML String to send.
-   * @param {Function} callback Called when a response to this packet
-   *                            is received with the first argument being
-   *                            the received packet.
-   * @param {Array} args An array of arguments to be passed to callback
-   *                     after the packet.
+   * @param {Function} callback Called when a response to this packet is received with the first argument being the received packet.
+   * @param {Array} args An array of arguments to be passed to callback after the packet.
+   * @returns {void}
    *
    * @see XC.Connection#send
    */
-  send: function (xml, callback, args) {},
+  send: function (xml, callback, args) {
+    throw new XC.Error("You MUST override XC.ConnectionAdapter#send " +
+                       "so it will send XML over the BOSH connection.");
+  },
 
   /**
    * Registers an event handler.
    *
-   * @param {String} event The type of stanza for which to listen
-   *                       (i.e., `message', `iq', `presence.')
-   * @param {Function} handler The stanza is passed to this function
-   *                           when it is received.
-   *
-   * @see XC.ConnectionAdapter#unregisterHandler
-   * @see XC.Connection#registerStanzaHandler
+   * @param {String} event The type of stanza for which to listen (i.e., `message', `iq', `presence.')
+   * @param {Function} handler The stanza is passed to this function when it is received.
+   * @returns {void}
    */
-  registerHandler: function (event, handler) {},
+  registerHandler: function (event, handler) {
+    throw new XC.Error("You MUST override XC.ConnectionAdapter#registerHandler " +
+                       "so it will handle events the BOSH connection recieves.");
+  },
 
   /**
    * Unregisters an event handler.
    *
-   * @param {String} event The type of stanza we were listening to
-   *                       (i.e., `message', `iq', `presence.')
-   *
-   * @see XC.ConnectionAdapter#registerHandler
-   * @see XC.Connection#unregisterStanzaHandler
+   * @param {String} event The type of stanza we were listening to (i.e., `message', `iq', `presence.')
+   * @returns {void}
    */
-  unregisterHandler: function (event) {}
+  unregisterHandler: function (event) {
+    throw new XC.Error("You MUST override XC.ConnectionAdapter#unregisterHandler " +
+                       "so it will remove event handlers on the BOSH connection.");
+  }
+
 });

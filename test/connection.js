@@ -12,19 +12,6 @@ XC.Test.Connection = new YAHOO.tool.TestCase({
     delete this.xc;
   },
 
-  testNoJID: function () {
-    var Assert = YAHOO.util.Assert,
-        expectedError = new Error(),
-        badAdapter = XC.Test.MockConnection.extend({
-          jid: function () {
-            return undefined;
-          }}).init();
-
-    Assert.throws(XC.Error, function () {
-                    XC.Connection.extend({connectionAdapter: badAdapter});
-                  });
-  },
-
   testGetJID: function () {
     var Assert = YAHOO.util.Assert;
 
