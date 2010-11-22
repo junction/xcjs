@@ -61,7 +61,6 @@ XC.Service.VCard = XC.Base.extend(XC.Mixin.Discoverable,
    */
   set: function (vCard, callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),
-        self = this,
         rawVCard = XC.Base.extend({ convertToString: function () {
                                       return XC_DOMHelper.serializeToString(vCard);
                                     }

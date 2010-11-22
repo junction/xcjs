@@ -93,3 +93,59 @@ msg = {
     foobar:bar: '/message/foo/bar'
   }
 }
+
+// KVO approach:
+
+msg = {
+
+  XPathReader: function () {
+    return new DOMParser(this.get('doc'));
+  }.cacheable(),
+
+  type: XPathProperty.extend('/message/@type'),
+  body: XPathProperty.extend('/message/body/text()'),
+
+  // Handle all unknown lookups, assuming that they are XPath.
+  unknownProperty: function (xpath) {
+    return this.get('reader').getNodeValueFor(xpath);
+  }
+}
+
+XC.Registrar.register('urn:foobar').as('foobar');
+
+msg.get('type');
+// -> "chat"
+
+msg.get('/message/foobar:foo/foobar:bar/@text');
+// -> "value"
+
+This API would just be for reading incoming stanzas in XC,
+not for creating outgoing stanzas.
+
+We *could* have a cover so we can use the .set()
+functionality to fool those into thinking that the API handled
+that, but it isn't necessary, and is waay too confusing and
+mixes two independant parts of the library.
+
+This approach will be more maintainable and probably be
+easier to test and extend (if done properly).
+
+Ideally, the message class would look like:
+
+XC.Message = XC.Stanza.extend({
+  subject: '/message/subject/text()',
+  body: '/message/body/text()',
+  thread: '/message/thread/text()',
+  parentThread: '/message/thread/@parent'
+});
+
+Hardly any work at all!
+
+Also, we should make our code read like the RFC and XEPs
+so we can reference compliance with it. Consumers of this
+library still neeed to know the RFC, so we might be able
+to get away with simplifying some aspects of the API,
+distilling it to a very simple and standardized set of
+calls for creating XMPP stanzas, erring on the side of
+more flexibility and control over ease of use (however,
+simplicity is a MUST). Ease of use is bonus work on top.
