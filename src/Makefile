@@ -17,18 +17,23 @@ JAVA =	java
 
 all:	src doc
 
-src:	xc.js jslint minify
+src:	xc.js jslint xc.min.js
 
 jslint:
 	../frameworks/jslint/jslint ../xc.js
 
-minify:
-	java -jar ../frameworks/yuicompressor/yuicompressor.jar ../xc.js -o ../xc.min.js
-
-doc:	$(DOCDIR)/private/index.html $(DOCDIR)/public/index.html
-
 xc.js:	Makefile $(SRC)
 	cat $(SRC) > ../$@
+
+xc.min.js: xc.js
+ifdef YUI_COMPRESSOR
+	java -jar $(YUI_COMPRESSOR) ../$@.js -o ../$@.min.js
+else
+	@@echo "  YUI Compressor required to build minified version."
+	@@echo "  Please set YUI_COMPRESSOR to the path to the jar file."
+endif
+
+doc:	$(DOCDIR)/private/index.html $(DOCDIR)/public/index.html
 
 $(DOCDIR)/private/index.html: Makefile $(SRC)
 	$(JAVA) -jar $(JSDOCDIR)/jsrun.jar $(JSDOCDIR)/app/run.js --allfunctions --private -a -t=$(TEMPLATE) -d=$(DOCDIR)/private $(SRC)
