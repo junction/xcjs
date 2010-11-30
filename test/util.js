@@ -34,14 +34,23 @@ XC.Test.Util = new YAHOO.tool.TestCase({
     var Person = XC.Base.extend({
       name: null,
       sayHi: function () {
-        return "Hello, " + this.name;
+        return this.greet("Hello");
+      },
+
+      greet: function (greeting) {
+        return greeting + ", " + this.name;
       }
     });
+
     var mal = Person.extend({name: 'Mal'});
-    var mrFancyPants = {name: 'Mr. Fancy Pants'};
+    var mrFancyPants = Person.extend({name: 'Mr. Fancy Pants'});
     Assert.isFunction(Function.prototype.bind);
     Assert.isFunction(mal.sayHi.bind(mrFancyPants));
     Assert.areSame(mal.sayHi.bind(mrFancyPants)(), "Hello, " + mrFancyPants.name);
+
+    var bye = mal.greet.bind(mrFancyPants, 'Goodbye');
+    Assert.isFunction(bye);
+    Assert.areSame(bye(), 'Goodbye, ' + mrFancyPants.name);
   },
 
   testArrayFrom: function () {

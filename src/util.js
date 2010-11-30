@@ -125,9 +125,10 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    *   // -> 'Hello, Mr. FancyPants'
    */
   bind: function (target) {
-    var _method = this;
+    var _method = this,
+        args = Array.from(arguments).slice(1);
     return function () {
-      return _method.apply(target, arguments);
+      return _method.apply(target, args.concat(Array.from(arguments)));
     };
   }.inferior()
 });
