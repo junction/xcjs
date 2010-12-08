@@ -1,15 +1,15 @@
 /**
- * Presence Mixin.
  * @class
+ * Presence Mixin.
  * 
  * @see <a href="http://www.ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 5 & 6</a>
  */
 XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
 
   /**
+   * @namespace
    * A slot to contain presence information.
    * @type Object
-   * @namespace
    */
   presence: {
     /**
@@ -48,6 +48,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
    * @param {String} [status] The custom status message to send.
    * @param {Number} [priority] An integer between -127 and +128
    *                            giving the priority of the presence.
+   * @returns {void}
    */
   sendDirectedPresence: function (show, status, priority) {
     var p = XC.PresenceStanza.extend({
@@ -62,6 +63,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
 
   /**
    * Request a subscription to an entity's presence.
+   * @returns {void}
    */
   sendPresenceSubscribe: function () {
     var p = XC.XML.XMPP.Presence.extend();
@@ -73,6 +75,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
 
   /**
    * Unsubscribe from an entity's presence.
+   * @returns {void}
    */
   sendPresenceUnsubscribe: function () {
     var p = XC.XML.XMPP.Presence.extend();
@@ -84,6 +87,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
 
   /**
    * Cancel a Presence subscription.
+   * @returns {void}
    */
   cancelPresenceSubscription: function () {
     var p = XC.XML.XMPP.Presence.extend();

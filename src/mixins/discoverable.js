@@ -1,9 +1,9 @@
 /**
+ * @class
  * Mixin for discoverable services.
  * This provides a registration mechanism for
  * features, items, and identities for Service Discovery.
  *
- * @class
  * @requires XC.Connection
  * @see XC.Service.Disco
  */
@@ -28,10 +28,10 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
   }.around(),
 
   /**
+   * @private
    * The root of the Disco tree.
    *
    * @type XC.DiscoItem
-   * @private
    */
   _rootNode: null,
 
@@ -47,8 +47,8 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
   },
 
   /**
-   * Fetch a node. If it exists, retrieve it; otherwise do lazy instantiation.
    * @private
+   * Fetch a node. If it exists, retrieve it; otherwise do lazy instantiation.
    * @param {String} [node] The name of the node to fetch.
    */
   _fetchNode: function (node) {
@@ -61,6 +61,7 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
   /**
    * Retrieve features on a given node. Defaults to the root node.
    * @param {String} [node] The name of the node to fetch.
+   * @returns {String[]} The features on the node.
    */
   getFeatures: function (nodeName) {
     return this._fetchNode(nodeName).features;
@@ -69,6 +70,7 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
   /**
    * Retrieve identities on a given node. Defaults to the root node.
    * @param {String} [node] The name of the node to fetch.
+   * @returns {Object[]} The identities on the node.
    */
   getIdentities: function (nodeName) {
     return this._fetchNode(nodeName).identities;
@@ -77,6 +79,7 @@ XC.Mixin.Discoverable = /** @lends XC.Mixin.Discoverable# */{
   /**
    * Retrieve items on a given node. Defaults to the root node.
    * @param {String} [node] The name of the node to fetch.
+   * @returns {Object[]} The items on the node.
    */
   getItems: function (nodeName) {
     return this._fetchNode(nodeName).items;

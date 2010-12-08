@@ -1,7 +1,7 @@
 /**
+ * @class
  * Presence
  *
- * @class
  * @extends XC.Base
  * @extends XC.Mixin.HandlerRegistration
  *

@@ -1,11 +1,10 @@
 /**
+ * @name Function
+ * @namespace
  * Utility library for mixing in common functionality to
  * native Javascript objects
  */
 
-/**
- * Function.prototype
- */
 XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
 
   /**
@@ -33,6 +32,7 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    *   // -> 'barbell'
    *   fooBar.bar('n')
    *   // -> 'foobarn'
+   * @returns {Function} The reciever
    */
   around: function () {
     this._xcAround = true;
@@ -40,14 +40,10 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
   },
 
   /**
-   * XC is making some pretty bold, and possibly annoying
-   * implementations with curry, bind and potentially
-   * some other common functions. Mark a function as inferior
-   * and if a slot with the same name exists on the receiver
-   * at mixin time, XC.Base will NOT mixin that function.
-   *
-   * BE AWARE however, that this could cause some headaches if
-   * you aren't smart with it.
+   * <p>Marks the function as inferior.
+   * If a key exists on the mixin and the new mixin is marked as inferior,
+   * it will ignore the new function, relying on the old function
+   * for its implementation.</p>
    *
    * @example
    *   var foo = XC.Base.extend({
@@ -57,6 +53,7 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
    *   });
    *   foor.bar()
    *   // -> 1
+   * @returns {Function} The reciever
    */
   inferior: function () {
     this._xcInferior = true;
@@ -99,8 +96,11 @@ XC.Base.mixin.call(Function.prototype, /** @lends Function.prototype */ {
   }.inferior(),
 
   /**
-   * Bind 'this' to be the value of target when the bound function
-   * is invoked.
+   * <p>Bind 'this' to be the value of target when the bound function
+   * is invoked. Any additional arguments will be prepended to the argument
+   * list when the function is called.</p>
+   *
+   * <p>This function is compatible with the ECMAScript 5 standard.</p>
    *
    * @param {Object} target The value that 'this' should represent.
    * @returns {Function} This function wrapped to take the target as 'this'.
@@ -146,6 +146,9 @@ XC.Base.mixin.call(Array, /** @lends Array */ {
    *   function commaSeparate () {
    *     return Array.from(arguments).join(', ');
    *   }
+   *
+   *   commaSeparate("romeo", "juliet", "benvolio");
+   *   // -> "romeo, juliet, benvolio"
    */
   from: function (iterable) {
     return Array.prototype.slice.apply(iterable);

@@ -1,24 +1,24 @@
 /**
- * Service Discovery provides the ability to discover information about entities.
  * @class
+ * Service Discovery provides the ability to discover information about entities.
  *
  * @see <a href="http://xmpp.org/extensions/xep-0030.html">XEP-0030: Service Discovery</a>
  */
 XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
 
   /**
+   * @private
    * The root node of the Disco 'tree' that contains
    * all of the information queried.
    * 
-   * @private
    * @type Object
    */
   _rootNode: null,
 
   /**
+   * @private
    * Creates nodes through lazy instantiation.
    *
-   * @private
    * @param {String} [node] The node to create
    * @returns {Object} The node that was asked to be created.
    */
@@ -106,6 +106,7 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
    *      A function that will be called on a successful disco#info.
    *     @param {XC.Entity} [callbacks.onSuccess#entity]
    *        The entity with slots filled about the queried disco information.
+   * @returns {void}
    */
   requestDiscoInfo: function (nodeName, callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),
@@ -172,6 +173,7 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
    *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.
    *   @param {Function} [callbacks.onSuccess] A function that will be called on a successful disco#items.
    *     @param {XC.Entity} [callbacks.onSuccess#entity] The entity with slots filled about the queried disco items.
+   * @returns {void}
    */
   requestDiscoItems: function (node, callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),

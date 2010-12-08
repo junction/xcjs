@@ -1,5 +1,6 @@
 /**
  * @namespace
+ * Generic Presence stanza creation and parsing.
  * @extends XC.Stanza
  */
 XC.PresenceStanza = XC.Stanza.extend(XC.Mixin.DelayedDelivery, /** @lends XC.PresenceStanza# */{
@@ -50,6 +51,7 @@ XC.PresenceStanza = XC.Stanza.extend(XC.Mixin.DelayedDelivery, /** @lends XC.Pre
 
   /**
    * Accept a subscription request.
+   * @returns {void}
    */
   accept: function () {
     var p = XC.PresenceStanza.extend();
@@ -77,6 +79,7 @@ XC.PresenceStanza = XC.Stanza.extend(XC.Mixin.DelayedDelivery, /** @lends XC.Pre
 
   /**
    * Deny a subscription request.
+   * @returns {void}
    */
   deny: function () {
     var p = XC.PresenceStanza.extend();
@@ -103,8 +106,8 @@ XC.PresenceStanza = XC.Stanza.extend(XC.Mixin.DelayedDelivery, /** @lends XC.Pre
   },
 
   /**
-   * The builder for XC.Stanza's base toStanzaXML
    * @private
+   * The builder for XC.Stanza's base toStanzaXML
    */
   xmlStanza: XC.XML.XMPP.Presence,
 

@@ -1,11 +1,12 @@
 /**
- * IE DOM Core Level 2 is incomplete:
- *
- * These functions were originally mixed into Node.prototype, however
- * IE doesn't implement the Node prototype, rather than bending over backwards
- * to make it look like it does I've accepted this instead...
- * @see <a href="http://msdn.microsoft.com/en-us/library/dd282900%28VS.85%29.aspx#domproto">MSDN DOM prototypes</a>
  * @namespace
+ * Helper functions for XML DOM manipulation.
+ *
+ * <p>The IE DOM Core Level 2 is incomplete:</p>
+ * <p>These functions were originally mixed into Node.prototype, however
+ * IE doesn't implement the Node prototype, rather than bending over backwards
+ * to make it look like it does I've accepted this instead...</p>
+ * @see <a href="http://msdn.microsoft.com/en-us/library/dd282900%28VS.85%29.aspx#domproto">MSDN DOM prototypes</a>
  */
 var XC_DOMHelper = {
   /**
@@ -79,6 +80,7 @@ var XC_DOMHelper = {
    *
    * @param {Element|Node} el The document fragment to get the text of.
    * @param {String} text The inner text of the fragment.
+   * @returns {void}
    */
   setTextContent: function (el, text) {
     if (el) {

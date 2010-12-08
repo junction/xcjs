@@ -1,12 +1,17 @@
 /**
- * XC: XMPP Client Library.
  * @namespace
+ * <p>XMPP Client Library core object.</p>
  *
- * XMPP Client Library.
+ * <p>XC is designed to be a RFC / XEP compliant JavaScript library that
+ * provides an abstract API to perform common XMPP actions.</p>
+ *
+ * <p>XC is <b>NOT</b> a BOSH client, and purposely uses the adapter design
+ * pattern so you may provide your own.</p>
  */
 var XC = {
   /**
    * Prints a debug message to the console, if window.console exists.
+   * @returns {void}
    */
   debug: function () {
     return window.console && window.console.debug && window.console.debug.apply && window.console.debug.apply(window.console, arguments);
@@ -14,6 +19,7 @@ var XC = {
 
   /**
    * Prints a log to the console, if window.console exists.
+   * @returns {void}
    */
   log: function () {
     return window.console && window.console.log && window.console.warn.apply && window.console.log.apply(window.console, arguments);
@@ -21,6 +27,7 @@ var XC = {
 
   /**
    * Prints a warning to the console, if window.console exists.
+   * @returns {void}
    */
   warn: function () {
     return window.console && window.console.warn && window.console.warn.apply && window.console.warn.apply(window.console, arguments);
@@ -28,6 +35,7 @@ var XC = {
 
   /**
    * Prints an error to the console, if window.console exists.
+   * @returns {void}
    */
   error: function () {
     return window.console && window.console.error && window.console.error.apply && window.console.error.apply(window.console, arguments);
@@ -35,6 +43,7 @@ var XC = {
 
   /**
    * Begins a console group, if it's able to; otherwise it tries to print a log.
+   * @returns {void}
    */
   group: function () {
     if (window.console && window.console.group) {
@@ -46,6 +55,7 @@ var XC = {
 
   /**
    * End a console group.
+   * @returns {void}
    */
   groupEnd: function () {
     if (window.console && window.console.groupEnd) {
@@ -61,7 +71,7 @@ var XC = {
    * @returns {Boolean} True if the Object is a function, false otherwise.
    */
   isFunction: function (o) {
-    return (typeof o === "function");
+    return (/function/i).test(Object.prototype.toString.call(o));
   },
 
   /**
@@ -69,21 +79,21 @@ var XC = {
    * is a String.
    *
    * @param {Object} o The Object to test.
-   * @returns {Boolea} True if the Object is a String, false otherwise.
+   * @returns {Boolean} True if the Object is a String, false otherwise.
    */
   isString: function (o) {
-    return o instanceof String || typeof o === 'string';
+    return (/string/i).test(Object.prototype.toString.call(o));
   }
 };
 
 /**
- * Namespace for services.
  * @namespace
+ * Namespace for services.
  */
 XC.Service = {};
 
 /**
- * Namespace for mixins.
  * @namespace
+ * Namespace for mixins.
  */
 XC.Mixin = {};

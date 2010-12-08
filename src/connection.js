@@ -1,10 +1,10 @@
 /**
+ * @namespace
  * Connection object to use for all XC connections.
  * For a functioning connection, you MUST extend
  * {@link XC.Connection} with an implementation of
  * {@link XC.ConnectionAdapter}.
  *
- * @class
  * @extends XC.Base
  * @property {XC.Service.Presence} Presence
  * @property {XC.Service.Roster} Roster
@@ -15,13 +15,24 @@
  * @property {XC.Entity} Entity An Entity template to build Entities from.
  * @property {XC.MessageStanza} MessageStanza A MessageStanza template to build MessageStanzas from.
  * @property {XC.PresenceStanza} PresenceStanza A PresenceStanza template to build PresenceStanzas from.
+ * @requires The property 'connectionAdapter' to be extended on a {@link XC.Connection}.
+ *
+ * @example
+ *   var xmpp = XC.Connection.extend({
+ *     connectionAdapter: XC.StropheAdapter.extend({
+ *       connection: new Strophe.Connection('/http-bind/')
+ *     })
+ *   });
+ *
+ *   xmpp.Roster.requestItems();
+ *   xmpp.Presence.send(null, "Just got online!", 3);
  */
 XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
   /**
+   * @private
    * Map of template names to template objects. Used during
    * init to bootstrap services to a connection.
-   * @private
    */
   services: {
     Presence: XC.Service.Presence,
@@ -32,8 +43,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
-   * Templates are extended with the connection (this) during init().
    * @private
+   * Templates are extended with the connection (this) during init().
    */
   templates: {
     Entity: XC.Entity,
@@ -42,9 +53,9 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
+   * @private
    * Initializes the Connection with services and templates
    * hooked up with a connection and then stuck as top level objects.
-   * @private
    */
   init: function ($super) {
     if (this.connectionAdapter) {
@@ -90,6 +101,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * @param {String} xml The XML String to send.
    * @param {Function} callback Called when a response to this packet is received with the first argument being the received packet.
    * @param {Array} [args] An array of arguments to be passed to callback after the packet.
+   * @returns {void}
    *
    * @see XC.ConnectionAdapter#send
    */
@@ -101,7 +113,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * Returns the JID of this connection.
    *
    * @example
-   * xc.getJID();
+   *  xc.getJID();
    *
    * @returns {String} This connection's JID.
    *
@@ -112,6 +124,7 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
+   * @private
    * Register a handler for a stanza based on the following criteria:
    * <ul>
    *   <li>element - The stanza element; 'iq', 'message', or 'presence'.</li>
@@ -125,7 +138,6 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
    * or directly with their bosh connection for services not provided
    * by the XC library.
    *
-   * @private
    * @param {Object} criteria has any of the members listed above
    * @param {Function} callback
    * @param {Object} [target] scope for 'this'
@@ -143,10 +155,10 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
+   * @private
    * Unregister the stanza handler, given the return id.
    *
    * @param {Mixed} id The id returned from registerStanzaHandler.
-   * @private
    */
   unregisterStanzaHandler: function (id) {
     return this._stanzaHandlers.remove(id);
@@ -204,8 +216,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
   },
 
   /**
-   * @namespace
    * @private
+   * @namespace
    * Stanza Handlers are registered by the Services to register a callback
    * for a specific stanza based on various criteria
    *

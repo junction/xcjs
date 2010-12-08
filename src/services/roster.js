@@ -1,7 +1,7 @@
 /**
+ * @class
  * Roster Management
  *
- * @class
  * @extends XC.Base
  * @extends XC.Mixin.HandlerRegistration
  * @extends XC.Mixin.RosterX.Service

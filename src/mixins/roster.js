@@ -1,15 +1,15 @@
 /**
- * Roster Management
  * @namespace
+ * Roster Management
  *
  * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 7 & 8</a>
  */
 XC.Mixin.Roster = /** @lends XC.Mixin.Roster# */{
 
   /**
+   * @namespace
    * A slot to contain roster information.
    * @type Object
-   * @namespace
    */
   roster: {
     /**
@@ -52,6 +52,7 @@ XC.Mixin.Roster = /** @lends XC.Mixin.Roster# */{
    *      A function that will be called on a successful roster set.
    *     @param {XC.Entity} [callbacks.onSuccess#entity]
    *        The entity that the roster set was called on.
+   * @returns {void}
    */
   setRosterItem: function (callbacks) {
     var entity = this,
@@ -102,6 +103,7 @@ XC.Mixin.Roster = /** @lends XC.Mixin.Roster# */{
    *      A function that will be called on a successful roster remove.
    *     @param {XC.Entity} [callbacks.onSuccess#entity]
    *        The entity that the roster remove was called on.
+   * @returns {void}
    */
   removeRosterItem: function (callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),

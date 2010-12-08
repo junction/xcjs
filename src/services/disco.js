@@ -1,8 +1,8 @@
 /**
+ * @class
  * The Disco Service provides high level support,
  * responding to disco requests on behalf of the user.
  *
- * @class
  * @extends XC.Base
  * @extends XC.Mixin.Discoverable
  */

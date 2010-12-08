@@ -1,4 +1,5 @@
 /**
+ * @class
  * XC Connection Adapter abstract object.
  *
  * An instance of this object MUST be supplied to the XC.Connection
@@ -27,7 +28,6 @@
  *
  * var tmp = XC.Connection.extend({connection: adapter});
  *
- * @class
  * @extends XC.Base
  */
 XC.ConnectionAdapter = XC.Base.extend(/** @lends XC.ConnectionAdapter# */{

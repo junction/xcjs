@@ -40,6 +40,7 @@ XC.Mixin.DelayedDelivery = /** @lends XC.Mixin.DelayedDelivery# */{
   },
 
   /**
+   * @private
    * Look for the delay element and the delay namespace,
    * pulling out the 'from' and 'stamp' attibutes and
    * info body.

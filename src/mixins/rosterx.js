@@ -1,5 +1,6 @@
 /**
  * @namespace
+ * Roster Item Exchange mixin namespace.
  */
 XC.Mixin.RosterX = {};
 
@@ -45,9 +46,9 @@ XC.Mixin.RosterX.Service = XC.Base.extend(XC.Mixin.Discoverable,
    */
 
   /**
+   * @private
    * Handle a Roster Item Exchange from a third party.
    *
-   * @private
    * @param {XC.PacketAdapter} packet The packet causing the handler to fire.
    */
   _handleRosterItemExchange: function (packet) {
@@ -67,10 +68,10 @@ XC.Mixin.RosterX.Service = XC.Base.extend(XC.Mixin.Discoverable,
   },
 
   /**
+   * @private
    * Construct a {@link XC.RosterX.Entity} from a XML fragment
    * from a Roster Item Exchange.
    *
-   * @private
    * @param {Element} item A node that contains info about a roster item.
    */
   _rosterxEntityFromItem: function (item) {
@@ -125,6 +126,7 @@ XC.Mixin.RosterX.Entity = /** @lends XC.Mixin.RosterX.Entity# */{
   /**
    * Accept the Roster Item Exchange suggestion,
    * and commit the changes to your roster.
+   * @returns {void}
    */
   acceptRosterX: function () {
     switch (this.rosterx.action) {
@@ -145,6 +147,7 @@ XC.Mixin.RosterX.Entity = /** @lends XC.Mixin.RosterX.Entity# */{
 
 /**
  * @namespace
+ * The Roster Item Exchange namespace.
  * @name XC.RosterX
  */
 

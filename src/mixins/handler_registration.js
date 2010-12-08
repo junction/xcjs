@@ -1,8 +1,7 @@
 /**
+ * @class
  * Mixin to provide callback handler registration to
  * the services that mix it in.
- *
- * @class
  */
 XC.Mixin.HandlerRegistration = /** @lends XC.Mixin.HandlerRegistration# */{
 
@@ -52,6 +51,7 @@ XC.Mixin.HandlerRegistration = /** @lends XC.Mixin.HandlerRegistration# */{
    * @private
    * @param {String} event The event to trigger.
    * @param {...} args A variable length arg list provided to the handlers.
+   * @returns {void}
    */
   fireHandler: function (event) {
     if (this._registeredHandlers[event]) {

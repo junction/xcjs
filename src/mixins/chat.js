@@ -14,6 +14,7 @@ XC.Mixin.Chat = XC.Base.extend(/** @lends XC.Mixin.Chat# */{
    * @param {String} [subject]   The subject of the message.
    * @param {String} [thread]    The thread of the message.
    * @param {String} [id]        The id of the message.
+   * @returns {void}
    */
   sendChat: function (body, subject, thread, id) {
     this.connection.MessageStanza.extend({

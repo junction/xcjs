@@ -1,6 +1,6 @@
 /**
- * JID Manipulation
  * @class
+ * JID Manipulation
  * @extends XC.Base
  *
  * @see <a href="http://xmpp.org/rfcs/rfc3920.html#addressing">RFC 3920: XMPP Core; Addressing</a>
@@ -8,6 +8,7 @@
 XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
 
   /**
+   * The bare JID of the entity.
    * @returns {String} The bare JID of the entity.
    * @example
    *   var mal = this.xc.Entity.extend({
@@ -24,6 +25,7 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
   },
 
   /**
+   * The username of the JID.
    * @returns {String} The JID node (commonly used as a username).
    * @example
    *   var mal = this.xc.Entity.extend({
@@ -37,6 +39,7 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
   },
 
   /**
+   * The domain of the JID.
    * @returns {String} The JID's domain.
    * @example
    *   var mal = this.xc.Entity.extend({
@@ -50,6 +53,7 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
   },
 
   /**
+   * The resource of the JID.
    * @returns {String} The resource of the JID.
    * @example
    *   var mal = this.xc.Entity.extend({
@@ -63,6 +67,7 @@ XC.Mixin.JID = XC.Base.extend(/** @lends XC.Mixin.JID# */{
   },
 
   /**
+   * Returns the parts of the JID.
    * @returns {String} The parts of the JID.
    * @example
    *   var mal = this.xc.Entity.extend({

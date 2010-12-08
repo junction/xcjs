@@ -1,7 +1,7 @@
 /**
+ * @class
  * One-to-one Chatting
  *
- * @class
  * @extends XC.Base
  * @extends XC.Mixin.Discoverable
  * @extends XC.Mixin.HandlerRegistration

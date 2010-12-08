@@ -1,16 +1,15 @@
 /**
+ * @class
  * Simple class for unpacking stanzas.
  *
  * @extends XC.Base
- * @class
  */
 XC.Stanza = XC.Base.extend(/** @lends XC.Stanza# */{
 
   /**
+   * @private
    * Unpack 'to', 'from', 'type', 'id', and 'xmlns'
    * from the packet into the object.
-   *
-   * @private
    */
   init: function ($super) {
     $super.apply(this, Array.from(arguments).slice(1));
@@ -67,6 +66,7 @@ XC.Stanza = XC.Base.extend(/** @lends XC.Stanza# */{
 
   /**
    * Sends the XML fragment.
+   * @returns {void}
    */
   send: function () {
     this.connection.send(this.toStanzaXML().convertToString());

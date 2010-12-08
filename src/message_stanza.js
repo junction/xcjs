@@ -1,6 +1,6 @@
 /**
- * Simple Message class for XMPP Message stanzas
  * @class
+ * Simple Message class for XMPP Message stanzas
  * @extends XC.Stanza
  * @extends XC.Mixin.ChatStateNotification.Message
  * @see <a href="http://ietf.org/rfc/rfc3921.txt">RFC 3921: XMPP IM; Section 4</a>
@@ -11,10 +11,10 @@ XC.MessageStanza = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
   type: 'chat',
 
   /**
+   * @private
    * Unpack a message from a packet, or just do an ordinary init.
    *
    * @param {Function} $super The XC.Stanza toStanzaXML function
-   * @private
    */
   init: function ($super) {
     $super.apply(this, Array.from(arguments).slice(1));
@@ -36,16 +36,19 @@ XC.MessageStanza = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
   }.around(),
 
   /**
+   * The subject of the message.
    * @type String
    */
   subject: null,
 
   /**
+   * The body of the message.
    * @type String
    */
   body: null,
 
   /**
+   * The message thread.
    * @type String
    */
   thread: null,
@@ -70,8 +73,8 @@ XC.MessageStanza = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
   },
 
   /**
-   * The builder for XC.Stanza's base toStanzaXML
    * @private
+   * The builder for XC.Stanza's base toStanzaXML
    */
   xmlStanza: XC.XML.XMPP.Message,
 

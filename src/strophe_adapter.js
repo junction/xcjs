@@ -1,7 +1,20 @@
 /**
- * Strophe Connection Adapter
  * @class
+ * Provides a Connection Adapter for the BOSH library
+ * <a href="http://code.stanziq.com/strophe">Strophe</a>.
+ * The adapter tries to deal with possible memory leaks due to unanswered
+ * IQs, having a max queue size of handlers. You should be able to plug-and-play
+ * with this adapter and Strophe like the following example:
+ *
+ * @example
+ *   var bosh = new Strophe.Connection('/http-bind/');
+ *   var xc = XC.Connection.extend({
+ *     connectionAdapter: XC.StropheAdapter.extend({
+ *       connection: bosh
+ *     })
+ *   });
  * @extends XC.ConnectionAdapter
+ * @requires A slot named "connection" with an instance of Strophe.Connection provided.
  */
 XC.StropheAdapter = XC.ConnectionAdapter.extend(
   /** @lends XC.StropheAdapter# */{
@@ -10,18 +23,31 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
   _callbacks: {},
   /** @private */
   _handlers: {},
-
+  /** @private */
   _callbackQueue: [],
+
+  /**
+   * <p>The maximum allowable size for the callback queue.
+   * When it reaches the maximum size, it will warn you about it,
+   * and begin removing stale handlers, assuming that they will never be called.
+   * This exists as a catch for memory leaks. Change this value to meet your needs.</p>
+   *
+   * <p>You <i>will</i> be warned when this quota is reached.
+   * Make sure that you aren't throwing away any live messages
+   * if you want to keep the MAX_QUEUE_SIZE where it is.</p>
+   */
   MAX_QUEUE_SIZE: 100,
 
   /** @private */
-  init: function () {
+  init: function ($super) {
     this._callbacks = {};
     this._handlers = {};
     this._callbackQueue = [];
-  },
+    $super();
+  }.around(),
 
   /**
+   * The connection's JID.
    * @returns {String} The JID associated with the connection.
    */
   jid: function () {
@@ -33,6 +59,7 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
    *
    * @param {String} event The top level XMPP tag name to register for.
    * @param {Function} handler The function handler for the event.
+   * @returns {void}
    */
   registerHandler: function (event, handler) {
     var that = this;
@@ -63,6 +90,7 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
    * Unsubscribe from corresponding event.
    *
    * @param {String} event The event to unsubscribe from.
+   * @returns {void}
    */
   unregisterHandler: function (event) {
     var queue = this._callbackQueue, i, len = queue.length, rest;
@@ -113,6 +141,7 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
    * @param {String} xml The xml to send.
    * @param {Function} callback The function to call when done.
    * @param {Array} args A list of arguments to provide to the callback.
+   * @returns {void}
    */
   send: function (xml, callback, args) {
     var node = this.createNode(xml),
@@ -176,9 +205,9 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
   },
 
   /**
+   * @private
    * Convert a stanza into an object that implements {@link XC.PacketAdapter}.
    *
-   * @private
    * @param {Element} stanza The XMPP stanza to pack.
    *
    * @returns {XC.PacketAdapter} The stanza wrapped as a packet.
@@ -194,7 +223,7 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
       getType: function () {
         return type;
       },
-      getTo: function () { 
+      getTo: function () {
         return to;
       },
       getNode: function () {

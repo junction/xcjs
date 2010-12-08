@@ -1,7 +1,7 @@
 /**
  * @namespace
  * The XMPP Registry.
- * The @see <a href="http://xmpp.org/registrar/">XMPP Registrar</a>
+ * The <a href="http://xmpp.org/registrar/">XMPP Registrar</a>
  * maintains registries of protocol namespaces and various parameters.
  */
 XC.Registrar = {};
@@ -44,9 +44,9 @@ XC.Registrar.Disco = {
  */
 XC.Registrar.Presence = {
   /**
-   * Acceptable values for the values inside
-   * a <show/> element
    * @namespace
+   * Acceptable values for the values inside
+   * a &lt;show/&gt; element
    */
   SHOW: {
     /** The entity is available to chat. */
@@ -80,8 +80,8 @@ XC.Registrar.ChatStateNotification = {
   XMLNS: 'http://jabber.org/protocol/chatstates',
 
   /**
-   * Valid states for a conversation flow.
    * @namespace
+   * Valid states for a conversation flow.
    */
   STATES: {
     /** The user is active and ready to chat; this is entry state. */
@@ -99,6 +99,9 @@ XC.Registrar.ChatStateNotification = {
 
 /**
  * @namespace
+ * Roster Item Exchange namespace information constants.
+ *
+ * @see <a href="http://xmpp.org/extensions/xep-0144.html">XEP-0144: Roster Item Exchange</a>
  */
 XC.Registrar.RosterX = {
 
@@ -109,15 +112,25 @@ XC.Registrar.RosterX = {
    */
   XMLNS: 'http://jabber.org/protocol/rosterx',
 
+  /**
+   * @namespace
+   * Possible actions requested on a node.
+   */
   ACTION: {
+    /** Add the entity to your roster */
     ADD:    'add',
+    /** Modify the entity on your roster */
     MODIFY: 'modify',
+    /** Remove the entity from your roster */
     DELETE: 'delete'
   }
 };
 
 /**
  * @namespace
+ * vcard-temp namespace information constants.
+ *
+ * @see <a href="http://xmpp.org/extensions/xep-0054.html">XEP-0054: vcard-temp</a>
  */
 XC.Registrar.VCard = {
   /**
@@ -130,6 +143,9 @@ XC.Registrar.VCard = {
 
 /**
  * @namespace
+ * Delayed Delivery namespace.
+ *
+ * @see <a href="http://xmpp.org/extensions/xep-0203.html">XEP-0203: Delayed Delivery</a>
  */
 XC.Registrar.DelayedDelivery = {
   /**

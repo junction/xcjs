@@ -1,17 +1,27 @@
 /**
  * @namespace
- * Object class for XC. All objects inherit from this one.
+ * <p>Base object for XC. All other objects inherit from this one.
+ * This provides object inheritance much like Douglas Crockford's
+ * <a href="http://javascript.crockford.com/prototypal.html">Prototypal
+ * Inheritance in JavaScript</a> with a few modifications of our own.</p>
+ *
+ * <p>This framework uses Object templates rather than classes to provide
+ * inheritance.</p>
  */
 XC.Base = {
 
   /**
-   * Iterates over all arguments, adding their own
-   * properties to the reciever.
+   * Iterates over all arguments, adding their own properties to the
+   * receiver.
    *
    * @example
-   *   obj.mixin({param: value});
+   *   obj.mixin({
+   *     hello: "world"
+   *   });
+   *   obj.hello;
+   *   // -> "world"
    *
-   * @returns {XC.Base} the reciever
+   * @returns {XC.Base} the receiver
    *
    * @see XC.Base.extend
    */
@@ -46,14 +56,20 @@ XC.Base = {
   },
 
   /**
-   * Creates a new object which extends the current object.
-   * Any arguments are mixed into the new object as if {@link XC.Base.mixin}
+   * Creates a new object which extends the current object.  Any
+   * arguments are mixed in to the new object as if {@link XC.Base.mixin}
    * was called on the new object with remaining args.
    *
    * @example
-   *   var obj = XC.Base.extend({param: value});
-   *
-   * @returns {XC.Base} The new object.
+   *   var obj = XC.Base.extend({
+   *     hello: "world"
+   *   });
+   *   obj.hello;
+   *   // -> "world"
+   * 
+   *   XC.Base.hello;
+   *   // -> undefined
+   * @returns {XC.Base} the new object
    *
    * @see XC.Base.mixin
    */

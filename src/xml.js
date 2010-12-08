@@ -1,19 +1,21 @@
 /**
- * Namespace for XML elements
  * @namespace
+ * Namespace for XML elements
  */
 XC.XML = {};
 
 /**
+ * @class
  * A simple XML element class.
  *
  * @example
- * var newElement = XC.XML.Element.extend({name: 'foo'})
- * newElement.attr('bar', 'bam');
- * newElement.addChild(XC.XML.Element.extend({name: 'child'});
+ *   var newElement = XC.XML.Element.extend({name: 'foo'});
+ *   newElement.attr('bar', 'bam');
+ *   newElement.addChild(XC.XML.Element.extend({name: 'child'}));
+ *   newElement.toString();
+ *   // -> '<foo bar="bam"><child></child></foo>'
  *
  * @extends XC.Base
- * @class
  */
 XC.XML.Element = XC.Base.extend(/** @lends XC.XML.Element# */{
   name: null,
@@ -129,16 +131,17 @@ XC.XML.Element = XC.Base.extend(/** @lends XC.XML.Element# */{
 });
 
 /**
- * Namespace for XMPP XML elements.
  * @namespace
+ * Namespace for XMPP XML elements.
  */
 XC.XML.XMPP = {};
 
 /**
+ * @class
  * Generic XMPP stanza.
  *
  * @extends XC.XML.Element
- * @class
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.Stanza = XC.XML.Element.extend(/** @lends XC.XML.XMPP.Stanza# */{
   to: function (val) {
@@ -159,20 +162,22 @@ XC.XML.XMPP.Stanza = XC.XML.Element.extend(/** @lends XC.XML.XMPP.Stanza# */{
 });
 
 /**
- * XMPP IQ stanza.
+ * @class
+ * XMPP IQ (Info Query) stanza.
  *
  * @extends XC.XML.XMPP.Stanza
- * @class
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.IQ = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.IQ# */{
   name: 'iq'
 });
 
 /**
+ * @class
  * XMPP PubSub Element
  *
  * @extends XC.XML.Element
- * @class
+ * @see <a href="http://xmpp.org/extensions/xep-0060.html#schemas-pubsub">XEP-0060: Publish Subscribe</a>
  */
 XC.XML.XMPP.PubSub = XC.XML.Element.extend(/** @lends XC.XML.XMPP.PubSub# */{
   name: 'pubsub',
@@ -180,50 +185,55 @@ XC.XML.XMPP.PubSub = XC.XML.Element.extend(/** @lends XC.XML.XMPP.PubSub# */{
 });
 
 /**
+ * @class
  * XMPP Message stanza.
  *
  * @extends XC.XML.XMPP.Stanza
- * @class
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.Message = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.Message# */{
   name: 'message'
 });
 
 /**
+ * @class
  * XMPP Presence stanza.
  *
  * @extends XC.XML.XMPP.Stanza
- * @class
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a> * 
  */
 XC.XML.XMPP.Presence = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.Presence# */{
   name: 'presence'
 });
 
 /**
+ * @class
  * XMPP Query stanza.
  *
  * @extends XC.XML.XMPP.Stanza
- * @class
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a> *  * 
  */
 XC.XML.XMPP.Query = XC.XML.Element.extend(/** @lends XMPP.Query# */{
   name: 'query'
 });
 
 /**
+ * @class
  * XMPP Error stanza.
  *
  * @extends XC.XML.XMPP.Stanza
- * @class
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a> *  * 
  */
 XC.XML.XMPP.Error = XC.XML.Element.extend(/** @lends XMPP.Error# */{
   name: 'error'
 });
 
 /**
+ * @class
  * XMPP AdHoc Command element.
  *
  * @extends XC.XML.Element
- * @class
+ * @see <a href="http://xmpp.org/extensions/xep-0050.html">XEP-0050 Ad-Hoc Commands</a>
  */
 XC.XML.XMPP.Command = XC.XML.Element.extend(/** @lends XC.XML.XMPP.Command# */{
   name: 'command',
@@ -239,10 +249,11 @@ XC.XML.XMPP.Command = XC.XML.Element.extend(/** @lends XC.XML.XMPP.Command# */{
 });
 
 /**
+ * @class
  * XMPP XDataForm element.
  *
  * @extends XC.XML.Element
- * @class
+ * @see <a href="http://xmpp.org/extensions/xep-0004.html">XEP-0004 Data Forms</a>
  */
 XC.XML.XMPP.XDataForm = XC.XML.Element.extend(/** @lends XC.XML.XMPP.XDataForm# */{
   name: 'x',

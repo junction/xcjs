@@ -31,6 +31,7 @@ XC.Mixin.VCard.Entity = /** @lends XC.Mixin.VCard.Entity# */{
    *   @param {Function} callbacks.onSuccess Called on a successful vCard get.
    *     @param {XC.Entity} callbacks.onSuccess#entity
    *       The entity that vCard information was requested for.
+   * @returns {void}
    */
   getVCard: function (callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),

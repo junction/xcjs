@@ -1,10 +1,10 @@
 /**
+ * @class
  * This documents how incoming XML stanzas should be wrapped
  * to be ingested by XC properly. This is a stub, and creates a
  * specification for you (the developer) to interface with XC.
  *
  * @name XC.PacketAdapter
- * @class
  */
 
 /**

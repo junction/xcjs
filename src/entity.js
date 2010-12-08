@@ -1,9 +1,9 @@
 /**
+ * @class
  * An entity is anything with a Jabber ID (JID).
  *
  * @requires XC.Connection A connection to do action on.
  *
- * @class
  * @extends XC.Base
  * @extends XC.Mixin.Presence
  * @extends XC.Mixin.Roster
