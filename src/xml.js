@@ -222,7 +222,7 @@ XC.XML.XMPP.Message = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.Message# 
  * XMPP Presence stanza.
  *
  * @extends XC.XML.XMPP.Stanza
- * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a> * 
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.Presence = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.Presence# */{
   name: 'presence'
@@ -233,7 +233,7 @@ XC.XML.XMPP.Presence = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.Presence
  * XMPP Query stanza.
  *
  * @extends XC.XML.XMPP.Stanza
- * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a> *  * 
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.Query = XC.XML.Element.extend(/** @lends XMPP.Query# */{
   name: 'query'
@@ -244,7 +244,7 @@ XC.XML.XMPP.Query = XC.XML.Element.extend(/** @lends XMPP.Query# */{
  * XMPP Error stanza.
  *
  * @extends XC.XML.XMPP.Stanza
- * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a> *  * 
+ * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.Error = XC.XML.Element.extend(/** @lends XMPP.Error# */{
   name: 'error'

@@ -3,7 +3,11 @@
  * <p>XMPP Client Library core object.</p>
  *
  * <p>XC is designed to be a RFC / XEP compliant JavaScript library that
- * provides an abstract API to perform common XMPP actions.</p>
+ * provides an abstract API to perform common XMPP actions. This library
+ * is not intended to ensure proper flows, and those wishing to make a
+ * compliant client should read RFC 3920, RFC 3921, and any XEPs that
+ * you plan on using. Again, this XMPP stack ensures proper messaging,
+ * not control flow.</p>
  *
  * <p>XC is <b>NOT</b> a BOSH client, and purposely uses the adapter design
  * pattern so you may provide your own.</p>

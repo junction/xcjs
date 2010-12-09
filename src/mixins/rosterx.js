@@ -126,9 +126,18 @@ XC.Mixin.RosterX.Entity = /** @lends XC.Mixin.RosterX.Entity# */{
   /**
    * Accept the Roster Item Exchange suggestion,
    * and commit the changes to your roster.
+   * @param {Object} [callbacks] An object with 'onSuccess' and 'onError' slots.
+   *   @param {Function} [callbacks.onError]
+   *      A function that will process roster errors.
+   *     @param {XC.PacketAdapter} [callbacks.onError#packet]
+   *        The packet that produced the error.
+   *   @param {Function} [callbacks.onSuccess]
+   *      A function that will be called on a successful roster request.
+   *     @param {XC.Entity} [callbacks.onSuccess#entity]
+   *        The entity that the roster request was called on.
    * @returns {void}
    */
-  acceptRosterX: function () {
+  acceptRosterX: function (callbacks) {
     switch (this.rosterx.action) {
     case 'add':
     case 'modify':
@@ -136,10 +145,10 @@ XC.Mixin.RosterX.Entity = /** @lends XC.Mixin.RosterX.Entity# */{
         name: this.rosterx.name,
         groups: this.rosterx.groups
       };
-      this.setRosterItem();
+      this.setRosterItem(callbacks);
       break;
     case 'delete':
-      this.removeRosterItem();
+      this.removeRosterItem(callbacks);
       break;
     }
   }

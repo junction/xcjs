@@ -9,24 +9,24 @@
  * library.
  *
  * @example
- * var conn = new JSJaCConnection();
- * var adapter = XC.ConnectionAdapter.extend({
- *   jid: function() { return conn.jid; },
+ *   var conn = new JSJaCConnection({ httpbase: '/http-bind/' });
+ *   var adapter = XC.ConnectionAdapter.extend({
+ *     jid: function () { return conn.fulljid; },
  *
- *   registerHandler: function (event, handler) {
- *     return conn.registerHandler(event, handler);
- *   },
+ *     registerHandler: function (event, handler) {
+ *       return conn.registerHandler(event, handler);
+ *     },
  *
- *   unregisterHandler: function (event, handler) {
- *     return conn.unregisterHandler(event, handler);
- *   },
+ *     unregisterHandler: function (event, handler) {
+ *       return conn.unregisterHandler(event, handler);
+ *     },
  *
- *   send: function (xml, cb, args) {
- *     return conn._sendRaw(xml, cb, args);
- *   }
- * });
+ *     send: function (xml, cb, args) {
+ *       return conn._sendRaw(xml, cb, args);
+ *     }
+ *   });
  *
- * var tmp = XC.Connection.extend({connection: adapter});
+ *   var adapter = XC.Connection.extend({ connectionAdapter: adapter });
  *
  * @extends XC.Base
  */

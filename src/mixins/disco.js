@@ -167,7 +167,7 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
   /**
    * Discover the items on an entity.
    *
-   * @param {Object}  [node]      The node to query for i on the entity.
+   * @param {Object}  [nodeName]  The node to query for i on the entity.
    * @param {Object}  [callbacks] An Object with methods 'onError' and 'onSuccess'.
    *   @param {Function} [callbacks.onError] A function that will process disco#items errors.
    *     @param {XC.PacketAdapter} [callbacks.onError#packet] The packet that produced the error.

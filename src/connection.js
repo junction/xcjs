@@ -18,14 +18,30 @@
  * @requires The property 'connectionAdapter' to be extended on a {@link XC.Connection}.
  *
  * @example
+ *   var bosh = new Strophe.Connection('/http-bind/')
  *   var xmpp = XC.Connection.extend({
  *     connectionAdapter: XC.StropheAdapter.extend({
- *       connection: new Strophe.Connection('/http-bind/')
+ *       connection: bosh
  *     })
  *   });
  *
- *   xmpp.Roster.requestItems();
- *   xmpp.Presence.send(null, "Just got online!", 3);
+ *   bosh.connect("juliet@example.com", "romeo", function (status) {
+ *     if (status === Strophe.Status.CONNECTED) {
+ *       // OK- Let's follow the RFC, and request the roster.
+ *       xmpp.Roster.requestItems({
+ *         onSuccess: function (entities) {
+ *           xmpp.Presence.send(null, "Hello everyone!", 3);
+ *
+ *           // Say hi to everyone in your roster.
+ *           var i = 0, len = entities.length, entity;
+ *           for (i; i < len; i++) {
+ *             entity[i].sendChat("Hello, " + entity[i].roster.name + "!\n" +
+ *                                "How are you doing today?");
+ *           }
+ *         }
+ *       });
+ *     }
+ *   });
  */
 XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
 
