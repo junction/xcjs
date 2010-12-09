@@ -41,13 +41,22 @@ XC.Test.XML = new YAHOO.tool.TestCase({
                     XC.XML.Element.escapeXML('<>"\'&'));
   },
 
-  testEscapedCharacters: function () {
+  testEscapedText: function () {
     var Assert = YAHOO.util.Assert;
     var test = XC.XML.Element.extend({name: 'test'});
     test.text = '<>"\'&';
 
     var doc = XC.Test.DOMParser.parse(test.toString()).doc;
     Assert.areSame('<>"\'&', XC_DOMHelper.getTextContent(doc.firstChild));
+  },
+
+  testEscapedAttributes: function () {
+    var Assert = YAHOO.util.Assert;
+    var test = XC.XML.Element.extend({name: 'test'});
+    test.attr("hello", '<>"\'&');
+
+    var doc = XC.Test.DOMParser.parse(test.toString()).doc;
+    Assert.areSame('<>"\'&', doc.firstChild.getAttribute('hello'));
   },
 
   testXMLNamespaces: function () {
