@@ -69,7 +69,7 @@ XC.Stanza = XC.Base.extend(/** @lends XC.Stanza# */{
    * @returns {void}
    */
   send: function () {
-    this.connection.send(this.toStanzaXML().convertToString());
+    this.connection.send(this.toStanzaXML().toString());
   },
 
   /**

@@ -74,7 +74,7 @@ XC.PresenceStanza = XC.Stanza.extend(XC.Mixin.DelayedDelivery, /** @lends XC.Pre
     }
 
     p.to = this.from;
-    p.to.connection.send(p.toStanzaXML().convertToString());
+    p.to.connection.send(p.toStanzaXML().toString());
   },
 
   /**
@@ -102,7 +102,7 @@ XC.PresenceStanza = XC.Stanza.extend(XC.Mixin.DelayedDelivery, /** @lends XC.Pre
     }
 
     p.to = this.from;
-    p.to.connection.send(p.toStanzaXML().convertToString());
+    p.to.connection.send(p.toStanzaXML().toString());
   },
 
   /**

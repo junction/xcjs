@@ -54,7 +54,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.RosterX.Service,
     iq.type('get');
     iq.addChild(q);
 
-    this.connection.send(iq.convertToString(), function (packet) {
+    this.connection.send(iq.toString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError &&
           XC.isFunction(callbacks.onError)) {
@@ -99,7 +99,7 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.RosterX.Service,
       var iq = XC.XML.XMPP.IQ.extend();
       iq.type('result');
       iq.attr('id', packet.getAttribute('id'));
-      this.connection.send(iq.convertToString());
+      this.connection.send(iq.toString());
 
     // Process the items passed from the roster.
     }

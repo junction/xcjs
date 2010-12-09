@@ -54,11 +54,33 @@ XC.XML.Element = XC.Base.extend(/** @lends XC.XML.Element# */{
   },
 
   /**
+   * @function
+   * Escape XML characters to prevent parser errors.
+   *
+   * @param {String} string The string to escape.
+   * @returns {String} The escaped string.
+   */
+  escapeXML: (function () {
+    var character = {
+      '"': '&quot;',
+      "'": '&apos;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '&': '&amp;'
+    }, re = /[<>&"']/g;
+    return function (str) {
+      return str.replace(re, function (c) {
+        return character[c];
+      });
+    };
+  }()),
+
+  /**
    * Return an XML string representation of this element.
    *
    * @returns {String} This XML element as XML text.
    */
-  convertToString: function () {
+  toString: function () {
     var ret = "";
     var attrs = [];
 
@@ -83,11 +105,11 @@ XC.XML.Element = XC.Base.extend(/** @lends XC.XML.Element# */{
 
     var children = this.children || [];
     for (var i = 0, len = children.length; i < len; i++) {
-      ret += this.children[i].convertToString();
+      ret += this.children[i].toString();
     }
 
     if (this.text) {
-      ret += this.text;
+      ret += this.escapeXML(this.text.toString());
     }
 
     ret += "</" + this.name + ">";

@@ -41,7 +41,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
       priority: priority
     });
 
-    this.connection.send(p.toStanzaXML().convertToString());
+    this.connection.send(p.toStanzaXML().toString());
   },
 
   /**
@@ -56,7 +56,7 @@ XC.Service.Presence = XC.Base.extend(XC.Mixin.HandlerRegistration,
       status: status
     });
 
-    this.connection.send(p.toStanzaXML().convertToString());
+    this.connection.send(p.toStanzaXML().toString());
   },
 
   /**

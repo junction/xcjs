@@ -58,7 +58,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
       to: this
     });
 
-    this.connection.send(p.toStanzaXML().convertToString());
+    this.connection.send(p.toStanzaXML().toString());
   },
 
   /**
@@ -70,7 +70,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
     p.attr('type', 'subscribe');
     p.to(this.jid);
 
-    this.connection.send(p.convertToString());
+    this.connection.send(p.toString());
   },
 
   /**
@@ -82,7 +82,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
     p.attr('type', 'unsubscribe');
     p.to(this.jid);
 
-    this.connection.send(p.convertToString());
+    this.connection.send(p.toString());
   },
 
   /**
@@ -94,7 +94,7 @@ XC.Mixin.Presence = /** @lends XC.Mixin.Presence# */{
     p.attr('type', 'unsubscribed');
     p.to(this.jid);
 
-    this.connection.send(p.convertToString());
+    this.connection.send(p.toString());
   }
 
 };

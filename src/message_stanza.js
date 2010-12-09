@@ -69,7 +69,7 @@ XC.MessageStanza = XC.Stanza.extend(XC.Mixin.ChatStateNotification.Message,
       id: id
     });
 
-    this.connection.send(msg.toStanzaXML().convertToString());
+    this.connection.send(msg.toStanzaXML().toString());
   },
 
   /**

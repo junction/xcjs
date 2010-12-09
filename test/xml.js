@@ -35,6 +35,21 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     delete this.iqDoc;
   },
 
+  testEscapeXML: function () {
+    var Assert = YAHOO.util.Assert;
+    Assert.areEqual('&lt;&gt;&quot;&apos;&amp;',
+                    XC.XML.Element.escapeXML('<>"\'&'));
+  },
+
+  testEscapedCharacters: function () {
+    var Assert = YAHOO.util.Assert;
+    var test = XC.XML.Element.extend({name: 'test'});
+    test.text = '<>"\'&';
+
+    var doc = XC.Test.DOMParser.parse(test.toString()).doc;
+    Assert.areSame('<>"\'&', XC_DOMHelper.getTextContent(doc.firstChild));
+  },
+
   testXMLNamespaces: function () {
     var Assert = YAHOO.util.Assert;
 
@@ -78,11 +93,11 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     Assert.areEqual('bar', createdElement.attr('foo'));
     Assert.areEqual('test', createdElement.name);
 
-    var doc = XC.Test.DOMParser.parse(createdElement.convertToString());
+    var doc = XC.Test.DOMParser.parse(createdElement.toString());
     Assert.areEqual('the text', doc.getPathValue('/test/child/text()'));
 
     var createdElement2 = typeOfElement.create(createdAttrs, createdChild);
-    Assert.areEqual(createdElement.convertToString(), createdElement2.convertToString());
+    Assert.areEqual(createdElement.toString(), createdElement2.toString());
   },
 
   testDemoXMLStructure: function () {
@@ -137,7 +152,7 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     //
     // test DOM structure xpath
     //
-    var doc = XC.Test.DOMParser.parse(iq.convertToString());
+    var doc = XC.Test.DOMParser.parse(iq.toString());
     Assert.areEqual(iq.to(),
                     doc.getPathValue('/iq/@to'),
                     "xpath not equal to iq.to()");
@@ -197,7 +212,7 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     //
     // test DOM structure xpath
     //
-    var doc = XC.Test.DOMParser.parse(iq.convertToString());
+    var doc = XC.Test.DOMParser.parse(iq.toString());
     Assert.areEqual(cmd.node(),
                     doc.getPathValue('/iq/cmd:command/@node'),
                     "xpath not equal to cmd.node()");
@@ -240,7 +255,7 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     //
     // test DOM structure xpath
     //
-    var doc = XC.Test.DOMParser.parse(iq.convertToString());
+    var doc = XC.Test.DOMParser.parse(iq.toString());
     Assert.areEqual(x.type(),
                     doc.getPathValue('/iq/cmd:command/x:x/@type'),
                     "xpath not equal to x.type()");

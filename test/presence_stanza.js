@@ -76,7 +76,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     var pres = this.xc.PresenceStanza.extend();
 
-    Assert.XPathTests(pres.toStanzaXML().convertToString(), {
+    Assert.XPathTests(pres.toStanzaXML().toString(), {
       nothing: {
         value: null,
         xpath: '/presence',
@@ -91,7 +91,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       type: 'unavailable'
     });
 
-    Assert.XPathTests(pres.toStanzaXML().convertToString(), {
+    Assert.XPathTests(pres.toStanzaXML().toString(), {
       to: {
         value: this.chong.jid,
         xpath: '/presence/@to'
@@ -108,7 +108,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       priority: 5
     });
 
-    Assert.XPathTests(pres.toStanzaXML().convertToString(), {
+    Assert.XPathTests(pres.toStanzaXML().toString(), {
       show: {
         value: 'away',
         xpath: '/presence/show/text()'

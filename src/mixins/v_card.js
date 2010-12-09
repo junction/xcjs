@@ -42,7 +42,7 @@ XC.Mixin.VCard.Entity = /** @lends XC.Mixin.VCard.Entity# */{
     iq.type('get');
     iq.addChild(vCard);
 
-    this.connection.send(iq.convertToString(), function (packet) {
+    this.connection.send(iq.toString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError &&
           XC.isFunction(callbacks.onError)) {

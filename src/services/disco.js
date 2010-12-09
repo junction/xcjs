@@ -52,7 +52,7 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
     error.attr('type', 'cancel');
     error.addChild(itemNotFound);
     iq.addChild(error);
-    this.connection.send(iq.convertToString());
+    this.connection.send(iq.toString());
   },
 
   /**
@@ -102,7 +102,7 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
       q.addChild(item);
     }
 
-    this.connection.send(iq.convertToString());
+    this.connection.send(iq.toString());
   },
 
   /**
@@ -158,7 +158,7 @@ XC.Service.Disco = XC.Base.extend(XC.Mixin.Discoverable,
       q.addChild(elem);
     }
 
-    this.connection.send(iq.convertToString());
+    this.connection.send(iq.toString());
   }
 
 });

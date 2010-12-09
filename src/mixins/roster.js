@@ -78,7 +78,7 @@ XC.Mixin.Roster = /** @lends XC.Mixin.Roster# */{
 
     q.addChild(item);
     iq.addChild(q);
-    this.connection.send(iq.convertToString(), function (packet) {
+    this.connection.send(iq.toString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError &&
           XC.isFunction(callbacks.onError)) {
@@ -118,7 +118,7 @@ XC.Mixin.Roster = /** @lends XC.Mixin.Roster# */{
 
     q.addChild(item);
     iq.addChild(q);
-    this.connection.send(iq.convertToString(), function (packet) {
+    this.connection.send(iq.toString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError &&
           XC.isFunction(callbacks.onError)) {

@@ -33,7 +33,7 @@ var XC_DOMHelper = {
    * Get the first child from a document fragment that is an Element.
    *
    * @param {Element|Node} el The document fragment to search.
-   * @returns The node if it exists or null.
+   * @returns {Node|null} The node if it exists or null.
    */
   getFirstElementChild: function (el) {
     var nodeType = XC_DOMHelper.NodeTypes.ELEMENT_NODE;

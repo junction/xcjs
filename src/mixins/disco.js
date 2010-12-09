@@ -126,7 +126,7 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
       q.attr('node', nodeName);
     }
 
-    this.connection.send(iq.convertToString(), function (packet) {
+    this.connection.send(iq.toString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError &&
           XC.isFunction(callbacks.onError)) {
@@ -193,7 +193,7 @@ XC.Mixin.Disco = /** @lends XC.Mixin.Disco# */{
       q.attr('node', node);
     }
 
-    this.connection.send(iq.convertToString(), function (packet) {
+    this.connection.send(iq.toString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError && XC.isFunction(callbacks.onError)) {
         callbacks.onError(packet);

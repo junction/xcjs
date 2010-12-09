@@ -80,7 +80,7 @@ XC.Test.MessageStanza = new YAHOO.tool.TestCase({
       thread: "Avatar"
     });
 
-    Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
+    Assert.isXMPPMessage(msg.toStanzaXML().toString(),
                         this.chong.jid,
                         'chat', {
       subject: {
@@ -102,7 +102,7 @@ XC.Test.MessageStanza = new YAHOO.tool.TestCase({
       body: "No subject and no thread"
     });
 
-    Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
+    Assert.isXMPPMessage(msg.toStanzaXML().toString(),
                         this.chong.jid,
                         'chat', {
       subject: {
@@ -125,7 +125,7 @@ XC.Test.MessageStanza = new YAHOO.tool.TestCase({
       id: 'message-1'
     });
 
-    Assert.isXMPPMessage(msg.toStanzaXML().convertToString(),
+    Assert.isXMPPMessage(msg.toStanzaXML().toString(),
                         this.chong.jid,
                         'chat', {
       id: {

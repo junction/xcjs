@@ -51,6 +51,11 @@ XC.Base = {
           this[prop] = val;
         }
       }
+
+      // Prevents IE from clobbering toString
+      if (obj && obj.toString !== Object.prototype.toString) {
+        this.toString = obj.toString;
+      }
     }
     return this;
   },

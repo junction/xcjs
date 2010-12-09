@@ -36,7 +36,7 @@ XC.Service.VCard = XC.Base.extend(XC.Mixin.Discoverable,
     iq.type('get');
     iq.addChild(vCard);
 
-    this.connection.send(iq.convertToString(), function (packet) {
+    this.connection.send(iq.toString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError &&
           XC.isFunction(callbacks.onError)) {
@@ -61,14 +61,14 @@ XC.Service.VCard = XC.Base.extend(XC.Mixin.Discoverable,
    */
   set: function (vCard, callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),
-        rawVCard = XC.Base.extend({ convertToString: function () {
+        rawVCard = XC.Base.extend({ toString: function () {
                                       return XC_DOMHelper.serializeToString(vCard);
                                     }
                                   });
     iq.type('set');
     iq.addChild(rawVCard);
 
-    this.connection.send(iq.convertToString(), function (packet) {
+    this.connection.send(iq.toString(), function (packet) {
       if (packet.getType() === 'error' &&
           callbacks && callbacks.onError &&
           XC.isFunction(callbacks.onError)) {

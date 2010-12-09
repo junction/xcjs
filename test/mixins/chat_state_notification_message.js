@@ -33,7 +33,7 @@ XC.Test.Mixin.ChatStateNotificationMessage = new YAHOO.tool.TestCase({
     var msg = this.xc.MessageStanza.extend();
     Assert.areEqual('active', msg.chatNotificationState);
 
-    Assert.XPathTests(msg.toStanzaXML().convertToString(), {
+    Assert.XPathTests(msg.toStanzaXML().toString(), {
       active: {
         xpath: '/message/chatStates:active',
         value: null,
@@ -70,7 +70,7 @@ XC.Test.Mixin.ChatStateNotificationMessage = new YAHOO.tool.TestCase({
         chatNotificationState: states[i]
       });
 
-      Assert.XPathTests(msg.toStanzaXML().convertToString(), {
+      Assert.XPathTests(msg.toStanzaXML().toString(), {
         state: {
           xpath: '/message/chatStates:' + states[i],
           value: null,

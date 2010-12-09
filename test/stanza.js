@@ -65,13 +65,13 @@ XC.Test.Stanza = new YAHOO.tool.TestCase({
       xmlStanza: XC.XML.Element.extend({name: 'foo'})
     }), xmlStanza = stanza.toStanzaXML();
 
-    Assert.areEqual('<foo></foo>', xmlStanza.convertToString());
+    Assert.areEqual('<foo></foo>', xmlStanza.toString());
 
     stanza.to = XC.Entity.extend({jid: 'hage-san@okinawa.com'});
     stanza.from = XC.Entity.extend({jid: 'hanzo@okinawa.com'});
     stanza.type = 'bar';
 
-    Assert.XPathTests(stanza.toStanzaXML().convertToString(), {
+    Assert.XPathTests(stanza.toStanzaXML().toString(), {
       to: {
         xpath: '/foo/@to',
         value: stanza.to.jid

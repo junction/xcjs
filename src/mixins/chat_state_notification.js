@@ -33,7 +33,7 @@ XC.Mixin.ChatStateNotification.Entity =
       chatNotificationState: state
     });
 
-    this.connection.send(msg.toStanzaXML().convertToString());
+    this.connection.send(msg.toStanzaXML().toString());
   }
 };
 
