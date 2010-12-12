@@ -50,7 +50,7 @@ This library is NOT a client side BOSH implementation. Use a BOSH JavaScript imp
 
 Tests
 -----
-This library has been extensively tested. If you find any bugs, and would like to contribute, write a test making the condition fail, then fixing the code. We're happy to have any contributors to the project.
+This library has been extensively tested. If you find any bugs, and would like to contribute, write a test making the condition fail, then fix the offending code. We're happy to have any contributors to the project.
 
 XC has been tested (and has all tests passing) on the following platforms:
 

@@ -100,8 +100,8 @@ XC.Mixin.RosterX.Service = XC.Base.extend(XC.Mixin.Discoverable,
 XC.Mixin.RosterX.Entity = /** @lends XC.Mixin.RosterX.Entity# */{
 
   /**
-   * The Roster Item Exchange slot
    * @namespace
+   * The Roster Item Exchange slot
    */
   rosterx: {
     /**
