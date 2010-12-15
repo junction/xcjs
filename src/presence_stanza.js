@@ -122,7 +122,7 @@ XC.PresenceStanza = XC.Stanza.extend(XC.Mixin.DelayedDelivery, /** @lends XC.Pre
 
     var els = ['status', 'priority'];
 
-    if (this.show && this.show !== XC.Registrar.Presence.SHOW.AVAILABLE) {
+    if (this.show) {
       msg.addChild(XC.XML.Element.extend({
         name: 'show',
         text: this.show

@@ -17,7 +17,7 @@ function resize(e) {
     x = 400;
   }
   index.setAttribute('style', 'width: ' + x + "px");
-  content.setAttribute('style', 'left: ' + x + "px");
+  content.setAttribute('style', 'left: ' + (x + 1) + "px");
 
   e.returnValue = false;
   return false;
