@@ -11,8 +11,16 @@
  *
  * <p>XC is <b>NOT</b> a BOSH client, and purposely uses the adapter design
  * pattern so you may provide your own.</p>
+ * @version 1.3.4
  */
 var XC = {
+
+  /**
+   * The version number for XC using <a href="http://semver.org">Semantic Versioning</a>.
+   * @type String
+   */
+  VERSION: '1.3.4',
+
   /**
    * Prints a debug message to the console, if window.console exists.
    * @returns {void}
