@@ -76,7 +76,9 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
         handler.apply(this, newArgs);
       } catch (e) {
         XC.error('Error in XC handler: ' + handler +
-                 '; Error: ' + e + '; response stanza: ' + stanza);
+                 '; Error: ' + e + '; response stanza: ' +
+                 XC_DOMHelper.serializeToString(stanza));
+        throw e;
       }
       return true;
     };
@@ -138,7 +140,7 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
   /**
    * Send the xml fragment over the connection.
    *
-   * @param {String} xml The xml to send.
+   * @param {Element} xml The xml document to send.
    * @param {Function} callback The function to call when done.
    * @param {Array} args A list of arguments to provide to the callback.
    * @returns {void}
@@ -148,8 +150,9 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
         that = this;
 
     if (!this.connection.connected || this.connection.disconnecting) {
-      XC.log('Prevented "' + xml + '" from being sent because ' +
-             'the BOSH connection is being disposed / is disposed.');
+      XC.log('Prevented "' + XC_DOMHelper.serializeToString(xml) + '" ' +
+             'from being sent because the BOSH connection is being ' +
+             'disposed / is disposed.');
       return false;
     }
 
@@ -164,13 +167,6 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
           newArgs.push(args[i]);
         }
 
-        try {
-          callback.apply(this, newArgs);
-        } catch (e) {
-          XC.error('Error in XC handler: ' + callback +
-                   '; Error: ' + e + '; response stanza: ' + stanza);
-        }
-
         // Remove from the callback queue
         for (i = 0, len = queue.length; i < len; i++) {
           if (queue[i].toString() === event) {
@@ -182,6 +178,15 @@ XC.StropheAdapter = XC.ConnectionAdapter.extend(
         }
 
         delete that._callbacks[event];
+
+        try {
+          callback.apply(this, newArgs);
+        } catch (e) {
+          XC.error('Error in XC handler: ' + callback +
+                   '; Error: ' + e + '; response stanza: ' +
+                   XC_DOMHelper.serializeToString(stanza));
+          throw e;
+        }
 
         return false;
       };
