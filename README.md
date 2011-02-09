@@ -69,83 +69,30 @@ For the examples to work properly they must be served from same domain as the bo
 
 to your .conf file, and restarting Apache. If you go to http://localhost/http-bind, you should see something like "You really don't look like a BOSH client to me... what do you want?". Now, start up the example on your localhost, and check it out!
 
-TODO
-----
+FUTURE
+------
 
-version 2 thought... instead of parsing out values into json, intead return objects that include the DOM node of the XMPP stanza and a list of XPaths for known elements that can be parsed out, this will allow the client library to lazily retrieve.
+We have some ideas on making the library more extensible, since this version is quite rigid.
+This includes instead of parsing out values into JSON, returning objects that include the DOM node of the XMPP stanza and a list of XPaths for known elements that can be parsed out, this will allow the client library to lazily retrieve.
 
 For example:
 
 receive XML: 
- <message type='chat'>
-   <body>Hi There</body>
-   <foo xmlns="urn:foobar"><bar>value</bar></foo>
- </message>
+    <message type='chat'>
+      <body>Hi There</body>
+      <foo xmlns="urn:foobar"><bar>value</bar></foo>
+    </message>
 
 creates object =>
 
-msg = {
-  doc: <a dom document>
-  xpaths: {
-    type: '/message/@type',
-    body: '/message/body',
-    foobar:foo: '/message/foo',
-    foobar:bar: '/message/foo/bar'
-  }
-}
+    msg = {
+      doc: <a dom document>
+      xpaths: {
+        type: '/message/@type',
+        body: '/message/body',
+        foobar:foo: '/message/foo',
+        foobar:bar: '/message/foo/bar'
+      }
+    }
 
-// KVO approach:
-
-msg = {
-
-  XPathReader: function () {
-    return new DOMParser(this.get('doc'));
-  }.cacheable(),
-
-  type: XPathProperty.extend('/message/@type'),
-  body: XPathProperty.extend('/message/body/text()'),
-
-  // Handle all unknown lookups, assuming that they are XPath.
-  unknownProperty: function (xpath) {
-    return this.get('reader').getNodeValueFor(xpath);
-  }
-}
-
-XC.Registrar.register('urn:foobar').as('foobar');
-
-msg.get('type');
-// -> "chat"
-
-msg.get('/message/foobar:foo/foobar:bar/@text');
-// -> "value"
-
-This API would just be for reading incoming stanzas in XC,
-not for creating outgoing stanzas.
-
-We *could* have a cover so we can use the .set()
-functionality to fool those into thinking that the API handled
-that, but it isn't necessary, and is waay too confusing and
-mixes two independant parts of the library.
-
-This approach will be more maintainable and probably be
-easier to test and extend (if done properly).
-
-Ideally, the message class would look like:
-
-XC.Message = XC.Stanza.extend({
-  subject: '/message/subject/text()',
-  body: '/message/body/text()',
-  thread: '/message/thread/text()',
-  parentThread: '/message/thread/@parent'
-});
-
-Hardly any work at all!
-
-Also, we should make our code read like the RFC and XEPs
-so we can reference compliance with it. Consumers of this
-library still neeed to know the RFC, so we might be able
-to get away with simplifying some aspects of the API,
-distilling it to a very simple and standardized set of
-calls for creating XMPP stanzas, erring on the side of
-more flexibility and control over ease of use (however,
-simplicity is a MUST). Ease of use is bonus work on top.
+Combining this with a delivery system that emphasizes pattern matching / condition mapping instead of brittle pre-baked event listeners, we can design a library that is lighter and minimal.
