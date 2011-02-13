@@ -79,7 +79,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     Assert.XPathTests(pres.toStanzaXML().toString(), {
       nothing: {
         value: null,
-        xpath: '/presence',
+        xpath: '/client:presence',
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);
         }
@@ -94,11 +94,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     Assert.XPathTests(pres.toStanzaXML().toString(), {
       to: {
         value: this.chong.jid,
-        xpath: '/presence/@to'
+        xpath: '/client:presence/@to'
       },
       type: {
         value: 'unavailable',
-        xpath: '/presence/@type'
+        xpath: '/client:presence/@type'
       }
     });
 
@@ -111,15 +111,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     Assert.XPathTests(pres.toStanzaXML().toString(), {
       show: {
         value: 'away',
-        xpath: '/presence/show/text()'
+        xpath: '/client:presence/client:show/text()'
       },
       status: {
         value: 'Frolicking',
-        xpath: '/presence/status/text()'
+        xpath: '/client:presence/client:status/text()'
       },
       priority: {
         value: '5',
-        xpath: '/presence/priority/text()'
+        xpath: '/client:presence/client:priority/text()'
       }
     });
   },
@@ -135,11 +135,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: pres.from.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'subscribed'
       }
     });
@@ -149,11 +149,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: pres.from.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'subscribe'
       }
     });
@@ -163,11 +163,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: pres.from.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'unsubscribed'
       }
     });
@@ -177,11 +177,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: pres.from.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'unsubscribe'
       }
     });
@@ -198,11 +198,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: pres.from.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'unsubscribed'
       }
     });
@@ -212,11 +212,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: pres.from.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'unsubscribe'
       }
     });
@@ -226,11 +226,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: pres.from.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'subscribed'
       }
     });
@@ -240,11 +240,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: pres.from.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'subscribe'
       }
     });

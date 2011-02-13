@@ -98,11 +98,11 @@ XC.Test.Service.VCard = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: undefined
       },
       vCard: {
-        xpath: '/iq/vcard:vCard',
+        xpath: '/client:iq/vcard:vCard',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);
@@ -214,23 +214,23 @@ XC.Test.Service.VCard = new YAHOO.tool.TestCase({
     // Test a few element to ensure that they're there.
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'set'
       },
       FN: {
-        xpath: '/iq/vcard:vCard/vcard:FN/text()',
+        xpath: '/client:iq/vcard:vCard/vcard:FN/text()',
         value: 'Peter Saint-Andre'
       },
       NICKNAME: {
-        xpath: '/iq/vcard:vCard/vcard:NICKNAME/text()',
+        xpath: '/client:iq/vcard:vCard/vcard:NICKNAME/text()',
         value: 'stpeter'
       },
       JABBERID: {
-        xpath: '/iq/vcard:vCard/vcard:FN/text()',
+        xpath: '/client:iq/vcard:vCard/vcard:FN/text()',
         value: 'Peter Saint-Andre'
       },
       TELNUMBER: {
-        xpath: '/iq/vcard:vCard/vcard:TEL/vcard:NUMBER/text()',
+        xpath: '/client:iq/vcard:vCard/vcard:TEL/vcard:NUMBER/text()',
         value: '303-308-3282'
       }
     });

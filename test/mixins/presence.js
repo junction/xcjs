@@ -38,19 +38,19 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: this.arthur.jid
       },
       show: {
-        xpath: '/presence/show/text()',
+        xpath: '/client:presence/client:show/text()',
         value: 'away'
       },
       status: {
-        xpath: '/presence/status/text()',
+        xpath: '/client:presence/client:status/text()',
         value: 'Running away from a room full of monkeys that wrote Macbeth'
       },
       priority: {
-        xpath: '/presence/priority/text()',
+        xpath: '/client:presence/client:priority/text()',
         value: '3'
       }
     });
@@ -63,11 +63,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: this.arthur.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'subscribe'
       }
     });
@@ -80,11 +80,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: this.arthur.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'unsubscribe'
       }
     });
@@ -97,11 +97,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/presence/@to',
+        xpath: '/client:presence/@to',
         value: this.arthur.jid
       },
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'unsubscribed'
       }
     });

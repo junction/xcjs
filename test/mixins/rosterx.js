@@ -148,19 +148,19 @@ XC.Test.RosterX = new YAHOO.tool.TestCase({
           entity.acceptRosterX();
           Assert.XPathTests(that.conn.getLastStanzaXML(), {
             type: {
-              xpath: '/iq/@type',
+              xpath: '/client:iq/@type',
               value: 'set'
             },
             jid: {
-              xpath: '/iq/roster:query/roster:item/@jid',
+              xpath: '/client:iq/roster:query/roster:item/@jid',
               value: expected[i].jid
             },
             name: {
-              xpath: '/iq/roster:query/roster:item/@name',
+              xpath: '/client:iq/roster:query/roster:item/@name',
               value: expected[i].name
             },
             group: {
-              xpath: '/iq/roster:query/roster:item/roster:group/text()',
+              xpath: '/client:iq/roster:query/roster:item/roster:group/text()',
               value: expected[i].group
             }
           });
@@ -176,15 +176,15 @@ XC.Test.RosterX = new YAHOO.tool.TestCase({
         entity.acceptRosterX();
         Assert.XPathTests(that.conn.getLastStanzaXML(), {
           type: {
-            xpath: '/iq/@type',
+            xpath: '/client:iq/@type',
             value: 'set'
           },
           jid: {
-            xpath: '/iq/roster:query/roster:item/@jid',
+            xpath: '/client:iq/roster:query/roster:item/@jid',
             value: "osric@denmark.lit"
           },
           subscription: {
-            xpath: '/iq/roster:query/roster:item/@subscription',
+            xpath: '/client:iq/roster:query/roster:item/@subscription',
             value: "remove"
           }
         });

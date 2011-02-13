@@ -109,15 +109,15 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
     Assert.isTrue(fired, 'callback did not fire');
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'result'
       },
       checkID: {
-        xpath: '/iq/@id',
+        xpath: '/client:iq/@id',
         value: 'set1'
       },
       noChildren: {
-        xpath: '/iq[0]',
+        xpath: '/client:iq[0]',
         value: undefined
       }
     });

@@ -52,23 +52,23 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: packet.getFrom()
       },
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'result'
       },
       rosterx: {
-        xpath: '/iq/discoInfo:query/discoInfo:feature[1]/@var',
+        xpath: '/client:iq/discoInfo:query/discoInfo:feature[1]/@var',
         value: 'http://jabber.org/protocol/rosterx'
       },
       info: {
-        xpath: '/iq/discoInfo:query/discoInfo:feature[2]/@var',
+        xpath: '/client:iq/discoInfo:query/discoInfo:feature[2]/@var',
         value: 'http://jabber.org/protocol/disco#info'
       },
       items: {
-        xpath: '/iq/discoInfo:query/discoInfo:feature[3]/@var',
+        xpath: '/client:iq/discoInfo:query/discoInfo:feature[3]/@var',
         value: 'http://jabber.org/protocol/disco#items'
       }
     });
@@ -91,27 +91,27 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: packet.getFrom()
       },
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'result'
       },
       node: {
-        xpath: '/iq/discoInfo:query/@node',
+        xpath: '/client:iq/discoInfo:query/@node',
         value: 'http://jabber.org/protocol/tune'
       },
       A: {
-        xpath: '/iq/discoInfo:query/discoInfo:feature[1]/@var',
+        xpath: '/client:iq/discoInfo:query/discoInfo:feature[1]/@var',
         value: 'A'
       },
       B: {
-        xpath: '/iq/discoInfo:query/discoInfo:feature[2]/@var',
+        xpath: '/client:iq/discoInfo:query/discoInfo:feature[2]/@var',
         value: 'B'
       },
       C: {
-        xpath: '/iq/discoInfo:query/discoInfo:feature[3]/@var',
+        xpath: '/client:iq/discoInfo:query/discoInfo:feature[3]/@var',
         value: 'C'
       }
     });
@@ -133,23 +133,23 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: packet.getFrom()
       },
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'result'
       },
       itemJID: {
-        xpath: '/iq/discoItems:query/discoItems:item[1]/@jid',
+        xpath: '/client:iq/discoItems:query/discoItems:item[1]/@jid',
         value: this.conn.jid()
       },
       itemNode: {
-        xpath: '/iq/discoItems:query/discoItems:item[1]/@node',
+        xpath: '/client:iq/discoItems:query/discoItems:item[1]/@node',
         value: 'http://jabber.org/protocol/tune'
       },
       itemName: {
-        xpath: '/iq/discoItems:query/discoItems:item[1]/@name',
+        xpath: '/client:iq/discoItems:query/discoItems:item[1]/@name',
         value: 'Romeo\'s slow jams'
       }
     });
@@ -172,39 +172,39 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: packet.getFrom()
       },
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'result'
       },
       node: {
-        xpath: '/iq/discoItems:query/@node',
+        xpath: '/client:iq/discoItems:query/@node',
         value: 'http://jabber.org/protocol/tune'
       },
       firstJID: {
-        xpath: '/iq/discoItems:query/discoItems:item[1]/@jid',
+        xpath: '/client:iq/discoItems:query/discoItems:item[1]/@jid',
         value: "pubsub.shakespeare.lit"
       },
       firstNode: {
-        xpath: '/iq/discoItems:query/discoItems:item[1]/@node',
+        xpath: '/client:iq/discoItems:query/discoItems:item[1]/@node',
         value: 'CD'
       },
       firstName: {
-        xpath: '/iq/discoItems:query/discoItems:item[1]/@name',
+        xpath: '/client:iq/discoItems:query/discoItems:item[1]/@name',
         value: 'Romeo\'s CD player'
       },
       secondJID: {
-        xpath: '/iq/discoItems:query/discoItems:item[2]/@jid',
+        xpath: '/client:iq/discoItems:query/discoItems:item[2]/@jid',
         value: "pubsub.montague.net"
       },
       secondNode: {
-        xpath: '/iq/discoItems:query/discoItems:item[2]/@node',
+        xpath: '/client:iq/discoItems:query/discoItems:item[2]/@node',
         value: 'music/R/Romeo/iPod'
       },
       secondName: {
-        xpath: '/iq/discoItems:query/discoItems:item[2]/@name',
+        xpath: '/client:iq/discoItems:query/discoItems:item[2]/@name',
         value: undefined
       }
     });
@@ -227,23 +227,23 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: packet.getFrom()
       },
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'error'
       },
       node: {
-        xpath: '/iq/discoInfo:query/@node',
+        xpath: '/client:iq/discoInfo:query/@node',
         value: 'bollocks'
       },
       errorType: {
-        xpath: '/iq/error/@type',
+        xpath: '/client:iq/client:error/@type',
         value: 'cancel'
       },
       errorChild: {
-        xpath: '/iq/error/err:item-not-found',
+        xpath: '/client:iq/client:error/err:item-not-found',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);
@@ -270,23 +270,23 @@ XC.Test.Service.Disco = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: packet.getFrom()
       },
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'error'
       },
       node: {
-        xpath: '/iq/discoItems:query/@node',
+        xpath: '/client:iq/discoItems:query/@node',
         value: 'bollocks'
       },
       errorType: {
-        xpath: '/iq/error/@type',
+        xpath: '/client:iq/client:error/@type',
         value: 'cancel'
       },
       errorChild: {
-        xpath: '/iq/error/err:item-not-found',
+        xpath: '/client:iq/client:error/err:item-not-found',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);

@@ -44,15 +44,15 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       Set: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'set'
       },
       itemJID: {
-        xpath: '/iq/roster:query/roster:item/@jid',
+        xpath: '/client:iq/roster:query/roster:item/@jid',
         value: 'marvin@heart-of-gold.com'
       },
       itemName: {
-        xpath: '/iq/roster:query/roster:item/@subscription',
+        xpath: '/client:iq/roster:query/roster:item/@subscription',
         value: 'remove'
       }
     });
@@ -85,15 +85,15 @@ XC.Test.Mixin.Roster = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       Set: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'set'
       },
       itemJID: {
-        xpath: '/iq/roster:query/roster:item/@jid',
+        xpath: '/client:iq/roster:query/roster:item/@jid',
         value: 'marvin@heart-of-gold.com'
       },
       itemName: {
-        xpath: '/iq/roster:query/roster:item/@name',
+        xpath: '/client:iq/roster:query/roster:item/@name',
         value: 'Marvin'
       }
     });

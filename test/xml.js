@@ -134,6 +134,12 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     Assert.areEqual(this.demoDoc.getPathValue('/foo/bar[2]/value/text()'), value2.text);
   },
 
+  testStanzaStructure: function () {
+    var Assert = YAHOO.util.Assert;
+    var stanza = XC.XML.XMPP.Stanza.extend();
+    Assert.areEqual('jabber:client', stanza.xmlns, 'stanza namespace is incorrect');    
+  },
+
   testIQStructure: function () {
     var Assert = YAHOO.util.Assert;
     var iq = XC.XML.XMPP.IQ.extend(),
@@ -163,10 +169,10 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     //
     var doc = XC.Test.DOMParser.parse(iq.toString());
     Assert.areEqual(iq.to(),
-                    doc.getPathValue('/iq/@to'),
+                    doc.getPathValue('/client:iq/@to'),
                     "xpath not equal to iq.to()");
     Assert.areEqual(iq.from(),
-                    doc.getPathValue('/iq/@from'),
+                    doc.getPathValue('/client:iq/@from'),
                     "xpath not equal to iq.from()");
   },
 
@@ -223,10 +229,10 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     //
     var doc = XC.Test.DOMParser.parse(iq.toString());
     Assert.areEqual(cmd.node(),
-                    doc.getPathValue('/iq/cmd:command/@node'),
+                    doc.getPathValue('/client:iq/cmd:command/@node'),
                     "xpath not equal to cmd.node()");
     Assert.areEqual(cmd.action(),
-                    doc.getPathValue('/iq/cmd:command/@action'),
+                    doc.getPathValue('/client:iq/cmd:command/@action'),
                     "xpath not equal to cmd.action()");
   },
 
@@ -266,12 +272,12 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     //
     var doc = XC.Test.DOMParser.parse(iq.toString());
     Assert.areEqual(x.type(),
-                    doc.getPathValue('/iq/cmd:command/x:x/@type'),
+                    doc.getPathValue('/client:iq/cmd:command/x:x/@type'),
                     "xpath not equal to x.type()");
     Assert.areEqual('f1Value',
-                    doc.getPathValue('/iq/cmd:command/x:x/x:field[@var="f1"]/x:value/text()'));
+                    doc.getPathValue('/client:iq/cmd:command/x:x/x:field[@var="f1"]/x:value/text()'));
     Assert.areEqual('f2Value',
-                    doc.getPathValue('/iq/cmd:command/x:x/x:field[@var="f2"]/x:value/text()'));
+                    doc.getPathValue('/client:iq/cmd:command/x:x/x:field[@var="f2"]/x:value/text()'));
 
   }
 });

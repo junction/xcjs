@@ -166,6 +166,9 @@ XC.XML.XMPP = {};
  * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.Stanza = XC.XML.Element.extend(/** @lends XC.XML.XMPP.Stanza# */{
+
+  xmlns: 'jabber:client',
+
   to: function (val) {
     return this.attr('to', val);
   },
@@ -232,7 +235,7 @@ XC.XML.XMPP.Presence = XC.XML.XMPP.Stanza.extend(/** @lends XC.XML.XMPP.Presence
  * @class
  * XMPP Query stanza.
  *
- * @extends XC.XML.XMPP.Stanza
+ * @extends XC.XML.Element
  * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.Query = XC.XML.Element.extend(/** @lends XMPP.Query# */{
@@ -243,7 +246,7 @@ XC.XML.XMPP.Query = XC.XML.Element.extend(/** @lends XMPP.Query# */{
  * @class
  * XMPP Error stanza.
  *
- * @extends XC.XML.XMPP.Stanza
+ * @extends XC.XML.Element
  * @see <a href="http://xmpp.org/rfcs/rfc3920.html#stanzas">XMPP Core: Stanzas</a>
  */
 XC.XML.XMPP.Error = XC.XML.Element.extend(/** @lends XMPP.Error# */{

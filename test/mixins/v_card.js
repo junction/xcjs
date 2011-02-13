@@ -108,11 +108,11 @@ XC.Test.Mixin.VCard = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: 'stpeter@jabber.org'
       },
       vCard: {
-        xpath: '/iq/vcard:vCard',
+        xpath: '/client:iq/vcard:vCard',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);

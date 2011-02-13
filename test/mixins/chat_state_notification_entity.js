@@ -30,7 +30,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:active',
+        xpath: '/client:message/chatStates:active',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);
@@ -46,7 +46,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:composing',
+        xpath: '/client:message/chatStates:composing',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);
@@ -62,7 +62,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:paused',
+        xpath: '/client:message/chatStates:paused',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);
@@ -78,7 +78,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:inactive',
+        xpath: '/client:message/chatStates:inactive',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);
@@ -94,7 +94,7 @@ XC.Test.Mixin.ChatStateNotificationEntity = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       active: {
-        xpath: '/message/chatStates:gone',
+        xpath: '/client:message/chatStates:gone',
         value: null,
         assert: function (val, nodeVal, message, node) {
           Assert.isObject(node, arguments[2]);

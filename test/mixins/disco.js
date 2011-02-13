@@ -211,15 +211,15 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: this.romeo.jid
       },
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'get'
       },
       node: {
-        xpath: '/iq/discoInfo:query/@node',
+        xpath: '/client:iq/discoInfo:query/@node',
         value: 'http://jabber.org/protocol/tune'
       }
     });
@@ -386,15 +386,15 @@ XC.Test.Mixin.Disco = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       to: {
-        xpath: '/iq/@to',
+        xpath: '/client:iq/@to',
         value: this.romeo.jid
       },
       type: {
-        xpath: '/iq/@type',
+        xpath: '/client:iq/@type',
         value: 'get'
       },
       node: {
-        xpath: '/iq/discoItems:query/@node',
+        xpath: '/client:iq/discoItems:query/@node',
         value: 'http://jabber.org/protocol/tune'
       }
     });

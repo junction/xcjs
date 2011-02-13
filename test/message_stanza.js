@@ -85,15 +85,15 @@ XC.Test.MessageStanza = new YAHOO.tool.TestCase({
                         'chat', {
       subject: {
         value: msg.subject,
-        xpath: '/message/subject/text()'
+        xpath: '/client:message/client:subject/text()'
       },
       body: {
         value: msg.body,
-        xpath: '/message/body/text()'
+        xpath: '/client:message/client:body/text()'
       },
       thread: {
         value: msg.thread,
-        xpath: '/message/thread/text()'
+        xpath: '/client:message/client:thread/text()'
       }
     });
 
@@ -107,15 +107,15 @@ XC.Test.MessageStanza = new YAHOO.tool.TestCase({
                         'chat', {
       subject: {
         value: undefined,
-        xpath: '/message/subject/text()'
+        xpath: '/client:message/client:subject/text()'
       },
       body: {
         value: msg.body,
-        xpath: '/message/body/text()'
+        xpath: '/client:message/client:body/text()'
       },
       thread: {
         value: undefined,
-        xpath: '/message/thread/text()'
+        xpath: '/client:message/client:thread/text()'
       }
     });
 
@@ -130,7 +130,7 @@ XC.Test.MessageStanza = new YAHOO.tool.TestCase({
                         'chat', {
       id: {
         value: msg.id,
-        xpath: '/message/@id'
+        xpath: '/client:message/@id'
       }
     });
 
@@ -149,15 +149,15 @@ XC.Test.MessageStanza = new YAHOO.tool.TestCase({
     Assert.isXMPPMessage(this.conn.getLastStanzaXML(),
                          this.chong.jid, 'chat', {
       body: {
-        xpath: '/message/body/text()',
+        xpath: '/client:message/client:body/text()',
         value: "Badger moles coming toward me, come on guys, help me out."
       },
       subject: {
-        xpath: '/message/subject/text()',
+        xpath: '/client:message/client:subject/text()',
         value: msg.subject
       },
       thread: {
-        xpath: '/message/thread/text()',
+        xpath: '/client:message/client:thread/text()',
         value: msg.thread
       }
     });

@@ -35,27 +35,27 @@ XC.Test.Chat = new YAHOO.tool.TestCase({
 
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
-        xpath: '/message/@type',
+        xpath: '/client:message/@type',
         value: 'chat'
       },
       to: {
-        xpath: '/message/@to',
+        xpath: '/client:message/@to',
         value: this.arthur.jid
       },
       body: {
-        xpath: '/message/body/text()',
+        xpath: '/client:message/client:body/text()',
         value: "Pardon me for breathing, which I never do anyway so I don't know why I bother to say it, oh God I'm so depressed. Here's another one of those self-satisfied doors. Life! Don't talk to me about life."
       },
       subject: {
-        xpath: '/message/subject/text()',
+        xpath: '/client:message/client:subject/text()',
         value: 'Doors'
       },
       thread: {
-        xpath: '/message/thread/text()',
+        xpath: '/client:message/client:thread/text()',
         value: 'HHGTTG'
       },
       id: {
-        xpath: '/message/@id',
+        xpath: '/client:message/@id',
         value: '42'
       }
     });

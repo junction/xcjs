@@ -31,15 +31,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     // </presence>
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       show: {
-        xpath: '/presence/show/text()',
+        xpath: '/client:presence/client:show/text()',
         value: 'away'
       },
       status: {
-        xpath: '/presence/status/text()',
+        xpath: '/client:presence/client:status/text()',
         value: 'Out to lunch'
       },
       priority: {
-        xpath: '/presence/priority/text()',
+        xpath: '/client:presence/client:priority/text()',
         value: '5'
       }
     });
@@ -48,11 +48,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     this.Presence.send();
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: undefined
       },
       noChildren: {
-        xpath: '/presence/*',
+        xpath: '/client:presence/*',
         value: undefined
       }
     });
@@ -65,7 +65,7 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     this.Presence.sendUnavailable();
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'unavailable'
       }
     });
@@ -76,11 +76,11 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
     this.Presence.sendUnavailable('Gone home.');
     Assert.XPathTests(this.conn.getLastStanzaXML(), {
       type: {
-        xpath: '/presence/@type',
+        xpath: '/client:presence/@type',
         value: 'unavailable'
       },
       status: {
-        xpath: '/presence/status/text()',
+        xpath: '/client:presence/client:status/text()',
         value: 'Gone home.'
       }
     });
@@ -111,15 +111,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       request.accept();
       Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
-          xpath: '/presence/@type',
+          xpath: '/client:presence/@type',
           value: 'subscribed'
         },
         to: {
-          xpath: '/presence/@to',
+          xpath: '/client:presence/@to',
           value: 'romeo@example.com'
         },
         noChildren: {
-          xpath: '/presence/*',
+          xpath: '/client:presence/*',
           value: undefined
         }
       });
@@ -128,15 +128,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       request.deny();
       Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
-          xpath: '/presence/@type',
+          xpath: '/client:presence/@type',
           value: 'unsubscribed'
         },
         to: {
-          xpath: '/presence/@to',
+          xpath: '/client:presence/@to',
           value: 'romeo@example.com'
         },
         noChildren: {
-          xpath: '/presence/*',
+          xpath: '/client:presence/*',
           value: undefined
         }
       });
@@ -171,15 +171,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       request.accept();
       Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
-          xpath: '/presence/@type',
+          xpath: '/client:presence/@type',
           value: 'subscribe'
         },
         to: {
-          xpath: '/presence/@to',
+          xpath: '/client:presence/@to',
           value: 'romeo@example.com'
         },
         noChildren: {
-          xpath: '/presence/*',
+          xpath: '/client:presence/*',
           value: undefined
         }
       });
@@ -188,15 +188,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       request.deny();
       Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
-          xpath: '/presence/@type',
+          xpath: '/client:presence/@type',
           value: 'unsubscribe'
         },
         to: {
-          xpath: '/presence/@to',
+          xpath: '/client:presence/@to',
           value: 'romeo@example.com'
         },
         noChildren: {
-          xpath: '/presence/*',
+          xpath: '/client:presence/*',
           value: undefined
         }
       });
@@ -231,15 +231,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       request.accept();
       Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
-          xpath: '/presence/@type',
+          xpath: '/client:presence/@type',
           value: 'unsubscribed'
         },
         to: {
-          xpath: '/presence/@to',
+          xpath: '/client:presence/@to',
           value: 'romeo@example.com'
         },
         noChildren: {
-          xpath: '/presence/*',
+          xpath: '/client:presence/*',
           value: undefined
         }
       });
@@ -248,15 +248,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       request.deny();
       Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
-          xpath: '/presence/@type',
+          xpath: '/client:presence/@type',
           value: 'subscribed'
         },
         to: {
-          xpath: '/presence/@to',
+          xpath: '/client:presence/@to',
           value: 'romeo@example.com'
         },
         noChildren: {
-          xpath: '/presence/*',
+          xpath: '/client:presence/*',
           value: undefined
         }
       });
@@ -291,15 +291,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       request.accept();
       Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
-          xpath: '/presence/@type',
+          xpath: '/client:presence/@type',
           value: 'unsubscribe'
         },
         to: {
-          xpath: '/presence/@to',
+          xpath: '/client:presence/@to',
           value: 'romeo@example.com'
         },
         noChildren: {
-          xpath: '/presence/*',
+          xpath: '/client:presence/*',
           value: undefined
         }
       });
@@ -308,15 +308,15 @@ XC.Test.Presence = new YAHOO.tool.TestCase({
       request.deny();
       Assert.XPathTests(that.conn.getLastStanzaXML(), {
         type: {
-          xpath: '/presence/@type',
+          xpath: '/client:presence/@type',
           value: 'subscribe'
         },
         to: {
-          xpath: '/presence/@to',
+          xpath: '/client:presence/@to',
           value: 'romeo@example.com'
         },
         noChildren: {
-          xpath: '/presence/*',
+          xpath: '/client:presence/*',
           value: undefined
         }
       });
