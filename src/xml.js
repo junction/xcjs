@@ -149,6 +149,66 @@ XC.XML.Element = XC.Base.extend(/** @lends XC.XML.Element# */{
     }
 
     return ret;
+  },
+
+  /**
+   * Returns the XML given the JSON object.
+   *
+   * <code>xmlize</code> uses a custom format for
+   * defining XML in a 1:1 manner.
+   *
+   * Any given element will be an object literal.
+   * <ul>
+   *   <li>The tag name of the element is scoped under <code>name</code>.</li>
+   *   <li>The attributes of the element are scoped under <code>attrs</code>.</li>
+   *   <li>The children of the element are scoped under <code>children</code>.</li>
+   *   <li>The namespace of the element is scoped under <code>xmlns</code>.</li>
+   *   <li>The text of the element is scoped under <code>text</code>.</li>
+   * </ul>
+   *
+   * @param {Object} xml The XML in JSON notation.
+   * @param {XC.XML.Element} stanza The root XML element to put the JSON XML in.
+   * @returns XC.XML.Element The stanza passed in mutated by the XML.
+   * @example
+   *  XC.XML.Element.xmlize({
+   *    attrs: {
+   *      type: 'chat',
+   *      to: 'mickey.moose@muppets.com'
+   *    },
+   *    children: [{
+   *      name: 'subject',
+   *      text: 'Chocolate Moose'
+   *    }, {
+   *      name: 'body',
+   *      text: 'Yum yum yum for the chocolate.'
+   *    }]
+   *  }, XC.XML.XMPP.Message.extend());
+   *
+   *  // => <message type="chat" to="mickey.moose@muppets.com">
+   *  //      <subject>Chocolate Moose</subject>
+   *  //      <body>Yum yum yum for the chocolate.</body>
+   *  //    </message>
+   */
+  xmlize: function (json, stanza, ignore) {
+    var children = json.children, child,
+        el, i, len;
+
+    stanza.attributes = stanza.attributes || {};
+    XC.Base.mixin.apply(stanza.attributes, [json.attrs]);
+    stanza.text = json.text;
+    stanza.name = json.name || stanza.name;
+    stanza.xmlns = json.xmlns || stanza.xmlns;
+
+    len = children ? children.length : 0;
+    for (i = 0; i < len; i++) {
+      child = children[i];
+      el = XC.XML.Element.extend({ name: child.name });
+      if (this.xmlize(child, el)) {
+        stanza.addChild(el);
+      }
+    }
+
+    return stanza;
   }
 });
 

@@ -134,6 +134,42 @@ XC.Test.XML = new YAHOO.tool.TestCase({
     Assert.areEqual(this.demoDoc.getPathValue('/foo/bar[2]/value/text()'), value2.text);
   },
 
+  testXmlizeTurnsFlatJSONIntoXML: function () {
+    var Assert = YAHOO.util.Assert;
+    var foo = XC.XML.Element.xmlize({
+      name: 'foo',
+      attrs: { bar: 'baz', qux: 'quux' },
+      text: 'Lorem ipsum dolor sit amet',
+      xmlns: 'gobbeldigook'
+    }, XC.XML.Element.extend());
+
+    Assert.areEqual('foo', foo.name);
+    Assert.areEqual('gobbeldigook', foo.xmlns);
+    Assert.areEqual('baz', foo.attr('bar'));
+    Assert.areEqual('quux', foo.attr('qux'));
+    Assert.areEqual('Lorem ipsum dolor sit amet', foo.text);
+  },
+
+  testXmlizeTurnsNestedJSONIntoXML: function () {
+    var Assert = YAHOO.util.Assert;
+    var foo = XC.XML.Element.xmlize({
+      name: 'foo',
+      children: [{
+        name: 'value',
+        attrs: { bar: 'baz', qux: 'quux' },
+        text: 'Lorem ipsum dolor sit amet',
+        xmlns: 'gobbeldigook'
+      }]
+    }, XC.XML.Element.extend());
+
+    Assert.areEqual('foo', foo.name);
+    Assert.areEqual('value', foo.children[0].name);
+    Assert.areEqual('gobbeldigook', foo.children[0].xmlns);
+    Assert.areEqual('baz', foo.children[0].attr('bar'));
+    Assert.areEqual('quux', foo.children[0].attr('qux'));
+    Assert.areEqual('Lorem ipsum dolor sit amet', foo.children[0].text);
+  },
+
   testStanzaStructure: function () {
     var Assert = YAHOO.util.Assert;
     var stanza = XC.XML.XMPP.Stanza.extend();
