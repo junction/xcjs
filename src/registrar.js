@@ -153,3 +153,18 @@ XC.Registrar.DelayedDelivery = {
    */
   XMLNS: 'urn:xmpp:delay'
 };
+
+/**
+ * @namespace
+ * Private XML Storage namespace.
+ *
+ * @see <a href="http://xmpp.org/extensions/xep-0049.html">XEP-0049: Private XML Storage</a>
+ */
+XC.Registrar.PrivateStorage = {
+  /**
+   * The private storage namespace
+   * @type String
+   * @constant
+   */
+  XMLNS: 'jabber:iq:private'
+};

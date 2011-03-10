@@ -55,7 +55,8 @@ XC.Connection = XC.Base.extend(/** @lends XC.Connection# */{
     Roster:   XC.Service.Roster,
     Chat:     XC.Service.Chat,
     Disco:    XC.Service.Disco,
-    VCard:    XC.Service.VCard
+    VCard:    XC.Service.VCard,
+    PrivateStorage: XC.Service.PrivateStorage
   },
 
   /**
