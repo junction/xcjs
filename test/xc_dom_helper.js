@@ -113,9 +113,34 @@ XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
     var foo = XC_DOMHelper.getFirstElementChild(this.demoDoc),
         bill = XC_DOMHelper.getElementsByNS(foo, 'fi')[1];
 
+    bill = XC_DOMHelper.importNode(bill, true);
     bill.appendChild(dummy);
 
     Assert.areEqual(dummy, XC_DOMHelper.getFirstElementChild(bill));
+  },
+
+  testImportNode: function () {
+    var Assert = YAHOO.util.Assert;
+    Assert.isFunction(XC_DOMHelper.importNode, 'importNode is not a function');
+
+    Assert.XPathTests(XC_DOMHelper.serializeToString(XC_DOMHelper.importNode(this.demoDoc.firstChild, true)), {
+      bam: {
+        xpath: '/foo/@bam',
+        value: 'baz'
+      },
+      plip: {
+        xpath: '/foo/@plip',
+        value: 'plop'
+      },
+      bar: {
+        xpath: '/foo/bar/fi:value/text()',
+        value: '1'
+      },
+      bar_fi: {
+        xpath: '/foo/fi:bar/fi:value/text()',
+        value: '2'
+      }
+    });
   }
 
 });

@@ -29,6 +29,33 @@ var XC_DOMHelper = {
     NOTATION_NODE: 12
   },
 
+  xmlDocument: (function () {
+    var doc = null;
+    try {
+      doc = document.implementation.createDocument('jabber:client', 'xcjs', null);
+    } catch (x) {
+      var msDocs = ["Msxml2.DOMDocument.6.0",
+                    "Msxml2.DOMDocument.5.0",
+                    "Msxml2.DOMDocument.4.0",
+                    "MSXML2.DOMDocument.3.0",
+                    "MSXML2.DOMDocument",
+                    "MSXML.DOMDocument",
+                    "Microsoft.XMLDOM"];
+      for (var i = 0, len = msDocs.length; i < len; i++) {
+        if (doc === null) {
+          try {
+            doc = new ActiveXObject(msDocs[i]);
+          } catch (e) {
+            doc = null;
+          }
+        } else {
+          break;
+        }
+      }
+    }
+    return doc;
+  }()),
+
   /**
    * Get the first child from a document fragment that is an Element.
    *
@@ -99,9 +126,9 @@ var XC_DOMHelper = {
    * @returns {String} The document fragment as a string.
    */
   serializeToString: function (node) {
-    if ("XMLSerializer" in window) {
+    try {
       return (new XMLSerializer()).serializeToString(node);
-    } else {
+    } catch (x) {
       return node.xml;
     }
   },
@@ -115,10 +142,54 @@ var XC_DOMHelper = {
    */
   createElementNS: function (ns, tagName) {
     if ("createElementNS" in document) {
-      return document.createElementNS(ns, tagName);
+      return this.xmlDocument.createElementNS(ns, tagName);
     } else {
-      var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-      return xmlDoc.createNode(1, tagName, ns);
+      return this.xmlDocument.createNode(1, tagName, ns);
     }
+  },
+
+  /**
+   * Import the node into the XML Document.
+   *
+   * @param {Element|Node} node The element to import into the document.
+   * @param {Boolean} deep Whether to import all child nodes or not.
+   * @returns {Element} The imported element (suitable for appending as a child).
+   */
+  importNode: function (node, deep) {
+    var i, len, newNode, children;
+    try {
+      node = this.xmlDocument.importNode(node, deep);
+    } catch (x) {
+      switch (node.nodeType) {
+      case XC_DOMHelper.NodeTypes.ELEMENT_NODE:
+        if (node.namespaceURI) {
+          newNode = this.createElementNS(node.namespaceURI, node.nodeName);
+        } else {
+          newNode = this.xmlDocument.createElement(node.nodeName);
+        }
+        if (node.attributes && node.attributes.length > 0) {
+          for (i = 0, len = node.attributes.length; i < len; i++) {
+            if (node.attributes[i].nodeName === 'xmlns') continue;
+            newNode.setAttribute(node.attributes[i].nodeName,
+                                 node.attributes[i].value);
+          }
+        }
+
+        children = node.childNodes || node.children;
+        if (deep && children && children.length > 0) {
+          for (i = 0, len = children.length; i < len; i++) {
+            newNode.appendChild(this.importNode(children[i], deep));
+          }
+        }
+        break;
+      case XC_DOMHelper.NodeTypes.TEXT_NODE:
+      case XC_DOMHelper.NodeTypes.CDATA_SECTION_NODE:
+      case XC_DOMHelper.NodeTypes.COMMENT_NODE:
+        newNode = this.xmlDocument.createTextNode(node.nodeValue);
+        break;
+      }
+      node = newNode;
+    }
+    return node;
   }
 };
