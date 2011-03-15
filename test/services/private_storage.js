@@ -28,7 +28,7 @@ XC.Test.PrivateStorage = new YAHOO.tool.TestCase({
                        '<title>Doughnuts</title>' +
                        '<instructions>' +
                          '<step no="1">Throw english muffin in air.</step>' +
-                         '<step no=2">Fire gun at english muffin.</step>' +
+                         '<step no="2">Fire gun at english muffin.</step>' +
                        '</instructions>' +
                      '</recipe>' +
                   '</recipes>' +
@@ -79,7 +79,7 @@ XC.Test.PrivateStorage = new YAHOO.tool.TestCase({
                        '<title>Doughnuts</title>' +
                        '<instructions>' +
                          '<step no="1">Throw english muffin in air.</step>' +
-                         '<step no=2">Fire gun at english muffin.</step>' +
+                         '<step no="2">Fire gun at english muffin.</step>' +
                        '</instructions>' +
                      '</recipe>' +
                   '</recipes>' +
@@ -138,7 +138,6 @@ XC.Test.PrivateStorage = new YAHOO.tool.TestCase({
                 '</query>' +
               '</iq>';
 
-        
     this.conn.addResponse(XC.Test.Packet.extendWithXML(xml));
     var success = false, fail = false;
     this.xc.PrivateStorage.set("recipes", "chef:cookbook", [{
