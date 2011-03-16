@@ -150,6 +150,97 @@ XC.Test.Service.Roster = new YAHOO.tool.TestCase({
 
     this.conn.fireEvent('iq', packet);
     Assert.areEqual(1, count, 'onRosterItems should be called once');
+  },
+
+  testRosterVersioningWithNoQueryResponse: function () {
+    var Assert = YAHOO.util.Assert,
+        packet = XC.Test.Packet.extendWithXML(
+          '<iq type="result" id="result1"/>');
+
+    this.conn.addResponse(packet);
+    var fail = false, win = false;
+    this.Roster.ver = '1';
+    this.Roster.requestItems({
+      onSuccess: function (entities) {
+        win = true;
+      },
+
+      onError: function (packet) {
+        fail = true;
+      }
+    });
+
+    Assert.isTrue(win, "Was not successful in doing a roster request.");
+    Assert.isFalse(fail, "Roster request threw an error.");
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
+      ver: {
+        xpath: '/client:iq/roster:query/@ver',
+        value: '1'
+      }
+    });
+  },
+
+  testRosterVersioningUpdateOnRequest: function () {
+    var Assert = YAHOO.util.Assert,
+        packet = XC.Test.Packet.extendWithXML(
+          '<iq type="result" id="result1"> \
+             <query xmlns="jabber:iq:roster" ver="2"> \
+               <item jid="ford@betelguice.net" \
+                     name="Ford Prefect"> \
+                 <group>Hitchhiker</group> \
+               </item> \
+               <item jid="zaphod@heart-of-gold.com" \
+                     name="Zaphod"> \
+                 <group>President</group> \
+                 <group>Imbecile</group> \
+               </item> \
+             </query> \
+           </iq>');
+
+    this.conn.addResponse(packet);
+    var fail = false, win = false;
+    this.Roster.ver = '1';
+    this.Roster.requestItems({
+      onSuccess: function (entities) {
+        win = true;
+      },
+
+      onError: function (packet) {
+        fail = true;
+      }
+    });
+
+    Assert.isTrue(win, "Was not successful in doing a roster request.");
+    Assert.isFalse(fail, "Roster request threw an error.");
+    Assert.XPathTests(this.conn.getLastStanzaXML(), {
+      ver: {
+        xpath: '/client:iq/roster:query/@ver',
+        value: '1'
+      }
+    });
+    Assert.areEqual(this.Roster.ver, '2', "should have the roster version updated");
+  },
+
+  testRosterSetPushUpdatedRosterVersion: function () {
+    var Assert = YAHOO.util.Assert,
+        fired,
+        packet = XC.Test.Packet.extendWithXML(
+          '<iq type="set" id="set1">' +
+            '<query xmlns="jabber:iq:roster" ver="3">' +
+              '<item jid="ford@betelguice.net" name="Ford Prefect">' +
+                '<group>Hitchhiker</group>' +
+              '</item>' +
+            '</query>' +
+          '</iq>');
+
+    this.xc.Roster.registerHandler('onRosterItems', function (entities) {
+      fired = true;
+    });
+
+    this.conn.fireEvent('iq', packet);
+
+    Assert.isTrue(fired, 'callback did not fire');
+    Assert.areEqual('3', this.Roster.ver, "the roster version should be '3'");
   }
 
 });

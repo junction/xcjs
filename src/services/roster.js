@@ -13,6 +13,22 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.RosterX.Service,
   /** @lends XC.Service.Roster# */{
 
   /**
+   * <p>The current version of the roster.</p>
+   *
+   * <p>If you have a current known version that you are
+   * working off of, set the ver attribute here to let
+   * the server know in subsequent requests what version
+   * it should base its response off of.</p>
+   *
+   * <p>When a new version of the roster is received, this
+   * attribute will be updated to reflect the new version
+   * that you have</p>
+   * @type String
+   * @see <a href="http://xmpp.org/extensions/xep-0237.html">XEP-0237: Roster Versioning</a>
+   */
+  ver: null,
+
+  /**
    * Register for incoming stanzas
    *
    * @param {Function} $super The parent init function.
@@ -49,31 +65,48 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.RosterX.Service,
    */
   requestItems: function (callbacks) {
     var iq = XC.XML.XMPP.IQ.extend(),
-        q = XC.XML.XMPP.Query.extend({xmlns: XC.Registrar.Roster.XMLNS}),
-        that = this;
+        q = XC.XML.XMPP.Query.extend({xmlns: XC.Registrar.Roster.XMLNS});
     iq.type('get');
     iq.addChild(q);
+    if (this.ver !== null && typeof this.ver !== "undefined") {
+      q.attr('ver', this.ver);
+    }
 
-    this.connection.send(iq.toString(), function (packet) {
-      if (packet.getType() === 'error' &&
-          callbacks && callbacks.onError &&
-          XC.isFunction(callbacks.onError)) {
-        callbacks.onError(packet);
-      } else {
-        packet = packet.getNode();
-        var items = packet.getElementsByTagName('item'),
-            entities = [], itemsLength = items.length;
+    this.connection.send(iq.toString(), this._rosterRequestResponse.bind(this, callbacks));
+  },
 
-        for (var i = 0; i < itemsLength; i++) {
-          entities.push(that._entityFromItem(items[i]));
-        }
+  /**
+   * Called on a roster request IQ response.
+   *
+   * @param {Object} callbacks The callbacks to call when a successful request was made.
+   * @param {XC.Packet} packet The resulting packet.
+   */
+  _rosterRequestResponse: function (callbacks, packet) {
+    if (packet.getType() === 'error' &&
+        callbacks && callbacks.onError &&
+        XC.isFunction(callbacks.onError)) {
+      callbacks.onError(packet);
+    } else {
+      packet = packet.getNode();
+      var query = packet.getElementsByTagName('query'),
+          items = packet.getElementsByTagName('item'),
+          entities = [], itemsLength = items.length;
 
-        if (callbacks && callbacks.onSuccess &&
-            XC.isFunction(callbacks.onSuccess)) {
-          callbacks.onSuccess(entities);
-        }
+      // Update the version tag.
+      if (query.length) {
+        query = query[0];
+        this.ver = query.getAttribute('ver');
       }
-    });
+
+      for (var i = 0; i < itemsLength; i++) {
+        entities.push(this._entityFromItem(items[i]));
+      }
+
+      if (callbacks && callbacks.onSuccess &&
+          XC.isFunction(callbacks.onSuccess)) {
+        callbacks.onSuccess(entities);
+      }
+    }
   },
 
   /**
@@ -100,11 +133,18 @@ XC.Service.Roster = XC.Base.extend(XC.Mixin.RosterX.Service,
       iq.type('result');
       iq.attr('id', packet.getAttribute('id'));
       this.connection.send(iq.toString());
+    }
 
     // Process the items passed from the roster.
-    }
-    var items = packet.getElementsByTagName('item'),
+    var query = packet.getElementsByTagName('query'),
+        items = packet.getElementsByTagName('item'),
         itemsLength = items.length, entities = [];
+
+    // Update the version tag.
+    if (query.length) {
+      query = query[0];
+      this.ver = query.getAttribute('ver');
+    }
 
     for (var i = 0; i < itemsLength; i++) {
       entities.push(this._entityFromItem(items[i]));
