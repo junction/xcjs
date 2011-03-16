@@ -22,7 +22,7 @@ XC.Stanza = XC.Base.extend(/** @lends XC.Stanza# */{
       var pkt = this.packet;
 
       this.mixin({
-        to: this.connection.Entity.extend({jid: pkt.getTo()}),
+        to: this.connection.Entity.extend({jid: pkt.getTo() || this.connection.getJID()}),
         from: this.connection.Entity.extend({jid: pkt.getFrom()}),
         type: pkt.getType(),
         id: pkt.getNode().getAttribute('id'),
