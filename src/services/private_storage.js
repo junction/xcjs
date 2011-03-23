@@ -29,7 +29,7 @@ XC.Service.PrivateStorage = XC.Base.extend(/** @lends XC.Service.PrivateStorage#
    * @returns {void}
    * @example
    *   xc.PrivateStorage.get('recipes', 'chef:cookbook', {
-   *     success: function (xml) {
+   *     onSuccess: function (xml) {
    *       // process XML document fragment here...
    *     }
    *   });
