@@ -50,6 +50,24 @@ XC.Test.XC_DOMHelper = new YAHOO.tool.TestCase({
     Assert.areEqual('1', XC_DOMHelper.getTextContent(value[0]), "value should be '1'");
   },
 
+  testGetElementsByTagName: function () {
+    var Assert = YAHOO.util.Assert;
+    Assert.isFunction(XC_DOMHelper.getElementsByTagName, 'getElementsByTagName is not a function');
+
+    var foo = XC_DOMHelper.getFirstElementChild(this.demoDoc),
+        bars = XC_DOMHelper.getElementsByTagName(foo, 'bar'),
+        bill = XC_DOMHelper.getElementsByTagName(foo, 'bill'),
+        empty = XC_DOMHelper.getElementsByTagName(foo, 'qux');
+
+    Assert.areEqual(2, bars.length, "Unexpected number of elements.");
+    Assert.areEqual(1, bill.length, "Unexpected number of elements.");
+    Assert.areEqual(0, empty.length, "Unexpected number of elements.");
+
+    Assert.areEqual('bar', bars[0].localName || bars[0].nodeName);
+    Assert.areEqual('bar', bars[1].localName || bars[1].nodeName);
+    Assert.areEqual('bill', bill[0].localName || bill[0].nodeName);
+  },
+
   testGetTextContent: function() {
     var Assert = YAHOO.util.Assert;
     Assert.isFunction(XC_DOMHelper.getTextContent, 'getTextContent is not a function');

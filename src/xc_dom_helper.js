@@ -93,6 +93,27 @@ var XC_DOMHelper = {
   },
 
   /**
+   * Retrieve all immediate children that have a XML tag name that
+   * is matching the tagName argument.
+   *
+   * @param {Element|Node} el The document fragment to search.
+   * @param {String} tagName The tagName to search for.
+   * @returns {Element[]|Array} A list of elements or an empty array.
+   */
+  getElementsByTagName: function (el, tagName) {
+    var ret = [], child,
+        nodeType = XC_DOMHelper.NodeTypes.ELEMENT_NODE;
+    for (var i = 0, l = el.childNodes.length; i < l; i++) {
+      child = el.childNodes[i];
+      if (child.nodeType === nodeType &&
+          (child.localName || child.nodeName) === tagName) {
+        ret.push(child);
+      }
+    }
+    return ret;
+  },
+
+  /**
    * Get the text of an XML element.
    *
    * @param {Element|Node} el The document fragment to get the text of.
